@@ -1,0 +1,170 @@
+<?php
+
+namespace App\Http\Controllers\AdminProdi;
+
+use App\Http\Controllers\Controller;
+use App\Models\IkuPencapaian;
+use App\Models\Pengaturan;
+use App\Models\PenugasanDosen;
+use App\Models\PengisianBukti;
+use App\Models\FileIsiBukti;
+use App\Models\User;
+use Illuminate\Http\Request;
+
+class DashboardController extends Controller
+{
+    /**
+     * Tampilkan halaman utama dashboard Admin Prodi.
+     */
+    public function index()
+    {
+        $prodiId = auth()->user()->prodi_id;
+        $prodiName = auth()->user()->prodi ? auth()->user()->prodi->nama_prodi : 'Program Studi';
+        
+        $settings = Pengaturan::where('id_prodi', $prodiId)->first();
+        $tahunAktif = $settings?->tahun_aktif ?? date('Y');
+        
+        // Sinkronisasikan database terlebih dahulu untuk mencerminkan validasi atau unggahan baru
+        IkuPencapaian::calculateAndSync($prodiId, $tahunAktif);
+
+        // Metrik Utama
+        $totalTargets = IkuPencapaian::where('id_prodi', $prodiId)->where('tahun', $tahunAktif)->count();
+        $achievedCount = IkuPencapaian::where('id_prodi', $prodiId)->where('tahun', $tahunAktif)->where('status', 'Tercapai')->count();
+        $unachievedCount = IkuPencapaian::where('id_prodi', $prodiId)->where('tahun', $tahunAktif)->where('status', 'Belum Tercapai')->count();
+        
+        // Hitung total bukti yang valid
+        $totalValidProofs = FileIsiBukti::whereHas('pengisianBukti', function ($query) use ($prodiId, $tahunAktif) {
+            $query->where('tahun', $tahunAktif)
+                ->where('status', 'valid')
+                ->whereHas('user', function ($q) use ($prodiId) {
+                    $q->where('prodi_id', $prodiId);
+                });
+        })->count();
+
+        // Ambil penugasan terbaru
+        $recentAssignments = PenugasanDosen::with(['iku', 'user'])
+            ->where('tahun', $tahunAktif)
+            ->whereHas('user', function ($query) use ($prodiId) {
+                $query->where('prodi_id', $prodiId);
+            })
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // Daftar Iku Pencapaian untuk tabel ringkasan cepat
+        $pencapaians = IkuPencapaian::with('iku.kategori')
+            ->where('id_prodi', $prodiId)
+            ->where('tahun', $tahunAktif)
+            ->get();
+
+        return view('adminprodi.dashboard', compact(
+            'prodiName',
+            'tahunAktif',
+            'totalTargets',
+            'achievedCount',
+            'unachievedCount',
+            'totalValidProofs',
+            'recentAssignments',
+            'pencapaians',
+            'settings'
+        ));
+    }
+
+    /**
+     * Tampilkan daftar bukti yang diunggah oleh dosen dari prodi ini.
+     */
+    public function buktiDosen(Request $request)
+    {
+        $prodiId = auth()->user()->prodi_id;
+        $prodiName = auth()->user()->prodi ? auth()->user()->prodi->nama_prodi : 'Program Studi';
+        
+        $settings = Pengaturan::where('id_prodi', $prodiId)->first();
+        $tahunAktif = $settings?->tahun_aktif ?? date('Y');
+        
+        if ($settings) {
+            $tahunList = range($settings->tahun_mulai, $settings->tahun_selesai);
+        } else {
+            $tahunList = range(date('Y') - 2, date('Y') + 5);
+        }
+
+        $tahun = $request->query('tahun', $tahunAktif);
+        $status = $request->query('status');
+
+        $query = PengisianBukti::with(['user', 'iku.kategori', 'buktiIku', 'files'])
+            ->whereHas('user', function ($q) use ($prodiId) {
+                $q->where('prodi_id', $prodiId);
+            });
+
+        if ($request->filled('tahun')) {
+            $query->where('tahun', $tahun);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $status);
+        }
+
+        $riwayat = $query->latest()->paginate(10);
+
+        return view('adminprodi.bukti_dosen.index', compact(
+            'riwayat',
+            'tahunList',
+            'tahun',
+            'status',
+            'prodiName',
+            'settings'
+        ));
+    }
+
+    /**
+     * Tampilkan daftar dosen di prodi ini beserta tugas indikator IKU mereka.
+     */
+    public function dosen(Request $request)
+    {
+        $prodiId = auth()->user()->prodi_id;
+        $prodiName = auth()->user()->prodi ? auth()->user()->prodi->nama_prodi : 'Program Studi';
+        
+        $settings = Pengaturan::where('id_prodi', $prodiId)->first();
+        $tahunAktif = $settings?->tahun_aktif ?? date('Y');
+        
+        if ($settings) {
+            $tahunList = range($settings->tahun_mulai, $settings->tahun_selesai);
+        } else {
+            $tahunList = range(date('Y') - 2, date('Y') + 5);
+        }
+
+        $tahun = $request->query('tahun', $tahunAktif);
+
+        // Muat dosen dari program studi yang sama
+        $dosenList = User::where('role', 'dosen')
+            ->where('prodi_id', $prodiId)
+            ->orderBy('name')
+            ->get();
+
+        foreach ($dosenList as $dosenItem) {
+            // Muat tugas dosen ini untuk tahun akademik terpilih
+            $dosenItem->assignments = PenugasanDosen::with('iku.kategori')
+                ->where('id_user', $dosenItem->id)
+                ->where('tahun', $tahun)
+                ->get();
+
+            // Periksa status unggahan bukti untuk masing-masing tugas
+            foreach ($dosenItem->assignments as $assign) {
+                $proof = PengisianBukti::where('id_user', $dosenItem->id)
+                    ->where('id_iku', $assign->id_iku)
+                    ->where('tahun', $tahun)
+                    ->first();
+                
+                $assign->proof_status = $proof ? $proof->status : 'belum_isi';
+            }
+        }
+
+        return view('adminprodi.dosen.index', compact(
+            'dosenList',
+            'tahunList',
+            'tahun',
+            'prodiName',
+            'settings'
+        ));
+    }
+}
+
