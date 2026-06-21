@@ -1097,7 +1097,7 @@
                 <div class="user-profile-panel">
                     <div class="user-info">
                         <span class="user-name">{{ auth()->user()->name }}</span>
-                        <span class="user-role">Admin Prodi</span>
+                        <span class="user-role">{{ auth()->user()->role === 'kaprodi' ? 'Kaprodi' : 'Admin Prodi' }}</span>
                     </div>
                     <div class="user-avatar">
                         {{ substr(auth()->user()->name, 0, 2) }}

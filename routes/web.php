@@ -6,6 +6,28 @@ use App\Http\Controllers\AdminP2mp\UserController as AdminP2mpUserController;
 use App\Http\Controllers\AdminP2mp\ProdiController as AdminP2mpProdiController;
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Http;
+
+Route::get('/test-gemini', function () {
+
+    $response = Http::post(
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' . env('GEMINI_API_KEY'),
+        [
+            'contents' => [
+                [
+                    'parts' => [
+                        [
+                            'text' => 'Halo Gemini, siapa kamu?'
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    );
+
+    return $response->json();
+});
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');

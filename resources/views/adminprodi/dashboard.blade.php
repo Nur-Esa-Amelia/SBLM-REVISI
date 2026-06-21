@@ -25,7 +25,7 @@
         <span class="welcome-badge">Program Studi {{ $prodiName }}</span>
         <h3 class="welcome-title">Halo, {{ auth()->user()->name }}!</h3>
         <p class="welcome-desc">
-            Anda login sebagai <strong>Admin Program Studi</strong>. Gunakan panel ini untuk mengelola konfigurasi prodi, kategori, target IKU tahunan, menugaskan dosen pengisi bukti, serta memantau laporan capaian IKU prodi secara real-time.
+            Anda login sebagai <strong>{{ auth()->user()->role === 'kaprodi' ? 'Ketua Program Studi (Kaprodi)' : 'Admin Program Studi' }}</strong>. Gunakan panel ini untuk mengelola konfigurasi prodi, kategori, target IKU tahunan, menugaskan dosen pengisi bukti, serta memantau laporan capaian IKU prodi secara real-time.
         </p>
     </div>
     <div style="display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; min-width: 280px; max-width: 480px; width: 100%;">

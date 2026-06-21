@@ -197,7 +197,7 @@
             </div>
             <div style="text-align: center;">
                 <p>Dibuat Oleh,</p>
-                <p style="font-weight: bold; margin-top: 50px;">Admin Program Studi</p>
+                <p style="font-weight: bold; margin-top: 50px;">{{ auth()->user()->role === 'kaprodi' ? 'Ketua Program Studi' : 'Admin Program Studi' }}</p>
                 <p style="color: #64748b; font-size: 9pt;">{{ auth()->user()->name }}</p>
             </div>
         </div>
