@@ -44,6 +44,21 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     
+    Route::get('/profile', function () {
+        $user = auth()->user();
+        if ($user->role === 'admin_p2mp') {
+            $layout = 'adminp2mp.layouts.app';
+        } elseif ($user->role === 'admin_prodi' || $user->role === 'kaprodi') {
+            $layout = 'adminprodi.layouts.app';
+        } else {
+            $layout = 'dosen.layouts.app';
+        }
+        return view('profile', [
+            'layout' => $layout,
+            'user' => $user
+        ]);
+    })->name('profile');
+
     Route::get('/dashboard', function () {
         $user = auth()->user();
         if ($user->role === 'admin_p2mp') {

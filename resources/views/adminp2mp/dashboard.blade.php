@@ -220,14 +220,16 @@
                         <td style="text-align: center; font-weight: 700; color: #3b82f6;">
                             {{ round($item->realisasi) }} Bukti
                         </td>
-                        <td style="text-align: center; font-weight: 700; color: {{ $persentase >= 100 ? '#10b981' : '#f59e0b' }};">
+                        <td style="text-align: center; font-weight: 700; color: {{ $persentase >= 80 ? '#10b981' : ($persentase >= 60 ? '#fbbf24' : '#ef4444') }};">
                             {{ $persentase }}%
                         </td>
                         <td style="text-align: right;">
                             @if($item->status === 'Tercapai')
                                 <span class="badge-custom badge-green">Tercapai</span>
+                            @elseif($item->status === 'Belum Tercapai')
+                                <span class="badge-custom badge-yellow" style="background-color: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.2); color: #fbbf24;">Belum Tercapai</span>
                             @else
-                                <span class="badge-custom badge-rose">Belum Tercapai</span>
+                                <span class="badge-custom badge-rose">Berisiko Tidak Tercapai</span>
                             @endif
                         </td>
                     </tr>

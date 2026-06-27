@@ -74,8 +74,10 @@
                         <td style="text-align: center;">
                             @if($item->status === 'Tercapai')
                                 <span class="badge-custom badge-green">Tercapai</span>
+                            @elseif($item->status === 'Belum Tercapai')
+                                <span class="badge-custom badge-yellow" style="background-color: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.2); color: #fbbf24;">Belum Tercapai</span>
                             @else
-                                <span class="badge-custom badge-rose">Belum Tercapai</span>
+                                <span class="badge-custom badge-rose">Berisiko Tidak Tercapai</span>
                             @endif
                         </td>
                         <td style="text-align: center;">

@@ -166,13 +166,22 @@ class DashboardController extends Controller
             ->pluck('id_iku')
             ->toArray();
 
+        // Filter indikator yang bermasalah (Belum Tercapai atau Berisiko Tidak Tercapai)
+        $warnings = $pencapaianList->filter(function ($item) {
+            return in_array($item->status, ['Belum Tercapai', 'Berisiko Tidak Tercapai']);
+        });
+
+        $rekomendasiController = new \App\Http\Controllers\RekomendasiAiController();
+        $recommendations = $rekomendasiController->getOrGenerate($warnings);
+
         return view('dosen.pencapaian.index', compact(
             'pencapaianList',
             'assignedIkuIds',
             'tahunList',
             'tahun',
             'prodiName',
-            'settings'
+            'settings',
+            'recommendations'
         ));
     }
 }

@@ -9,6 +9,7 @@ use App\Models\PengisianBukti;
 use App\Models\IkuPencapaian;
 use App\Models\Pengaturan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class DashboardController extends Controller
 {
@@ -214,6 +215,14 @@ class DashboardController extends Controller
             ->orderBy('id', 'asc') 
             ->get();
 
+        // Filter indikator yang bermasalah (Belum Tercapai atau Berisiko Tidak Tercapai)
+        $warnings = $laporan->filter(function ($item) {
+            return in_array($item->status, ['Belum Tercapai', 'Berisiko Tidak Tercapai']);
+        });
+
+        $rekomendasiController = new \App\Http\Controllers\RekomendasiAiController();
+        $recommendations = $rekomendasiController->getOrGenerate($warnings);
+
         return view('adminp2mp.monitoring.index', compact(
             'laporan',
             'prodis',
@@ -221,7 +230,8 @@ class DashboardController extends Controller
             'prodiId',
             'prodiName',
             'tahun',
-            'settings'
+            'settings',
+            'recommendations'
         ));
     }
 }

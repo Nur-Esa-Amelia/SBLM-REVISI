@@ -101,18 +101,28 @@
 
                             <!-- Berkas Lampiran -->
                             <td>
-                                <div style="display: flex; flex-direction: column; gap: 4px;">
-                                    @forelse($item->files as $file)
-                                        <a href="{{ asset($file->file_bukti) }}" target="_blank" style="color: #10b981; text-decoration: underline; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px;">
-                                            <svg style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                @if($item->files->isNotEmpty())
+                                    <details>
+                                        <summary style="font-size: 0.8rem; color: #38bdf8; cursor: pointer; user-select: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: underline; outline: none;">
+                                            <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
                                             </svg>
-                                            {{ $file->nama_file }}
-                                        </a>
-                                    @empty
-                                        <span style="color: #64748b; font-size: 0.75rem;">Tidak ada berkas</span>
-                                    @endforelse
-                                </div>
+                                            Detail Berkas ({{ $item->files->count() }})
+                                        </summary>
+                                        <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px; padding: 8px; background-color: rgba(15, 23, 42, 0.6); border: 1px solid #1e293b; border-radius: 6px; min-width: 180px;">
+                                            @foreach($item->files as $file)
+                                                <a href="{{ asset($file->file_bukti) }}" target="_blank" style="color: #10b981; text-decoration: underline; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px; word-break: break-all;">
+                                                    <svg style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                                    </svg>
+                                                    {{ $file->nama_file }}
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </details>
+                                @else
+                                    <span style="color: #64748b; font-size: 0.75rem;">Tidak ada berkas</span>
+                                @endif
                             </td>
 
                             <!-- Keterangan -->

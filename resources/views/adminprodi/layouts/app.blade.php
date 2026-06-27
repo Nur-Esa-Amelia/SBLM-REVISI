@@ -199,6 +199,14 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .user-profile-panel:hover .user-avatar {
+            transform: scale(1.08);
+            box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
+            border-color: #3b82f6;
         }
 
         .user-info {
@@ -231,6 +239,7 @@
             font-weight: 700;
             font-size: 0.75rem;
             text-transform: uppercase;
+            transition: all 0.2s ease;
         }
 
         /* Body container */
@@ -1065,7 +1074,7 @@
 
             <!-- Sidebar Logout -->
             <div class="sidebar-footer">
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin keluar dari sistem?')">
                     @csrf
                     <button type="submit" class="btn btn-rose" style="width: 100%; font-size: 0.75rem; padding: 8px 12px;">
                         <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -1094,7 +1103,7 @@
                 </div>
 
                 <!-- Profile Info Actions -->
-                <div class="user-profile-panel">
+                <a href="{{ route('profile') }}" class="user-profile-panel">
                     <div class="user-info">
                         <span class="user-name">{{ auth()->user()->name }}</span>
                         <span class="user-role">{{ auth()->user()->role === 'kaprodi' ? 'Kaprodi' : 'Admin Prodi' }}</span>
@@ -1102,7 +1111,7 @@
                     <div class="user-avatar">
                         {{ substr(auth()->user()->name, 0, 2) }}
                     </div>
-                </div>
+                </a>
             </header>
 
             <!-- Main Content Area -->

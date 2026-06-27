@@ -199,6 +199,14 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .user-profile-panel:hover .user-avatar {
+            transform: scale(1.08);
+            box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
+            border-color: #3b82f6;
         }
 
         .user-info {
@@ -231,6 +239,7 @@
             font-weight: 700;
             font-size: 0.75rem;
             text-transform: uppercase;
+            transition: all 0.2s ease;
         }
 
         /* Body container */
@@ -1024,13 +1033,6 @@
                         Monitor & Laporan
                     </a>
 
-                    <a href="{{ route('adminprodi.laporan.index') }}" 
-                       class="nav-link {{ request()->routeIs('adminprodi.laporan.index') ? 'active' : '' }}">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        Laporan Prodi
-                    </a>
 
                     <a href="{{ route('adminprodi.pengaturan.index') }}" 
                        class="nav-link {{ request()->routeIs('adminprodi.pengaturan.*') ? 'active' : '' }}">
@@ -1045,7 +1047,7 @@
 
             <!-- Sidebar Logout -->
             <div class="sidebar-footer">
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin keluar dari sistem?')">
                     @csrf
                     <button type="submit" class="btn btn-rose" style="width: 100%; font-size: 0.75rem; padding: 8px 12px;">
                         <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -1074,7 +1076,7 @@
                 </div>
 
                 <!-- Profile Info Actions -->
-                <div class="user-profile-panel">
+                <a href="{{ route('profile') }}" class="user-profile-panel">
                     <div class="user-info">
                         <span class="user-name">{{ auth()->user()->name }}</span>
                         <span class="user-role">{{ str_replace('_', ' ', auth()->user()->role) }}</span>
@@ -1082,7 +1084,7 @@
                     <div class="user-avatar">
                         {{ substr(auth()->user()->name, 0, 2) }}
                     </div>
-                </div>
+                </a>
             </header>
 
             <!-- Main Content Area -->

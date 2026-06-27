@@ -68,7 +68,7 @@
     </div>
 
     <!-- Actions -->
-    <form action="{{ route('logout') }}" method="POST">
+    <form action="{{ route('logout') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin keluar dari sistem?')">
         @csrf
         <button type="submit" class="btn-action" style="background-color: transparent; border: 1px solid #f43f5e; color: #f43f5e; font-weight: 600; cursor: pointer; transition: all 0.2s ease;"
                 onmouseover="this.style.backgroundColor='rgba(244, 63, 94, 0.08)'"

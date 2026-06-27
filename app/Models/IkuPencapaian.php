@@ -78,7 +78,21 @@ class IkuPencapaian extends Model
             }
 
             // Tentukan status ketercapaian target
-            $status = ($realisasi >= $target_nyata) ? 'Tercapai' : 'Belum Tercapai'; 
+            if ($target_nyata > 0) {
+                $persentase = ($realisasi / $target_nyata) * 100;
+            } else {
+                $persentase = $realisasi > 0 ? 100 : 0;
+            }
+
+            if ($persentase >= 80) {
+                $status = 'Tercapai';
+                // Hapus rekomendasi jika ada karena status sudah tercapai/aman
+                \App\Models\RekomendasiAi::where('id_iku_pencapaian', $pencapaian->id)->delete();
+            } elseif ($persentase >= 60) {
+                $status = 'Belum Tercapai';
+            } else {
+                $status = 'Berisiko Tidak Tercapai';
+            }
 
             $pencapaian->update([
                 'realisasi' => $realisasi,

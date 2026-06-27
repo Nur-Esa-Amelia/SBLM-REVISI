@@ -30,7 +30,7 @@ class DashboardController extends Controller
         // Metrik Utama
         $totalTargets = IkuPencapaian::where('id_prodi', $prodiId)->where('tahun', $tahunAktif)->count();
         $achievedCount = IkuPencapaian::where('id_prodi', $prodiId)->where('tahun', $tahunAktif)->where('status', 'Tercapai')->count();
-        $unachievedCount = IkuPencapaian::where('id_prodi', $prodiId)->where('tahun', $tahunAktif)->where('status', 'Belum Tercapai')->count();
+        $unachievedCount = IkuPencapaian::where('id_prodi', $prodiId)->where('tahun', $tahunAktif)->where('status', '!=', 'Tercapai')->count();
         
         // Hitung total bukti yang valid
         $totalValidProofs = FileIsiBukti::whereHas('pengisianBukti', function ($query) use ($prodiId, $tahunAktif) {
@@ -57,6 +57,14 @@ class DashboardController extends Controller
             ->where('tahun', $tahunAktif)
             ->get();
 
+        // Filter indikator yang bermasalah (Belum Tercapai atau Berisiko Tidak Tercapai)
+        $warnings = $pencapaians->filter(function ($item) {
+            return in_array($item->status, ['Belum Tercapai', 'Berisiko Tidak Tercapai']);
+        });
+
+        $rekomendasiController = new \App\Http\Controllers\RekomendasiAiController();
+        $recommendations = $rekomendasiController->getOrGenerate($warnings);
+
         return view('adminprodi.dashboard', compact(
             'prodiName',
             'tahunAktif',
@@ -66,7 +74,8 @@ class DashboardController extends Controller
             'totalValidProofs',
             'recentAssignments',
             'pencapaians',
-            'settings'
+            'settings',
+            'recommendations'
         ));
     }
 

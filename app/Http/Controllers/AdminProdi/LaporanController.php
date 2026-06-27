@@ -58,6 +58,14 @@ class LaporanController extends Controller
             $laporan = collect();
         }
 
-        return view('adminprodi.laporan.index', compact('laporan', 'tahunList', 'tahun', 'prodiName', 'settings', 'prodis', 'selectedProdiId'));
+        // Filter indikator yang bermasalah (Belum Tercapai atau Berisiko Tidak Tercapai)
+        $warnings = $laporan->filter(function ($item) {
+            return in_array($item->status, ['Belum Tercapai', 'Berisiko Tidak Tercapai']);
+        });
+
+        $rekomendasiController = new \App\Http\Controllers\RekomendasiAiController();
+        $recommendations = $rekomendasiController->getOrGenerate($warnings);
+
+        return view('adminprodi.laporan.index', compact('laporan', 'tahunList', 'tahun', 'prodiName', 'settings', 'prodis', 'selectedProdiId', 'recommendations'));
     }
 }
