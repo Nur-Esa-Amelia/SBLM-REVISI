@@ -57,6 +57,45 @@ class DashboardController extends Controller
             ->where('tahun', $tahunAktif)
             ->get();
 
+        // Hitung rata-rata Balanced Scorecard (BSC)
+        $jml_mahasiswa = $settings ? $settings->jml_mahasiswa : 0;
+        $jml_dosen = $settings ? $settings->jml_dosen : 0;
+
+        $mahasiswaIkus = collect();
+        $dosenIkus = collect();
+
+        foreach ($pencapaians as $item) {
+            $targetVal = floatval($item->target);
+            if ($item->satuan === 'persen') {
+                if ($item->objek === 'mahasiswa') {
+                    $targetNyata = ($targetVal / 100) * $jml_mahasiswa;
+                } elseif ($item->objek === 'dosen') {
+                    $targetNyata = ($targetVal / 100) * $jml_dosen;
+                } else {
+                    $targetNyata = $targetVal;
+                }
+            } else {
+                $targetNyata = $targetVal;
+            }
+
+            if ($targetNyata > 0) {
+                $persentase = ($item->realisasi / $targetNyata) * 100;
+            } else {
+                $persentase = $item->realisasi > 0 ? 100 : 0;
+            }
+
+            $item->persentase_capped = min($persentase, 100);
+
+            if ($item->objek === 'mahasiswa') {
+                $mahasiswaIkus->push($item);
+            } elseif ($item->objek === 'dosen') {
+                $dosenIkus->push($item);
+            }
+        }
+
+        $avgMahasiswa = $mahasiswaIkus->count() > 0 ? round($mahasiswaIkus->avg('persentase_capped')) : 0;
+        $avgDosen = $dosenIkus->count() > 0 ? round($dosenIkus->avg('persentase_capped')) : 0;
+
         // Filter indikator yang bermasalah (Belum Tercapai atau Berisiko Tidak Tercapai)
         $warnings = $pencapaians->filter(function ($item) {
             return in_array($item->status, ['Belum Tercapai', 'Berisiko Tidak Tercapai']);
@@ -75,7 +114,9 @@ class DashboardController extends Controller
             'recentAssignments',
             'pencapaians',
             'settings',
-            'recommendations'
+            'recommendations',
+            'avgMahasiswa',
+            'avgDosen'
         ));
     }
 

@@ -1,8 +1,8 @@
 @extends('dosen.layouts.app')
 
 @section('title', 'Dashboard Dosen - Sistem Early Warning IKU')
-@section('page_title', 'Dashboard Utama')
-@section('page_subtitle', 'Selamat datang di panel pengisian bukti IKU ditugaskan')
+@section('page_title', 'Selamat Datang di Sistem Monitoring Pencapaian Indikator Kinerja Politeknik Sukabumi')
+@section('page_subtitle', '')
 
 @section('content')
 <!-- Check configuration warning -->

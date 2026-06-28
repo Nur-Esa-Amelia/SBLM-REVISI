@@ -2,7 +2,7 @@
 
 @section('title', 'Data IKU - Admin Prodi')
 @section('page_title', 'Kelola Data IKU')
-@section('page_subtitle', 'Master data Indikator Kinerja Utama program studi')
+@section('page_subtitle', 'Master data Indikator Kinerja Utama')
 
 @section('content')
 <div class="card" style="display: flex; flex-direction: column; gap: 20px;">

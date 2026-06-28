@@ -1,8 +1,8 @@
 @extends('adminp2mp.layouts.app')
 
 @section('title', 'Dashboard Admin P2MP - Sistem Early Warning IKU')
-@section('page_title', 'Dashboard Utama')
-@section('page_subtitle', 'Selamat datang di portal monitoring IKU Anda')
+@section('page_title', 'Selamat Datang di Sistem Monitoring Pencapaian Indikator Kinerja Politeknik Sukabumi')
+@section('page_subtitle', '')
 
 @section('content')
 <!-- Welcome Announcement Card -->
@@ -29,25 +29,25 @@
 
 <!-- Metrics Cards Section -->
 <div class="dashboard-grid">
-    <!-- Kelola User Card -->
+    <!-- Total Indikator IKU -->
     <div class="stat-card">
         <div>
             <div class="stat-header">
                 <div class="stat-info">
-                    <span class="stat-label">Total User</span>
-                    <h4 class="stat-value">{{ $totalUsers }}</h4>
+                    <span class="stat-label">Total Indikator IKU</span>
+                    <h4 class="stat-value" style="color: #6366f1;">{{ $totalIku }}</h4>
                 </div>
-                <div class="stat-icon user">
+                <div class="stat-icon target" style="background-color: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); color: #6366f1; width: 42px; height: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
                     <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                     </svg>
                 </div>
             </div>
         </div>
         <div class="stat-footer">
-            <span class="stat-desc">User semua prodi</span>
-            <a href="{{ route('adminp2mp.users.index') }}" class="stat-link">
-                Kelola
+            <span class="stat-desc">Seluruh Indikator IKU</span>
+            <a href="{{ route('adminprodi.iku.index') }}" class="stat-link">
+                Data IKU
                 <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
                 </svg>
@@ -55,39 +55,13 @@
         </div>
     </div>
 
-    <!-- Kelola Prodi Card -->
-    <div class="stat-card">
-        <div>
-            <div class="stat-header">
-                <div class="stat-info">
-                    <span class="stat-label">Total Program Studi</span>
-                    <h4 class="stat-value">{{ $totalProdi }}</h4>
-                </div>
-                <div class="stat-icon prodi">
-                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                    </svg>
-                </div>
-            </div>
-        </div>
-        <div class="stat-footer">
-            <span class="stat-desc">Program Studi aktif</span>
-            <a href="{{ route('adminp2mp.prodi.index') }}" class="stat-link">
-                Kelola
-                <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </a>
-        </div>
-    </div>
-
-    <!-- Validasi Bukti IKU Card (Placeholder) -->
+    <!-- Validasi Bukti IKU Card -->
     <div class="stat-card">
         <div>
             <div class="stat-header">
                 <div class="stat-info">
                     <span class="stat-label">Validasi Bukti IKU</span>
-                    <h4 class="stat-value">{{ $pendingValidationCount }}</h4>
+                    <h4 class="stat-value" style="color: {{ $pendingValidationCount > 0 ? '#fbbf24' : '#10b981' }};">{{ $pendingValidationCount }}</h4>
                 </div>
                 <div class="stat-icon validasi">
                     <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -97,7 +71,9 @@
             </div>
         </div>
         <div class="stat-footer">
-            <span class="stat-desc" style="color: #f59e0b;">Belum ada pengajuan</span>
+            <span class="stat-desc" style="color: {{ $pendingValidationCount > 0 ? '#fbbf24' : '#64748b' }};">
+                {{ $pendingValidationCount > 0 ? 'Perlu tindakan validasi' : 'Semua bukti divalidasi' }}
+            </span>
             <a href="{{ route('adminp2mp.validasi') }}" class="stat-link" style="color: #10b981;">
                 Validasi
                 <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
@@ -107,29 +83,80 @@
         </div>
     </div>
 
-    <!-- Monitor & Laporan Card (Placeholder) -->
+    <!-- IKU Tercapai -->
     <div class="stat-card">
         <div>
             <div class="stat-header">
                 <div class="stat-info">
-                    <span class="stat-label">Monitor & Laporan</span>
-                    <h4 class="stat-value">-</h4>
+                    <span class="stat-label">IKU Tercapai</span>
+                    <h4 class="stat-value" style="color: #10b981;">{{ $achievedCount }}</h4>
                 </div>
-                <div class="stat-icon report">
+                <div class="stat-icon tercapai" style="background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #10b981; width: 42px; height: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
                     <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
                     </svg>
                 </div>
             </div>
         </div>
         <div class="stat-footer">
-            <span class="stat-desc" style="color: #6366f1;">Tabel iku_capaian kosong</span>
-            <a href="{{ route('adminp2mp.monitoring') }}" class="stat-link" style="color: #6366f1;">
-                Pantau
-                <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </a>
+            <span class="stat-desc">Target terpenuhi</span>
+            <span class="badge-custom badge-blue">
+                {{ $totalReports > 0 ? round(($achievedCount / $totalReports) * 100) : 0 }}%
+            </span>
+        </div>
+    </div>
+
+    <!-- Belum Tercapai -->
+    <div class="stat-card">
+        <div>
+            <div class="stat-header">
+                <div class="stat-info">
+                    <span class="stat-label">Belum Tercapai</span>
+                    <h4 class="stat-value" style="color: #ef4444;">{{ $unachievedCount }}</h4>
+                </div>
+                <div class="stat-icon belum-tercapai" style="background-color: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; width: 42px; height: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="stat-footer">
+            <span class="stat-desc">Belum memenuhi target</span>
+            <span class="badge-custom badge-rose">Warning</span>
+        </div>
+    </div>
+</div>
+
+<!-- Balanced Scorecard (BSC) Averages -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 24px;">
+    <!-- Perspektif Mahasiswa -->
+    <div class="card" style="display: flex; align-items: center; gap: 20px; padding: 20px; position: relative; overflow: hidden; border-color: rgba(56, 189, 248, 0.15);">
+        <div style="position: relative; width: 76px; height: 76px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient({{ $avgMahasiswa >= 80 ? '#10b981' : ($avgMahasiswa >= 60 ? '#f59e0b' : '#ef4444') }} {{ $avgMahasiswa * 3.6 }}deg, #1e293b 0deg); flex-shrink: 0; box-shadow: inset 0 0 8px rgba(0,0,0,0.5);">
+            <div style="content: ''; position: absolute; width: 60px; height: 60px; border-radius: 50%; background-color: #0f172a;"></div>
+            <span style="position: relative; font-size: 1.1rem; font-weight: 800; color: #ffffff;">{{ $avgMahasiswa }}%</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+            <h4 style="font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin: 0;">Perspektif Mahasiswa</h4>
+            <span style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase;">Balanced Scorecard</span>
+            <span class="badge-custom {{ $avgMahasiswa >= 80 ? 'badge-green' : ($avgMahasiswa >= 60 ? 'badge-blue' : 'badge-rose') }}" style="align-self: flex-start; font-size: 0.6rem; margin-top: 2px;">
+                {{ $avgMahasiswa >= 80 ? 'Sangat Baik' : ($avgMahasiswa >= 60 ? 'Cukup Baik' : 'Kurang/Risiko') }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Perspektif Dosen -->
+    <div class="card" style="display: flex; align-items: center; gap: 20px; padding: 20px; position: relative; overflow: hidden; border-color: rgba(168, 85, 247, 0.15);">
+        <div style="position: relative; width: 76px; height: 76px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient({{ $avgDosen >= 80 ? '#10b981' : ($avgDosen >= 60 ? '#f59e0b' : '#ef4444') }} {{ $avgDosen * 3.6 }}deg, #1e293b 0deg); flex-shrink: 0; box-shadow: inset 0 0 8px rgba(0,0,0,0.5);">
+            <div style="content: ''; position: absolute; width: 60px; height: 60px; border-radius: 50%; background-color: #0f172a;"></div>
+            <span style="position: relative; font-size: 1.1rem; font-weight: 800; color: #ffffff;">{{ $avgDosen }}%</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+            <h4 style="font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin: 0;">Perspektif Dosen</h4>
+            <span style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase;">Balanced Scorecard</span>
+            <span class="badge-custom {{ $avgDosen >= 80 ? 'badge-green' : ($avgDosen >= 60 ? 'badge-purple' : 'badge-rose') }}" style="align-self: flex-start; font-size: 0.6rem; margin-top: 2px;">
+                {{ $avgDosen >= 80 ? 'Sangat Baik' : ($avgDosen >= 60 ? 'Cukup Baik' : 'Kurang/Risiko') }}
+            </span>
         </div>
     </div>
 </div>

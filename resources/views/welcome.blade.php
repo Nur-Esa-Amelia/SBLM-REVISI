@@ -22,14 +22,7 @@
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        width: 64px;
-        height: 64px;
-        background-color: #0f1626;
-        border: 1px solid #1e293b;
-        border-radius: 16px;
         margin-bottom: 24px;
-        color: #38bdf8;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
     }
 
     .logo-wrapper svg {
@@ -134,13 +127,11 @@
 
 <div class="welcome-container">
     <div class="logo-wrapper">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-        </svg>
+        <img src="{{ asset('images/logo politeknik sukabumi.png') }}" alt="Logo" style="height: 80px; width: auto; object-fit: contain;">
     </div>
 
     <div>
-        <span class="badge">Sistem IKU</span>
+        <span class="badge">Politeknik Sukabumi</span>
     </div>
 
     <h1 class="title">Sistem Monitoring Pencapaian IKU</h1>
@@ -168,7 +159,7 @@
     @endif
 
     <div class="footer-text">
-        Sistem Early Warning IKU — Program Studi
+        Sistem Early Warning IKU — Politeknik Sukabumi
     </div>
 </div>
 @endsection

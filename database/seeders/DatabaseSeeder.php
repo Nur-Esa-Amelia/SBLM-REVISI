@@ -21,16 +21,29 @@ class DatabaseSeeder extends Seeder
             ProdiSeeder::class,
         ]);
 
-        // Seed 7 Categories
-        $categoriesData = [
-            ['id' => 1, 'nama_kategori' => 'Pendidikan', 'deskripsi' => 'Kategori IKU terkait proses pembelajaran, kurikulum, dan kelulusan.'],
-            ['id' => 2, 'nama_kategori' => 'Kemahasiswaan', 'deskripsi' => 'Kategori IKU terkait prestasi mahasiswa dan daya saing lulusan.'],
-            ['id' => 3, 'nama_kategori' => 'SDM', 'deskripsi' => 'Kategori IKU terkait kualifikasi, sertifikasi, dan kompetensi dosen/staf.'],
-            ['id' => 4, 'nama_kategori' => 'Penelitian & Pengabdian', 'deskripsi' => 'Kategori IKU terkait hasil penelitian, pengabdian masyarakat, dan publikasi.'],
-            ['id' => 5, 'nama_kategori' => 'Kerjasama & Kelembagaan', 'deskripsi' => 'Kategori IKU terkait kemitraan industri dan standar kelembagaan.'],
-            ['id' => 6, 'nama_kategori' => 'Sarana & Prasarana', 'deskripsi' => 'Kategori IKU terkait fasilitas laboratorium, perpustakaan, dan infrastruktur.'],
-            ['id' => 7, 'nama_kategori' => 'Tata Kelola & Keuangan', 'deskripsi' => 'Kategori IKU terkait manajemen mutu, tata kelola, dan kepuasan pengguna.'],
-        ];
+       // Seed 7 Categories
+    $categoriesData = [
+        [
+            'id' => 1,
+            'nama_kategori' => 'Pendidikan',
+            'deskripsi' => 'Kategori IKU yang berkaitan dengan penyelenggaraan pendidikan tinggi, efektivitas proses pembelajaran, kurikulum, kelulusan tepat waktu, masa studi sesuai standar, angka efisiensi edukasi perguruan tinggi (AEE PT), penyerapan lulusan, lulusan bekerja, berwirausaha, melanjutkan studi, serta kesesuaian kompetensi lulusan dengan kebutuhan dunia kerja dan industri.'
+        ],
+        [
+            'id' => 2,
+            'nama_kategori' => 'Kemahasiswaan',
+            'deskripsi' => 'Kategori IKU yang berkaitan dengan aktivitas, partisipasi, dan prestasi mahasiswa, meliputi organisasi kemahasiswaan, kompetisi akademik maupun non-akademik, penelitian mahasiswa, pengabdian kepada masyarakat, kewirausahaan, pertukaran pelajar, pengembangan soft skills, kepemimpinan, kreativitas, inovasi, serta pencapaian prestasi di tingkat nasional maupun internasional.'
+        ],
+        [
+            'id' => 3,
+            'nama_kategori' => 'SDM',
+            'deskripsi' => 'Kategori IKU yang berkaitan dengan sumber daya manusia perguruan tinggi, khususnya dosen, meliputi rekognisi dosen, penghargaan, kepakaran, sitasi ilmiah, keterlibatan dalam penyusunan kebijakan, konsultasi pemerintah, kontribusi kepada industri, pengembangan karier, peningkatan kompetensi, perlindungan, serta kesejahteraan dosen.'
+        ],
+        [
+            'id' => 4,
+            'nama_kategori' => 'Penelitian & Pengabdian',
+            'deskripsi' => 'Kategori IKU yang berkaitan dengan penelitian, pengabdian kepada masyarakat, kerja sama dengan industri, pemerintah, sekolah, dan mitra lainnya, hilirisasi hasil penelitian dan inovasi, pemanfaatan hasil riset, publikasi ilmiah internasional, jurnal bereputasi, Scopus, Web of Science (WoS), serta peningkatan reputasi akademik perguruan tinggi.'
+        ],
+    ];
 
         foreach ($categoriesData as $cat) {
             Kategori::updateOrCreate(
@@ -43,80 +56,56 @@ class DatabaseSeeder extends Seeder
         }
 
         // Seed 12 IKUs
-        $ikusData = [
-            [
-                'id' => 1,
-                'id_kategori' => 1,
-                'nama_iku' => 'AEE PT',
-                'deskripsi' => 'Mengukur efisiensi pendidikan melalui kelulusan tepat waktu, masa studi standar, dan efektivitas proses akademik.',
-            ],
-            [
-                'id' => 2,
-                'id_kategori' => 1,
-                'nama_iku' => 'Lulusan Terserap',
-                'deskripsi' => 'Mengukur keberhasilan lulusan dalam bekerja, berwirausaha, atau melanjutkan studi maksimal 1 tahun setelah lulus.',
-            ],
-            [
-                'id' => 3,
-                'id_kategori' => 2,
-                'nama_iku' => 'Aktivitas & Prestasi Mahasiswa',
-                'deskripsi' => 'Mengukur keterlibatan dan prestasi mahasiswa dalam kegiatan akademik maupun non-akademik.',
-            ],
-            [
-                'id' => 4,
-                'id_kategori' => 3,
-                'nama_iku' => 'Rekognisi Dosen',
-                'deskripsi' => 'Mengukur pengakuan dan reputasi dosen melalui penghargaan, sitasi, dan kontribusi keilmuan.',
-            ],
-            [
-                'id' => 5,
-                'id_kategori' => 4,
-                'nama_iku' => 'Kerja Sama & Hilirisasi',
-                'deskripsi' => 'Mengukur kualitas kerja sama dan pemanfaatan hasil riset atau inovasi secara nyata.',
-            ],
-            [
-                'id' => 6,
-                'id_kategori' => 4,
-                'nama_iku' => 'Publikasi Internasional',
-                'deskripsi' => 'Mengukur jumlah publikasi ilmiah bereputasi internasional yang terindeks Scopus atau WoS.',
-            ],
-            [
-                'id' => 7,
-                'id_kategori' => 5,
-                'nama_iku' => 'Kontribusi SDGs',
-                'deskripsi' => 'Mengukur kontribusi perguruan tinggi terhadap pencapaian Sustainable Development Goals (SDGs).',
-            ],
-            [
-                'id' => 8,
-                'id_kategori' => 3,
-                'nama_iku' => 'SDM dalam Kebijakan',
-                'deskripsi' => 'Mengukur keterlibatan dosen atau tenaga ahli dalam penyusunan kebijakan dan konsultasi publik.',
-            ],
-            [
-                'id' => 9,
-                'id_kategori' => 6,
-                'nama_iku' => 'Pendapatan Non-UKT',
-                'deskripsi' => 'Mengukur kemampuan perguruan tinggi memperoleh pendapatan selain dari UKT.',
-            ],
-            [
-                'id' => 10,
-                'id_kategori' => 7,
-                'nama_iku' => 'Zona Integritas',
-                'deskripsi' => 'Mengukur pembangunan budaya birokrasi bersih menuju WBK dan WBBM.',
-            ],
-            [
-                'id' => 11,
-                'id_kategori' => 7,
-                'nama_iku' => 'Tata Kelola Berintegritas',
-                'deskripsi' => 'Mengukur kualitas tata kelola kampus yang transparan, akuntabel, dan profesional.',
-            ],
-            [
-                'id' => 12,
-                'id_kategori' => 3,
-                'nama_iku' => 'Kesejahteraan Dosen',
-                'deskripsi' => 'Mengukur upaya peningkatan kesejahteraan, pengembangan karier, dan perlindungan dosen.',
-            ]
-        ];
+    $ikusData = [
+        [
+            'id' => 1,
+            'id_kategori' => 1,
+            'nama_iku' => 'AEE PT',
+            'deskripsi' => 'Mengukur efisiensi pendidikan di perguruan tinggi melalui kelulusan tepat waktu, masa studi sesuai standar, efektivitas proses akademik, penurunan angka drop out (DO), pengurangan keterlambatan kelulusan, serta keberhasilan mahasiswa menyelesaikan studi sesuai kurikulum.',
+        ],
+        [
+            'id' => 2,
+            'id_kategori' => 1,
+            'nama_iku' => 'Lulusan Terserap',
+            'deskripsi' => 'Mengukur keberhasilan lulusan yang bekerja, berwirausaha, atau melanjutkan studi paling lama satu tahun setelah lulus, serta kesesuaian kompetensi lulusan dengan kebutuhan dunia kerja, industri, dan masyarakat.',
+        ],
+        [
+            'id' => 3,
+            'id_kategori' => 2,
+            'nama_iku' => 'Aktivitas & Prestasi Mahasiswa',
+            'deskripsi' => 'Mengukur keterlibatan mahasiswa dalam kegiatan di luar program studi seperti kompetisi, organisasi, pengabdian kepada masyarakat, penelitian, pertukaran pelajar, kewirausahaan, serta prestasi akademik dan non-akademik.',
+        ],
+        [
+            'id' => 4,
+            'id_kategori' => 3,
+            'nama_iku' => 'Rekognisi Dosen',
+            'deskripsi' => 'Mengukur pengakuan terhadap dosen melalui penghargaan nasional maupun internasional, kepakaran, sitasi ilmiah, publikasi, inovasi, hasil penelitian yang dimanfaatkan masyarakat, serta kontribusi dalam pengembangan ilmu pengetahuan.',
+        ],
+        [
+            'id' => 5,
+            'id_kategori' => 4,
+            'nama_iku' => 'Kerja Sama & Hilirisasi',
+            'deskripsi' => 'Mengukur kualitas kerja sama perguruan tinggi dengan industri, pemerintah, sekolah, lembaga, dunia usaha, dan mitra lainnya, serta hilirisasi hasil penelitian atau inovasi agar memberikan manfaat nyata bagi masyarakat dan dunia industri.',
+        ],
+        [
+            'id' => 6,
+            'id_kategori' => 4,
+            'nama_iku' => 'Publikasi Internasional',
+            'deskripsi' => 'Mengukur jumlah dan kualitas publikasi ilmiah internasional bereputasi yang terindeks Scopus atau Web of Science (WoS), sebagai indikator reputasi akademik dan kualitas penelitian perguruan tinggi.',
+        ],
+        [
+            'id' => 7,
+            'id_kategori' => 3,
+            'nama_iku' => 'SDM dalam Kebijakan',
+            'deskripsi' => 'Mengukur keterlibatan dosen atau tenaga ahli perguruan tinggi dalam penyusunan kebijakan, konsultasi pemerintah, dunia industri, lembaga nasional maupun daerah, serta kontribusi keilmuan dalam pengambilan keputusan publik.',
+        ],
+        [
+            'id' => 8,
+            'id_kategori' => 3,
+            'nama_iku' => 'Kesejahteraan Dosen',
+            'deskripsi' => 'Mengukur upaya perguruan tinggi dalam meningkatkan kesejahteraan dosen melalui pengembangan karier, perlindungan, penghargaan, peningkatan kompetensi, serta perencanaan kesejahteraan dosen secara berkelanjutan.',
+        ],
+    ];
 
         foreach ($ikusData as $iku) {
             Iku::updateOrCreate(

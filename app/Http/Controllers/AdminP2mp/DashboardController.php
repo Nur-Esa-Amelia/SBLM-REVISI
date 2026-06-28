@@ -20,6 +20,7 @@ class DashboardController extends Controller
     {
         $totalUsers = User::count(); 
         $totalProdi = Prodi::count();
+        $totalIku = \App\Models\Iku::count();
         $pendingValidationCount = PengisianBukti::where('status', 'pending')->count(); 
         
         $prodis = Prodi::all();  
@@ -71,9 +72,54 @@ class DashboardController extends Controller
         $settingsMap = Pengaturan::all()->keyBy('id_prodi');
         $totalReports = IkuPencapaian::where('tahun', $tahun)->count();
 
+        // Hitung rata-rata Balanced Scorecard (BSC) untuk P2MP
+        $mahasiswaIkus = collect();
+        $dosenIkus = collect();
+
+        foreach ($laporan as $item) {
+            $settings = $settingsMap->get($item->id_prodi);
+            $jml_mahasiswa = $settings ? $settings->jml_mahasiswa : 0;
+            $jml_dosen = $settings ? $settings->jml_dosen : 0;
+            
+            $targetVal = floatval($item->target);
+            if ($item->satuan === 'persen') {
+                if ($item->objek === 'mahasiswa') {
+                    $targetNyata = ($targetVal / 100) * $jml_mahasiswa;
+                } elseif ($item->objek === 'dosen') {
+                    $targetNyata = ($targetVal / 100) * $jml_dosen;
+                } else {
+                    $targetNyata = $targetVal;
+                }
+            } else {
+                $targetNyata = $targetVal;
+            }
+
+            if ($targetNyata > 0) {
+                $persentase = ($item->realisasi / $targetNyata) * 100;
+            } else {
+                $persentase = $item->realisasi > 0 ? 100 : 0;
+            }
+
+            $item->persentase_capped = min($persentase, 100);
+
+            if ($item->objek === 'mahasiswa') {
+                $mahasiswaIkus->push($item);
+            } elseif ($item->objek === 'dosen') {
+                $dosenIkus->push($item);
+            }
+        }
+
+        $avgMahasiswa = $mahasiswaIkus->count() > 0 ? round($mahasiswaIkus->avg('persentase_capped')) : 0;
+        $avgDosen = $dosenIkus->count() > 0 ? round($dosenIkus->avg('persentase_capped')) : 0;
+
+        // Hitung IKU Tercapai & Belum Tercapai untuk kartu metrik
+        $achievedCount = $laporan->where('status', 'Tercapai')->count();
+        $unachievedCount = $laporan->where('status', '!=', 'Tercapai')->count();
+
         return view('adminp2mp.dashboard', compact(
             'totalUsers',
             'totalProdi',
+            'totalIku',
             'pendingValidationCount',
             'totalReports',
             'laporan',
@@ -81,7 +127,11 @@ class DashboardController extends Controller
             'tahun',
             'prodis',
             'tahunList',
-            'prodiId'
+            'prodiId',
+            'avgMahasiswa',
+            'avgDosen',
+            'achievedCount',
+            'unachievedCount'
         ));
     }
 

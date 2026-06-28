@@ -1,8 +1,8 @@
 @extends('adminprodi.layouts.app')
 
 @section('title', 'Dashboard Admin Prodi - Sistem Early Warning IKU')
-@section('page_title', 'Dashboard Utama')
-@section('page_subtitle', 'Selamat datang di portal monitoring IKU program studi Anda')
+@section('page_title', 'Selamat Datang di Sistem Monitoring Pencapaian Indikator Kinerja Politeknik Sukabumi')
+@section('page_subtitle', '')
 
 @section('content')
 <style>
@@ -55,7 +55,7 @@
         <span class="welcome-badge">Program Studi {{ $prodiName }}</span>
         <h3 class="welcome-title">Halo, {{ auth()->user()->name }}!</h3>
         <p class="welcome-desc">
-            Anda login sebagai <strong>{{ auth()->user()->role === 'kaprodi' ? 'Ketua Program Studi (Kaprodi)' : 'Admin Program Studi' }}</strong>. Gunakan panel ini untuk mengelola konfigurasi prodi, kategori, target IKU tahunan, menugaskan dosen pengisi bukti, serta memantau laporan capaian IKU prodi secara real-time.
+            Anda login sebagai <strong>{{ auth()->user()->role === 'kaprodi' ? 'Ketua Program Studi (Kaprodi)' : 'Admin Program Studi' }}</strong>. 
         </p>
     </div>
     <div style="display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; min-width: 280px; max-width: 480px; width: 100%;">
@@ -192,6 +192,39 @@
         <div class="stat-footer">
             <span class="stat-desc">Perlu didorong pengisian</span>
             <span class="badge-custom badge-rose">Warning</span>
+        </div>
+    </div>
+</div>
+
+<!-- Balanced Scorecard (BSC) Averages -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 24px;">
+    <!-- Perspektif Mahasiswa -->
+    <div class="card" style="display: flex; align-items: center; gap: 20px; padding: 20px; position: relative; overflow: hidden; border-color: rgba(56, 189, 248, 0.15);">
+        <div style="position: relative; width: 76px; height: 76px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient({{ $avgMahasiswa >= 80 ? '#10b981' : ($avgMahasiswa >= 60 ? '#f59e0b' : '#ef4444') }} {{ $avgMahasiswa * 3.6 }}deg, #1e293b 0deg); flex-shrink: 0; box-shadow: inset 0 0 8px rgba(0,0,0,0.5);">
+            <div style="content: ''; position: absolute; width: 60px; height: 60px; border-radius: 50%; background-color: #0f172a;"></div>
+            <span style="position: relative; font-size: 1.1rem; font-weight: 800; color: #ffffff;">{{ $avgMahasiswa }}%</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+            <h4 style="font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin: 0;">Perspektif Mahasiswa</h4>
+            <span style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase;">Balanced Scorecard</span>
+            <span class="badge-custom {{ $avgMahasiswa >= 80 ? 'badge-green' : ($avgMahasiswa >= 60 ? 'badge-blue' : 'badge-rose') }}" style="align-self: flex-start; font-size: 0.6rem; margin-top: 2px;">
+                {{ $avgMahasiswa >= 80 ? 'Sangat Baik' : ($avgMahasiswa >= 60 ? 'Cukup Baik' : 'Kurang/Risiko') }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Perspektif Dosen -->
+    <div class="card" style="display: flex; align-items: center; gap: 20px; padding: 20px; position: relative; overflow: hidden; border-color: rgba(168, 85, 247, 0.15);">
+        <div style="position: relative; width: 76px; height: 76px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient({{ $avgDosen >= 80 ? '#10b981' : ($avgDosen >= 60 ? '#f59e0b' : '#ef4444') }} {{ $avgDosen * 3.6 }}deg, #1e293b 0deg); flex-shrink: 0; box-shadow: inset 0 0 8px rgba(0,0,0,0.5);">
+            <div style="content: ''; position: absolute; width: 60px; height: 60px; border-radius: 50%; background-color: #0f172a;"></div>
+            <span style="position: relative; font-size: 1.1rem; font-weight: 800; color: #ffffff;">{{ $avgDosen }}%</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+            <h4 style="font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin: 0;">Perspektif Dosen</h4>
+            <span style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase;">Balanced Scorecard</span>
+            <span class="badge-custom {{ $avgDosen >= 80 ? 'badge-green' : ($avgDosen >= 60 ? 'badge-purple' : 'badge-rose') }}" style="align-self: flex-start; font-size: 0.6rem; margin-top: 2px;">
+                {{ $avgDosen >= 80 ? 'Sangat Baik' : ($avgDosen >= 60 ? 'Cukup Baik' : 'Kurang/Risiko') }}
+            </span>
         </div>
     </div>
 </div>
