@@ -8,7 +8,7 @@
         width: 100%;
         max-width: 480px;
         background-color: #171d2c;
-        border: 1px solid #242f47;
+        border: 1px solid #cdd2de;
         border-radius: 24px;
         padding: 48px 36px;
         text-align: center;
@@ -134,7 +134,7 @@
         <span class="badge">Politeknik Sukabumi</span>
     </div>
 
-    <h1 class="title">Sistem Monitoring Pencapaian IKU</h1>
+    <h1 class="title">Sistem Monitoring Pencapaian IKU/IKT</h1>
     <p class="subtitle">Aplikasi Monitoring Pencapaian Indikator Kinerja Utama</p>
 
     <div class="actions-group">
@@ -159,7 +159,7 @@
     @endif
 
     <div class="footer-text">
-        Sistem Early Warning IKU — Politeknik Sukabumi
+        Sistem Monitoring IKU/IKT — Politeknik Sukabumi
     </div>
 </div>
 @endsection

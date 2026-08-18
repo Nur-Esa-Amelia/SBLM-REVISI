@@ -96,9 +96,9 @@ class DashboardController extends Controller
         $avgMahasiswa = $mahasiswaIkus->count() > 0 ? round($mahasiswaIkus->avg('persentase_capped')) : 0;
         $avgDosen = $dosenIkus->count() > 0 ? round($dosenIkus->avg('persentase_capped')) : 0;
 
-        // Filter indikator yang bermasalah (Belum Tercapai atau Berisiko Tidak Tercapai)
+        // Filter indikator yang bermasalah (Perlu Perhatian atau Tidak Tercapai)
         $warnings = $pencapaians->filter(function ($item) {
-            return in_array($item->status, ['Belum Tercapai', 'Berisiko Tidak Tercapai']);
+            return in_array($item->status, ['Perlu Perhatian', 'Tidak Tercapai']);
         });
 
         $rekomendasiController = new \App\Http\Controllers\RekomendasiAiController();

@@ -116,8 +116,8 @@
                             <td style="text-align: center; vertical-align: middle;">
                                 @if($item->status === 'Tercapai')
                                     <span class="badge-custom badge-green">Tercapai</span>
-                                @elseif($item->status === 'Belum Tercapai')
-                                    <span class="badge-custom badge-yellow" style="background-color: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.2); color: #fbbf24; display: block; margin-bottom: 6px;">Belum Tercapai</span>
+                                @elseif($item->status === 'Perlu Perhatian')
+                                    <span class="badge-custom badge-yellow" style="background-color: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.2); color: #fbbf24; display: block; margin-bottom: 6px;">Perlu Perhatian</span>
                                     <button type="button" class="btn-show-ai-rec" data-pencapaian-id="{{ $item->id }}" style="padding: 3px 8px; font-size: 0.72rem; border-radius: 6px; background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.3); color: #c084fc; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s; outline: none;">
                                         <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21l8.982-11.795H13.62l1.378-6.059L6 15.004h3.813z"></path>
@@ -125,7 +125,7 @@
                                         Rekomendasi
                                     </button>
                                 @else
-                                    <span class="badge-custom badge-rose" style="display: block; margin-bottom: 6px;">Berisiko Tidak Tercapai</span>
+                                    <span class="badge-custom badge-rose" style="display: block; margin-bottom: 6px;">Tidak Tercapai</span>
                                     <button type="button" class="btn-show-ai-rec" data-pencapaian-id="{{ $item->id }}" style="padding: 3px 8px; font-size: 0.72rem; border-radius: 6px; background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.3); color: #c084fc; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s; outline: none;">
                                         <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21l8.982-11.795H13.62l1.378-6.059L6 15.004h3.813z"></path>
@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (data) {
                 modalTitle.textContent = 'Rekomendasi Analisis AI: ' + (data.iku_pencapaian.iku ? data.iku_pencapaian.iku.nama_iku : 'IKU');
                 modalSubtitle.innerHTML = 'Status: <span style="font-weight: 600; color: ' + 
-                    (data.iku_pencapaian.status === 'Belum Tercapai' ? '#fbbf24' : '#ef4444') + ';">' + 
+                    (data.iku_pencapaian.status === 'Perlu Perhatian' ? '#fbbf24' : '#ef4444') + ';">' + 
                     data.iku_pencapaian.status + '</span> (Realisasi: ' + Math.round(data.iku_pencapaian.realisasi) + ' dari Target: ' + data.iku_pencapaian.target + ')';
                 
                 modalBody.innerHTML = parseMarkdown(data.rekomendasi);

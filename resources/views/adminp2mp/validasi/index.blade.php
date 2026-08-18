@@ -66,7 +66,7 @@
                 <thead>
                     <tr>
                         <th style="width: 50px;">No</th>
-                        <th style="min-width: 160px;">Dosen / Prodi</th>
+                        <th style="min-width: 160px;">Pengunggah / Prodi</th>
                         <th style="min-width: 180px;">Indikator IKU</th>
                         <th style="min-width: 140px;">Jenis Bukti</th>
                         <th style="min-width: 150px;">Berkas Lampiran</th>
@@ -83,6 +83,9 @@
                             <!-- Dosen / Prodi -->
                             <td>
                                 <div style="font-weight: 700; color: #ffffff;">{{ $item->user->name }}</div>
+                                <div style="font-size: 0.72rem; color: #cbd5e1; margin-top: 2px; font-weight: 600;">
+                                    Role: {{ $item->user->role === 'kaprodi' ? 'Kaprodi' : 'Dosen' }}
+                                </div>
                                 <div style="font-size: 0.72rem; color: #38bdf8; margin-top: 2px;">
                                     {{ $item->user->prodi ? $item->user->prodi->nama_prodi : 'Umum / Tanpa Prodi' }}
                                 </div>

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('realisasi', 10, 2)->default(0);
             $table->string('objek');
             $table->text('keterangan')->nullable();
-            $table->string('status')->default('Belum Tercapai');
+            $table->string('status')->default('Tidak Tercapai');
             $table->timestamps();
         });
     }

@@ -110,6 +110,14 @@ Route::middleware('auth')->group(function () {
         Route::resource('penugasan', \App\Http\Controllers\AdminProdi\PenugasanController::class);
         Route::get('/bukti-dosen', [\App\Http\Controllers\AdminProdi\DashboardController::class, 'buktiDosen'])->name('bukti-dosen');
         Route::get('/dosen', [\App\Http\Controllers\AdminProdi\DashboardController::class, 'dosen'])->name('dosen');
+
+        // Rute Pengisian Bukti khusus Kaprodi
+        Route::middleware('role:kaprodi')->group(function () {
+            Route::get('/pengisian/create', [\App\Http\Controllers\AdminProdi\PengisianController::class, 'create'])->name('pengisian.create');
+            Route::post('/pengisian', [\App\Http\Controllers\AdminProdi\PengisianController::class, 'store'])->name('pengisian.store');
+            Route::get('/pengisian/{id}/edit', [\App\Http\Controllers\AdminProdi\PengisianController::class, 'edit'])->name('pengisian.edit');
+            Route::put('/pengisian/{id}', [\App\Http\Controllers\AdminProdi\PengisianController::class, 'update'])->name('pengisian.update');
+        });
     });
 
     // Rute Dosen

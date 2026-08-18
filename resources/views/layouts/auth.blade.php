@@ -409,7 +409,7 @@
     <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-cyan-500/5 blur-[120px] pointer-events-none"></div>
     <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-500/5 blur-[120px] pointer-events-none"></div>
 
-    <div class="w-full max-w-[480px] z-10 py-6">
+    <div class="w-full @yield('container-class', 'max-w-[480px]') z-10 py-6">
         @yield('content')
     </div>
 </body>

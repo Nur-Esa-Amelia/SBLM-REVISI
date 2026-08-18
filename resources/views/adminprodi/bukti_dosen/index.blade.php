@@ -13,6 +13,14 @@
                 <h3 style="font-size: 0.95rem; font-weight: 700; color: #ffffff;">Filter Bukti IKU</h3>
                 <p style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">Saring pengajuan bukti IKU berdasarkan status validasi atau tahun akademik.</p>
             </div>
+            @if(auth()->user()->role === 'kaprodi')
+                <a href="{{ route('adminprodi.pengisian.create') }}" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.8rem;">
+                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                    </svg>
+                    Unggah Bukti (Kaprodi)
+                </a>
+            @endif
         </div>
 
         <form action="{{ route('adminprodi.bukti-dosen') }}" method="GET" class="filter-row-custom" style="display: flex; gap: 16px; flex-wrap: wrap;">
@@ -54,7 +62,7 @@
                 <thead>
                     <tr>
                         <th style="width: 50px;">No</th>
-                        <th style="min-width: 160px;">Dosen Penerima Tugas</th>
+                        <th style="min-width: 160px;">Pengunggah</th>
                         <th style="min-width: 180px;">Indikator IKU</th>
                         <th style="min-width: 140px;">Jenis Bukti</th>
                         <th style="min-width: 150px;">Berkas Lampiran</th>
@@ -68,9 +76,12 @@
                         <tr>
                             <td>{{ $riwayat->firstItem() + $index }}</td>
                             
-                            <!-- Dosen -->
+                            <!-- Pengunggah -->
                             <td>
                                 <div style="font-weight: 700; color: #ffffff;">{{ $item->user->name }}</div>
+                                <div style="font-size: 0.72rem; color: #38bdf8; margin-top: 2px; font-weight: 600;">
+                                    Role: {{ $item->user->role === 'kaprodi' ? 'Kaprodi' : 'Dosen' }}
+                                </div>
                                 <div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">
                                     Email: {{ $item->user->email }}
                                 </div>
@@ -137,6 +148,16 @@
                                     <span class="badge-custom badge-green">Valid</span>
                                 @elseif($item->status === 'invalid')
                                     <span class="badge-custom badge-rose">Perlu Perbaikan</span>
+                                    @if($item->id_user === auth()->id() && auth()->user()->role === 'kaprodi')
+                                        <div style="margin-top: 8px;">
+                                            <a href="{{ route('adminprodi.pengisian.edit', $item->id) }}" class="btn btn-rose" style="padding: 4px 10px; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 4px; border-radius: 4px; text-decoration: none;">
+                                                <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path>
+                                                </svg>
+                                                Perbaiki
+                                            </a>
+                                        </div>
+                                    @endif
                                 @else
                                     <span class="badge-custom badge-yellow">Awaiting Validasi</span>
                                 @endif
