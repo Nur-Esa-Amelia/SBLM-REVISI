@@ -60,13 +60,13 @@
                     <tr>
                         <td>{{ $pencapaian->firstItem() + $index }}</td>
                         <td>
-                            <div style="font-weight: 600; color: #ffffff;">{{ $item->iku->nama_iku }}</div>
-                            <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
+                            <div style="font-weight: 600; color: var(--text-primary);">{{ $item->iku->nama_iku }}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
                         </td>
                         <td style="text-align: center; font-weight: 600;">{{ $item->tahun }}</td>
                         <td style="text-align: center; font-weight: 700; color: #3b82f6;">
                             {{ $item->target }}{{ $item->satuan === 'persen' ? '%' : '' }}
-                            <span style="font-size: 0.7rem; color: #64748b; display: block; font-weight: normal;">({{ $item->objek }})</span>
+                            <span style="font-size: 0.7rem; color: var(--text-muted); display: block; font-weight: normal;">({{ $item->objek }})</span>
                         </td>
                         <td style="text-align: center; font-weight: 700;">
                             {{ round($item->realisasi) }} Bukti
@@ -101,7 +101,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" style="text-align: center; color: #64748b; padding: 40px;">
+                        <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">
                             Belum ada target IKU yang dikonfigurasi untuk tahun akademik {{ $tahun }}.
                         </td>
                     </tr>

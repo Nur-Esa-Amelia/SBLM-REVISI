@@ -40,8 +40,8 @@
     <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
             <div>
-                <h3 style="font-size: 0.95rem; font-weight: 700; color: #ffffff;">Pilih Tahun Akademik</h3>
-                <p style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">Tampilkan target IKU prodi dan bukti capaian Anda pada tahun akademik terpilih.</p>
+                <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Pilih Tahun Akademik</h3>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Tampilkan target IKU prodi dan bukti capaian Anda pada tahun akademik terpilih.</p>
             </div>
             
             <form action="{{ route('dosen.pencapaian.index') }}" method="GET" style="display: flex; align-items: flex-end; gap: 12px; width: 220px;">
@@ -57,7 +57,7 @@
     </div>
 
     @if($recommendations && $recommendations->isNotEmpty())
-        <div class="alert-box alert-warning" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); color: #cbd5e1; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;">
+        <div class="alert-box alert-warning" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); color: var(--text-secondary); display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;">
             <svg style="width: 18px; height: 18px; color: #c084fc; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21l8.982-11.795H13.62l1.378-6.059L6 15.004h3.813z"></path>
             </svg>
@@ -66,7 +66,7 @@
             </div>
         </div>
     @else
-        <div class="alert-box alert-success" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #94a3b8; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;">
+        <div class="alert-box alert-success" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: var(--text-secondary); display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;">
             <svg style="width: 18px; height: 18px; color: #10b981; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
@@ -97,14 +97,14 @@
                             
                             <!-- Indikator IKU -->
                             <td>
-                                <div style="font-weight: 600; color: #ffffff; line-height: 1.4;">{{ $item->iku->nama_iku }}</div>
-                                <div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
+                                <div style="font-weight: 600; color: var(--text-primary); line-height: 1.4;">{{ $item->iku->nama_iku }}</div>
+                                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
                             </td>
 
                             <!-- Target -->
-                            <td style="text-align: center; font-weight: 600; color: #cbd5e1;">
+                            <td style="text-align: center; font-weight: 600; color: var(--text-secondary);">
                                 {{ $item->target }}{{ $item->satuan === 'persen' ? '%' : '' }}
-                                <span style="font-size: 0.65rem; color: #64748b; display: block; font-weight: normal; margin-top: 2px;">({{ $item->objek }})</span>
+                                <span style="font-size: 0.65rem; color: var(--text-muted); display: block; font-weight: normal; margin-top: 2px;">({{ $item->objek }})</span>
                             </td>
 
                             <!-- Realisasi -->
@@ -144,7 +144,7 @@
                                 @if($item->my_proofs->isNotEmpty())
                                     <div style="display: flex; flex-direction: column; gap: 8px;">
                                         @foreach($item->my_proofs as $proof)
-                                            <div style="padding: 8px; background-color: #090d16; border: 1px solid #1e293b; border-radius: 6px; display: flex; flex-direction: column; gap: 4px;">
+                                            <div style="padding: 8px; background-color: var(--bg-surface); border: 1px solid var(--border); border-radius: 6px; display: flex; flex-direction: column; gap: 4px;">
                                                 <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
                                                     <span style="font-size: 0.75rem; font-weight: 600; color: #94a3b8;">{{ $proof->buktiIku->nama_bukti }}</span>
                                                     
@@ -165,7 +165,7 @@
                                                         </svg>
                                                         Lihat Lampiran ({{ $proof->files->count() }})
                                                     </summary>
-                                                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px; padding: 10px; background-color: rgba(15, 23, 42, 0.6); border: 1px solid #1e293b; border-radius: 6px;">
+                                                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px; padding: 10px; background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 6px;">
                                                         @foreach($proof->files as $file)
                                                             <div style="display: flex; flex-direction: column; gap: 4px; border-bottom: 1px solid rgba(30, 41, 59, 0.8); padding-bottom: 6px; margin-bottom: 4px;">
                                                                 <a href="{{ asset($file->file_bukti) }}" target="_blank" style="color: #10b981; text-decoration: underline; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 4px; word-break: break-all; font-weight: 500;">
@@ -219,7 +219,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="text-align: center; padding: 48px; color: #64748b;">
+                            <td colspan="6" style="text-align: center; padding: 48px; color: var(--text-muted);">
                                 <svg style="width: 32px; height: 32px; margin: 0 auto 12px; color: #334155; display: block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>

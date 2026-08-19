@@ -8,7 +8,7 @@
 <div class="form-layout-container">
     <!-- Back Link -->
     <div>
-        <a href="{{ route('adminp2mp.users.index') }}" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; color: #94a3b8; text-decoration: none; transition: all 0.2s ease;">
+        <a href="{{ route('adminp2mp.users.index') }}" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: all 0.2s ease;">
             <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
             </svg>
@@ -18,7 +18,7 @@
 
     <!-- Form Card -->
     <div class="card">
-        <h3 style="font-size: 0.95rem; font-weight: 700; color: #ffffff; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #1e293b;">Form Registrasi Pengguna Baru</h3>
+        <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border);">Form Registrasi Pengguna Baru</h3>
 
         <form action="{{ route('adminp2mp.users.store') }}" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
             @csrf

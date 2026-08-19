@@ -185,14 +185,14 @@
                 @forelse($assignments as $index => $item)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td style="font-weight: 600; color: #ffffff;">{{ $item->iku->nama_iku }}</td>
+                        <td style="font-weight: 600; color: var(--text-primary);">{{ $item->iku->nama_iku }}</td>
                         <td>
                             <span class="badge-custom badge-purple">{{ $item->iku->kategori->nama_kategori }}</span>
                         </td>
-                        <td style="text-align: center; color: #cbd5e1; font-size: 0.85rem;">
+                        <td style="text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
                             {{ round($item->target_nyata) }} {{ $item->satuan === 'persen' ? $item->objek : ($item->satuan ?: 'Bukti') }}
                         </td>
-                        <td style="text-align: center; color: #cbd5e1; font-weight: 600;">
+                        <td style="text-align: center; color: var(--text-secondary); font-weight: 600;">
                             {{ $item->realisasi }} Bukti
                         </td>
                         <td style="text-align: center; font-weight: 700; color: #10b981;">
@@ -209,7 +209,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" style="text-align: center; color: #64748b; padding: 40px;">
+                        <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">
                             Anda tidak memiliki penugasan pengisian IKU untuk tahun akademik aktif ({{ $tahunAktif }}). Silakan hubungi Admin Prodi Anda jika ini adalah kesalahan.
                         </td>
                     </tr>

@@ -132,13 +132,13 @@
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 24px;">
     <!-- Perspektif Mahasiswa -->
     <div class="card" style="display: flex; align-items: center; gap: 20px; padding: 20px; position: relative; overflow: hidden; border-color: rgba(56, 189, 248, 0.15);">
-        <div style="position: relative; width: 76px; height: 76px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient({{ $avgMahasiswa >= 100 ? '#10b981' : ($avgMahasiswa >= 60 ? '#f59e0b' : '#ef4444') }} {{ $avgMahasiswa * 3.6 }}deg, #1e293b 0deg); flex-shrink: 0; box-shadow: inset 0 0 8px rgba(0,0,0,0.5);">
-            <div style="content: ''; position: absolute; width: 60px; height: 60px; border-radius: 50%; background-color: #0f172a;"></div>
-            <span style="position: relative; font-size: 1.1rem; font-weight: 800; color: #ffffff;">{{ $avgMahasiswa }}%</span>
+        <div style="position: relative; width: 76px; height: 76px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient({{ $avgMahasiswa >= 100 ? '#10b981' : ($avgMahasiswa >= 60 ? '#f59e0b' : '#ef4444') }} {{ $avgMahasiswa * 3.6 }}deg, var(--bg-surface2) 0deg); flex-shrink: 0; box-shadow: inset 0 0 8px rgba(0,0,0,0.5);">
+            <div style="content: ''; position: absolute; width: 60px; height: 60px; border-radius: 50%; background-color: var(--bg-surface);"></div>
+            <span style="position: relative; font-size: 1.1rem; font-weight: 800; color: var(--text-primary);">{{ $avgMahasiswa }}%</span>
         </div>
         <div style="display: flex; flex-direction: column; gap: 4px;">
-            <h4 style="font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin: 0;">Perspektif Mahasiswa</h4>
-            <span style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase;">Balanced Scorecard</span>
+            <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); margin: 0;">Perspektif Mahasiswa</h4>
+            <span style="font-size: 0.65rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Balanced Scorecard</span>
             <span class="badge-custom {{ $avgMahasiswa >= 100 ? 'badge-green' : ($avgMahasiswa >= 60 ? 'badge-blue' : 'badge-rose') }}" style="align-self: flex-start; font-size: 0.6rem; margin-top: 2px;">
                 {{ $avgMahasiswa >= 100 ? 'Sangat Baik' : ($avgMahasiswa >= 60 ? 'Cukup Baik' : 'Kurang/Risiko') }}
             </span>
@@ -147,13 +147,13 @@
 
     <!-- Perspektif Dosen -->
     <div class="card" style="display: flex; align-items: center; gap: 20px; padding: 20px; position: relative; overflow: hidden; border-color: rgba(168, 85, 247, 0.15);">
-        <div style="position: relative; width: 76px; height: 76px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient({{ $avgDosen >= 100 ? '#10b981' : ($avgDosen >= 60 ? '#f59e0b' : '#ef4444') }} {{ $avgDosen * 3.6 }}deg, #1e293b 0deg); flex-shrink: 0; box-shadow: inset 0 0 8px rgba(0,0,0,0.5);">
-            <div style="content: ''; position: absolute; width: 60px; height: 60px; border-radius: 50%; background-color: #0f172a;"></div>
-            <span style="position: relative; font-size: 1.1rem; font-weight: 800; color: #ffffff;">{{ $avgDosen }}%</span>
+        <div style="position: relative; width: 76px; height: 76px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient({{ $avgDosen >= 100 ? '#10b981' : ($avgDosen >= 60 ? '#f59e0b' : '#ef4444') }} {{ $avgDosen * 3.6 }}deg, var(--bg-surface2) 0deg); flex-shrink: 0; box-shadow: inset 0 0 8px rgba(0,0,0,0.5);">
+            <div style="content: ''; position: absolute; width: 60px; height: 60px; border-radius: 50%; background-color: var(--bg-surface);"></div>
+            <span style="position: relative; font-size: 1.1rem; font-weight: 800; color: var(--text-primary);">{{ $avgDosen }}%</span>
         </div>
         <div style="display: flex; flex-direction: column; gap: 4px;">
-            <h4 style="font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin: 0;">Perspektif Dosen</h4>
-            <span style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase;">Balanced Scorecard</span>
+            <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); margin: 0;">Perspektif Dosen</h4>
+            <span style="font-size: 0.65rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Balanced Scorecard</span>
             <span class="badge-custom {{ $avgDosen >= 100 ? 'badge-green' : ($avgDosen >= 60 ? 'badge-purple' : 'badge-rose') }}" style="align-self: flex-start; font-size: 0.6rem; margin-top: 2px;">
                 {{ $avgDosen >= 100 ? 'Sangat Baik' : ($avgDosen >= 60 ? 'Cukup Baik' : 'Kurang/Risiko') }}
             </span>
@@ -163,16 +163,16 @@
 
 <!-- Table IKU Capaian -->
 <div class="card" style="display: flex; flex-direction: column; gap: 16px; padding: 0; overflow: hidden;">
-    <div style="padding: 20px 24px; border-bottom: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
+    <div style="padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
         <div>
-            <h3 class="text-base font-bold text-white" style="font-size: 0.95rem; margin-bottom: 2px;">Capaian IKU Keseluruhan</h3>
-            <p style="font-size: 0.75rem; color: #64748b;">Rekap capaian Indikator Kinerja Utama seluruh Program Studi untuk tahun {{ $tahun }}.</p>
+            <h3 class="text-base font-bold" style="font-size: 0.95rem; margin-bottom: 2px; color: var(--text-primary);">Capaian IKU Keseluruhan</h3>
+            <p style="font-size: 0.75rem; color: var(--text-muted);">Rekap capaian Indikator Kinerja Utama seluruh Program Studi untuk tahun {{ $tahun }}.</p>
         </div>
         
         <form action="{{ route('adminp2mp.dashboard') }}" method="GET" style="display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap;">
             <!-- Prodi Selector -->
             <div class="filter-item-custom" style="max-width: 260px; min-width: 200px;">
-                <label for="prodi_id" class="form-label-custom" style="font-size: 0.75rem; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">Program Studi</label>
+                <label for="prodi_id" class="form-label-custom" style="font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px;">Program Studi</label>
                 <select id="prodi_id" name="prodi_id" class="form-select-custom" style="padding: 8px 12px; font-size: 0.8rem;" onchange="this.form.submit()">
                     <option value="">-- Semua Program Studi --</option>
                     @foreach($prodis as $p)
@@ -183,7 +183,7 @@
 
             <!-- Year Selector -->
             <div class="filter-item-custom" style="max-width: 200px; min-width: 150px;">
-                <label for="tahun" class="form-label-custom" style="font-size: 0.75rem; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">Tahun Akademik</label>
+                <label for="tahun" class="form-label-custom" style="font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px;">Tahun Akademik</label>
                 <select id="tahun" name="tahun" class="form-select-custom" style="padding: 8px 12px; font-size: 0.8rem;" onchange="this.form.submit()">
                     @foreach($tahunList as $y)
                         <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>Tahun {{ $y }}</option>
@@ -238,11 +238,11 @@
                         <td>
                             <span style="font-weight: 600; color: #38bdf8;">{{ $item->prodi->nama_prodi }}</span>
                         </td>
-                        <td style="font-weight: 700; color: #ffffff;">{{ $item->iku->nama_iku }}</td>
+                        <td style="font-weight: 700; color: var(--text-primary);">{{ $item->iku->nama_iku }}</td>
                         <td>{{ $item->iku->kategori->nama_kategori }}</td>
-                        <td style="text-align: center; font-weight: 600; color: #cbd5e1;">
+                        <td style="text-align: center; font-weight: 600; color: var(--text-secondary);">
                             {{ $item->target }}{{ $item->satuan === 'persen' ? '%' : '' }}
-                            <span style="font-size: 0.65rem; color: #64748b; display: block; font-weight: normal;">({{ $item->objek }})</span>
+                            <span style="font-size: 0.65rem; color: var(--text-muted); display: block; font-weight: normal;">({{ $item->objek }})</span>
                         </td>
                         <td style="text-align: center; font-weight: 700; color: #3b82f6;">
                             {{ round($item->realisasi) }} Bukti
@@ -262,7 +262,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" style="text-align: center; color: #64748b; padding: 40px;">
+                        <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 40px;">
                             Belum ada target dan realisasi IKU keseluruhan yang tercatat untuk tahun akademik {{ $tahun }}.
                         </td>
                     </tr>

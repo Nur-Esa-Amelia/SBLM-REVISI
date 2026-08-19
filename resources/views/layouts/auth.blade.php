@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +15,47 @@
     <!-- Styles / Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
+    <!-- Apply theme immediately before paint to prevent flash -->
+    <script>
+        (function() {
+            var theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
     <style>
+        :root, html[data-theme="dark"] {
+            --auth-bg: #0b0f19;
+            --auth-surface: #171d2c;
+            --auth-surface-2: #0f1626;
+            --auth-border: #242f47;
+            --auth-text: #f8fafc;
+            --auth-text-soft: #cbd5e1;
+            --auth-text-muted: #94a3b8;
+            --auth-text-faint: #64748b;
+            --auth-accent: #38bdf8;
+            --auth-accent-soft: rgba(56, 189, 248, 0.08);
+            --auth-input-bg: #0f1626;
+            --auth-input-border: #242f47;
+            --auth-card-shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        html[data-theme="light"] {
+            --auth-bg: #f1f5f9;
+            --auth-surface: #ffffff;
+            --auth-surface-2: #f8fafc;
+            --auth-border: #e2e8f0;
+            --auth-text: #0f172a;
+            --auth-text-soft: #1e293b;
+            --auth-text-muted: #475569;
+            --auth-text-faint: #64748b;
+            --auth-accent: #0f172a;
+            --auth-accent-soft: rgba(15, 23, 42, 0.04);
+            --auth-input-bg: #f8fafc;
+            --auth-input-border: #cbd5e1;
+            --auth-card-shadow: rgba(15, 23, 42, 0.08);
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -24,8 +64,8 @@
         }
 
         body { 
-            background-color: #0b0f19; 
-            color: #f8fafc;
+            background-color: var(--auth-bg); 
+            color: var(--auth-text);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -33,7 +73,87 @@
             padding: 20px;
             overflow-x: hidden;
             position: relative;
+            transition: background-color 0.25s ease, color 0.25s ease;
         }
+
+        html[data-theme="light"] body,
+        html[data-theme="light"] {
+            background-color: var(--auth-bg) !important;
+            color: var(--auth-text) !important;
+        }
+        html[data-theme="light"] .auth-card {
+            background-color: var(--auth-surface) !important;
+            border-color: var(--auth-border) !important;
+            box-shadow: 0 20px 25px -5px rgba(15,23,42,0.08), 0 10px 10px -5px rgba(15,23,42,0.04) !important;
+        }
+        html[data-theme="light"] .auth-title { color: var(--auth-text) !important; }
+        html[data-theme="light"] .auth-subtitle { color: var(--auth-text-muted) !important; }
+        html[data-theme="light"] .form-label { color: var(--auth-text-muted) !important; }
+        html[data-theme="light"] .form-input {
+            background-color: var(--auth-input-bg) !important;
+            border-color: var(--auth-input-border) !important;
+            color: var(--auth-text) !important;
+        }
+        html[data-theme="light"] .checkbox-input {
+            background-color: var(--auth-input-bg) !important;
+            border-color: var(--auth-input-border) !important;
+        }
+        html[data-theme="light"] .checkbox-label { color: var(--auth-text-muted) !important; }
+        html[data-theme="light"] .prodi-card {
+            background-color: var(--auth-surface-2) !important;
+            border-color: var(--auth-border) !important;
+        }
+        html[data-theme="light"] .prodi-name { color: var(--auth-text) !important; }
+        html[data-theme="light"] .prodi-code { color: var(--auth-text-faint) !important; }
+        html[data-theme="light"] .prodi-icon-wrapper {
+            background-color: var(--auth-surface) !important;
+            border-color: var(--auth-border) !important;
+        }
+        html[data-theme="light"] .btn-primary {
+            background-color: var(--auth-accent) !important;
+            color: var(--auth-surface) !important;
+        }
+        html[data-theme="light"] .btn-primary:hover {
+            background-color: transparent !important;
+            border: 1px solid var(--auth-accent) !important;
+            color: var(--auth-accent) !important;
+        }
+
+        /* ==================== THEME TOGGLE (Auth) ==================== */
+        .auth-theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.07);
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(8px);
+        }
+        .auth-theme-toggle:hover {
+            background: rgba(255,255,255,0.15);
+            color: #ffffff;
+        }
+        html[data-theme="light"] .auth-theme-toggle {
+            border-color: rgba(0,0,0,0.1);
+            background: rgba(0,0,0,0.05);
+            color: #475569;
+        }
+        html[data-theme="light"] .auth-theme-toggle:hover {
+            background: rgba(0,0,0,0.1);
+            color: #0f172a;
+        }
+        .auth-theme-toggle svg { width: 18px; height: 18px; }
+        html[data-theme="light"] .icon-moon { display: none; }
+        html[data-theme="dark"]  .icon-sun  { display: none; }
 
         /* Dekorasi latar belakang dengan efek cahaya lembut */ 
         body::before {
@@ -402,12 +522,35 @@
             });
             observer.observe(document.body, { childList: true, subtree: true });
         });
+
+        // Theme Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('auth-theme-btn');
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    const current = document.documentElement.getAttribute('data-theme');
+                    const next = current === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', next);
+                    localStorage.setItem('theme', next);
+                });
+            }
+        });
     </script>
 </head>
 <body class="bg-[#080c14] text-gray-100 min-h-screen flex items-center justify-center p-4 selection:bg-cyan-500 selection:text-slate-900 overflow-x-hidden antialiased">
     <!-- Beautiful Glow Effects -->
     <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-cyan-500/5 blur-[120px] pointer-events-none"></div>
     <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-500/5 blur-[120px] pointer-events-none"></div>
+
+    <!-- Theme Toggle Button (floating) -->
+    <button id="auth-theme-btn" class="auth-theme-toggle" title="Toggle Tema" aria-label="Toggle tema gelap/terang">
+        <svg class="icon-moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/>
+        </svg>
+        <svg class="icon-sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 100 10A5 5 0 0012 7z"/>
+        </svg>
+    </button>
 
     <div class="w-full @yield('container-class', 'max-w-[480px]') z-10 py-6">
         @yield('content')

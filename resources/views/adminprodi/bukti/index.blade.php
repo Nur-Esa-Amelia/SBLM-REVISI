@@ -35,13 +35,13 @@
                 @forelse($bukti as $index => $item)
                     <tr>
                         <td>{{ $bukti->firstItem() + $index }}</td>
-                        <td style="font-weight: 600; color: #ffffff;">{{ $item->nama_bukti }}</td>
+                        <td style="font-weight: 600; color: var(--text-primary);">{{ $item->nama_bukti }}</td>
                         <td>
                             <div style="font-weight: 600; color: #3b82f6; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 {{ $item->iku->nama_iku }}
                             </div>
                         </td>
-                        <td style="color: #cbd5e1; font-size: 0.8rem; max-width: 300px; line-height: 1.4;">
+                        <td style="color: var(--text-secondary); font-size: 0.8rem; max-width: 300px; line-height: 1.4;">
                             {{ $item->deskripsi ?? '-' }}
                         </td>
                         @if(auth()->user()->role === 'admin_p2mp')
@@ -67,7 +67,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="{{ auth()->user()->role === 'admin_p2mp' ? 5 : 4 }}" style="text-align: center; color: #64748b; padding: 30px;">
+                        <td colspan="{{ auth()->user()->role === 'admin_p2mp' ? 5 : 4 }}" style="text-align: center; color: var(--text-muted); padding: 30px;">
                             Belum ada data jenis bukti.
                         </td>
                     </tr>

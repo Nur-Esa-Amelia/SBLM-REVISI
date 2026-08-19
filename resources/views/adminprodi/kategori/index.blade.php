@@ -34,8 +34,8 @@
                 @forelse($kategori as $index => $item)
                     <tr>
                         <td>{{ $kategori->firstItem() + $index }}</td>
-                        <td style="font-weight: 600; color: #ffffff;">{{ $item->nama_kategori }}</td>
-                        <td style="color: #cbd5e1; max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        <td style="font-weight: 600; color: var(--text-primary);">{{ $item->nama_kategori }}</td>
+                        <td style="color: var(--text-secondary); max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                             {{ $item->deskripsi ?? '-' }}
                         </td>
                         @if(auth()->user()->role === 'admin_p2mp')
@@ -61,7 +61,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="{{ auth()->user()->role === 'admin_p2mp' ? 4 : 3 }}" style="text-align: center; color: #64748b; padding: 30px;">
+                        <td colspan="{{ auth()->user()->role === 'admin_p2mp' ? 4 : 3 }}" style="text-align: center; color: var(--text-muted); padding: 30px;">
                             Belum ada data kategori IKU.
                         </td>
                     </tr>

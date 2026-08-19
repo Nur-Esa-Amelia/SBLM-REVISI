@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Http;
 Route::get('/test-gemini', function () {
 
     $response = Http::post(
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' . env('GEMINI_API_KEY'),
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=' . env('GEMINI_API_KEY'),
         [
             'contents' => [
                 [
@@ -80,6 +80,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('prodi', AdminP2mpProdiController::class);
         Route::get('/validasi', [AdminP2mpDashboardController::class, 'validasi'])->name('validasi');
         Route::post('/validasi/{id}', [AdminP2mpDashboardController::class, 'updateValidasi'])->name('validasi.update');
+        Route::post('/validasi-bulk-approve', [\App\Http\Controllers\AdminP2mp\BulkApproveController::class, 'bulkApprove'])->name('validasi.bulk-approve');
         Route::get('/monitoring', [AdminP2mpDashboardController::class, 'monitoring'])->name('monitoring');
     });
 

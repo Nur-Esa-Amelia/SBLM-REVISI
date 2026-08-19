@@ -94,7 +94,7 @@ class IkuPencapaianController extends Controller
             'satuan' => $request->satuan,
             'objek' => $request->objek,
             'keterangan' => $request->keterangan,
-            'status' => 'Tidak Tercapai',
+            'status' => 'Baru',
         ]);
 
         // Sinkronisasikan segera

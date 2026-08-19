@@ -38,7 +38,7 @@
                     </option>
                 @endforeach
             </select>
-            <small style="color: #64748b; font-size: 0.75rem; margin-top: 2px;">Pilihan jenis bukti disesuaikan secara otomatis berdasarkan IKU yang dipilih di atas.</small>
+            <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 2px;">Pilihan jenis bukti disesuaikan secara otomatis berdasarkan IKU yang dipilih di atas.</small>
             @error('id_bukti_iku')
                 <span class="form-error-custom">{{ $message }}</span>
             @enderror
@@ -48,18 +48,18 @@
         <div class="form-group-custom">
             <label class="form-label-custom">Unggah Berkas Bukti</label>
             <div id="file-inputs-container" style="display: flex; flex-direction: column; gap: 16px;">
-                <div class="file-input-card" style="background-color: rgba(30, 41, 59, 0.25); border: 1px solid #1e293b; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative;">
+                <div class="file-input-card" style="background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span class="file-number-label" style="font-size: 0.8rem; font-weight: 700; color: #10b981;">Berkas Bukti #1</span>
                     </div>
                     
                     <div style="display: flex; flex-direction: column; gap: 6px;">
-                        <label class="form-label-custom" style="font-size: 0.72rem; color: #94a3b8; font-weight: 600;">Pilih Berkas</label>
+                        <label class="form-label-custom" style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">Pilih Berkas</label>
                         <input type="file" name="files[]" class="form-input-custom file-selector-input" required>
                     </div>
                     
                     <div class="keterangan-file-group" style="display: none; flex-direction: column; gap: 6px;">
-                        <label class="form-label-custom" style="font-size: 0.72rem; color: #94a3b8; font-weight: 600;">Keterangan Berkas</label>
+                        <label class="form-label-custom" style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">Keterangan Berkas</label>
                         <textarea name="keterangan_files[]" rows="2" placeholder="Tulis keterangan spesifik untuk berkas ini (contoh: Link Google Drive, Judul Dokumen, dll)..." class="form-input-custom file-keterangan-input"></textarea>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                 Tambah File Lainnya
             </button>
             
-            <small style="color: #64748b; font-size: 0.75rem; display: block; margin-top: 12px;">Format berkas yang didukung: <strong>PDF, JPG, JPEG, PNG, ZIP, DOC, DOCX</strong>. Maksimal ukuran per file: <strong>10 MB</strong>.</small>
+            <small style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 12px;">Format berkas yang didukung: <strong>PDF, JPG, JPEG, PNG, ZIP, DOC, DOCX</strong>. Maksimal ukuran per file: <strong>10 MB</strong>.</small>
             @error('files')
                 <span class="form-error-custom">{{ $message }}</span>
             @enderror
@@ -181,7 +181,7 @@
             const nextIdx = fileInputsContainer.querySelectorAll('.file-input-card').length + 1;
             const newCard = document.createElement('div');
             newCard.className = 'file-input-card';
-            newCard.style.cssText = 'background-color: rgba(30, 41, 59, 0.25); border: 1px solid #1e293b; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative; margin-top: 12px;';
+            newCard.style.cssText = 'background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative; margin-top: 12px;';
 
             newCard.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center;">

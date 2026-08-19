@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +15,92 @@
     <!-- Styles / Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    <!-- Apply theme immediately before paint to prevent flash -->
+    <script>
+        (function() {
+            var theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+
     <style>
+        /* ==================== THEME VARIABLES ==================== */
+        :root, html[data-theme="dark"] {
+            --bg-base:        #090d16;
+            --bg-surface:     #0f172a;
+            --bg-surface2:    #1e293b;
+            --bg-surface3:    #334155;
+            --border:         #1e293b;
+            --border-muted:   rgba(30,41,59,0.5);
+            --text-primary:   #ffffff;
+            --text-secondary: #f8fafc;
+            --text-muted:     #94a3b8;
+            --text-faint:     #64748b;
+            --header-bg:      rgba(15,23,42,0.9);
+            --scrollbar-track:#0f172a;
+            --scrollbar-thumb:#1e293b;
+            --scrollbar-hover:#334155;
+            --table-th-bg:    rgba(15,23,42,0.4);
+            --input-bg:       #1e293b;
+            --input-border:   #334155;
+            --nav-hover-bg:   rgba(255,255,255,0.04);
+            --time-card-bg:   #090d16;
+            --tr-hover-bg:    rgba(30,41,59,0.25);
+            --pagination-bg:  #1e293b;
+            --pagination-border:#334155;
+            --pagination-dis: #0f172a;
+        }
+
+        html[data-theme="light"] {
+            --bg-base:        #f1f5f9;
+            --bg-surface:     #ffffff;
+            --bg-surface2:    #f8fafc;
+            --bg-surface3:    #e2e8f0;
+            --border:         #e2e8f0;
+            --border-muted:   rgba(226,232,240,0.7);
+            --text-primary:   #0f172a;
+            --text-secondary: #1e293b;
+            --text-muted:     #475569;
+            --text-faint:     #64748b;
+            --header-bg:      rgba(255,255,255,0.95);
+            --scrollbar-track:#f1f5f9;
+            --scrollbar-thumb:#cbd5e1;
+            --scrollbar-hover:#94a3b8;
+            --table-th-bg:    rgba(248,250,252,0.8);
+            --input-bg:       #f8fafc;
+            --input-border:   #cbd5e1;
+            --nav-hover-bg:   rgba(0,0,0,0.04);
+            --time-card-bg:   #f1f5f9;
+            --tr-hover-bg:    rgba(226,232,240,0.5);
+            --pagination-bg:  #f1f5f9;
+            --pagination-border:#e2e8f0;
+            --pagination-dis: #ffffff;
+        }
+
+        /* ==================== THEME TOGGLE BUTTON ==================== */
+        .theme-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-surface);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .theme-toggle-btn:hover {
+            background: var(--bg-surface2);
+            color: var(--text-primary);
+            border-color: var(--bg-surface3);
+        }
+        .theme-toggle-btn svg { width: 18px; height: 18px; }
+        html[data-theme="light"] .icon-moon { display: none; }
+        html[data-theme="dark"]  .icon-sun  { display: none; }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -24,11 +109,12 @@
         }
 
         body {
-            background-color: #090d16;
-            color: #f8fafc;
+            background-color: var(--bg-base);
+            color: var(--text-secondary);
             min-height: 100vh;
             display: flex;
             overflow-x: hidden;
+            transition: background-color 0.25s ease, color 0.25s ease;
         }
 
         /* Container Layout */
@@ -41,8 +127,8 @@
         /* Sidebar Styles */
         .sidebar {
             width: 260px;
-            background-color: #0f172a;
-            border-right: 1px solid #1e293b;
+            background-color: var(--bg-surface);
+            border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             height: 100vh;
@@ -54,7 +140,7 @@
 
         .sidebar-header {
             padding: 20px 24px;
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             gap: 2px;
@@ -63,7 +149,7 @@
         .sidebar-title {
             font-size: 1.1rem;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--text-primary);
             letter-spacing: -0.02em;
         }
 
@@ -105,15 +191,15 @@
             padding: 10px 14px;
             font-size: 0.875rem;
             font-weight: 500;
-            color: #94a3b8;
+            color: var(--text-muted);
             border-radius: 8px;
             text-decoration: none;
             transition: all 0.2s ease;
         }
 
         .nav-link:hover {
-            color: #ffffff;
-            background-color: rgba(255, 255, 255, 0.04);
+            color: var(--text-primary);
+            background-color: var(--nav-hover-bg);
         }
 
         .nav-link.active {
@@ -130,7 +216,7 @@
 
         .sidebar-footer {
             padding: 16px;
-            border-top: 1px solid #1e293b;
+            border-top: 1px solid var(--border);
         }
 
         /* Workspace Layout */
@@ -145,8 +231,8 @@
         /* Top Header */
         .top-header {
             height: 70px;
-            background-color: rgba(15, 23, 42, 0.9);
-            border-bottom: 1px solid #1e293b;
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -168,15 +254,15 @@
             display: none;
             background: transparent;
             border: none;
-            color: #94a3b8;
+            color: var(--text-muted);
             cursor: pointer;
             padding: 6px;
             border-radius: 6px;
         }
 
         .menu-toggle-btn:hover {
-            background-color: #1e293b;
-            color: #ffffff;
+            background-color: var(--bg-surface2);
+            color: var(--text-primary);
         }
 
         .page-title-group {
@@ -218,7 +304,7 @@
         .user-name {
             font-size: 0.85rem;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--text-primary);
         }
 
         .user-role {
@@ -254,8 +340,8 @@
 
         /* Cards and Components */
         .card {
-            background-color: #0f172a;
-            border: 1px solid #1e293b;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border);
             border-radius: 12px;
             padding: 24px;
         }
@@ -292,12 +378,12 @@
         .welcome-title {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--text-primary);
         }
 
         .welcome-desc {
             font-size: 0.875rem;
-            color: #94a3b8;
+            color: var(--text-muted);
             line-height: 1.5;
             max-width: 580px;
         }
@@ -350,8 +436,8 @@
         }
 
         .stat-card {
-            background-color: #0f172a;
-            border: 1px solid #1e293b;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border);
             border-radius: 12px;
             padding: 20px;
             display: flex;
@@ -381,7 +467,7 @@
         .stat-label {
             font-size: 0.7rem;
             font-weight: 700;
-            color: #64748b;
+            color: var(--text-faint);
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
@@ -389,7 +475,7 @@
         .stat-value {
             font-size: 1.85rem;
             font-weight: 800;
-            color: #ffffff;
+            color: var(--text-primary);
             line-height: 1.1;
         }
 
@@ -428,7 +514,7 @@
 
         .stat-footer {
             padding-top: 12px;
-            border-top: 1px solid #1e293b;
+            border-top: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -436,7 +522,7 @@
 
         .stat-desc {
             font-size: 0.75rem;
-            color: #64748b;
+            color: var(--text-faint);
         }
 
         .stat-link {
@@ -489,14 +575,14 @@
 
         .btn-secondary {
             background-color: transparent;
-            border: 1px solid #334155;
-            color: #cbd5e1;
+            border: 1px solid var(--bg-surface3);
+            color: var(--text-muted);
         }
 
         .btn-secondary:hover {
-            background-color: #1e293b;
-            color: #ffffff;
-            border-color: #475569;
+            background-color: var(--bg-surface2);
+            color: var(--text-primary);
+            border-color: var(--text-faint);
         }
 
         .btn-rose {
@@ -571,40 +657,40 @@
         .form-label-custom {
             font-size: 0.8rem;
             font-weight: 600;
-            color: #cbd5e1;
+            color: var(--text-muted);
             letter-spacing: 0.01em;
         }
 
         .form-input-custom {
             width: 100%;
-            background-color: #1e293b;
-            border: 1px solid #334155;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
             border-radius: 10px;
             padding: 12px 16px;
             font-size: 0.875rem;
-            color: #ffffff;
+            color: var(--text-primary);
             outline: none;
             transition: all 0.2s ease-in-out;
         }
 
         .form-input-custom:focus {
             border-color: #10b981;
-            background-color: #1e293b;
+            background-color: var(--input-bg);
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
         }
 
         .form-input-custom::placeholder {
-            color: #64748b;
+            color: var(--text-faint);
         }
 
         .form-select-custom {
             width: 100%;
-            background-color: #1e293b;
-            border: 1px solid #334155;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
             border-radius: 10px;
             padding: 12px 16px;
             font-size: 0.875rem;
-            color: #ffffff;
+            color: var(--text-primary);
             outline: none;
             transition: all 0.2s ease-in-out;
             cursor: pointer;
@@ -612,7 +698,7 @@
 
         .form-select-custom:focus {
             border-color: #10b981;
-            background-color: #1e293b;
+            background-color: var(--input-bg);
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
         }
 
@@ -629,7 +715,7 @@
             justify-content: flex-end;
             gap: 12px;
             padding-top: 20px;
-            border-top: 1px solid #1e293b;
+            border-top: 1px solid var(--border);
             margin-top: 8px;
         }
 
@@ -665,23 +751,23 @@
             padding: 14px 20px;
             font-size: 0.7rem;
             font-weight: 700;
-            color: #94a3b8;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            border-bottom: 1px solid #1e293b;
-            background-color: rgba(15, 23, 42, 0.4);
+            border-bottom: 1px solid var(--border);
+            background-color: var(--table-th-bg);
         }
 
         .table-custom td {
             padding: 14px 20px;
             font-size: 0.85rem;
-            color: #cbd5e1;
-            border-bottom: 1px solid rgba(30, 41, 59, 0.5);
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-muted);
             vertical-align: middle;
         }
 
         .table-custom tr:hover {
-            background-color: rgba(30, 41, 59, 0.25);
+            background-color: var(--tr-hover-bg);
         }
 
         /* Badges */
@@ -856,6 +942,18 @@
                 });
             }
         });
+
+            // ===== Theme Toggle =====
+            const themeBtn = document.getElementById('theme-toggle-btn');
+            if (themeBtn) {
+                themeBtn.addEventListener('click', () => {
+                    const current = document.documentElement.getAttribute('data-theme');
+                    const next = current === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', next);
+                    localStorage.setItem('theme', next);
+                });
+            }
+        });
     </script>
 </head>
 <body>
@@ -945,16 +1043,28 @@
                     </div>
                 </div>
 
-                <!-- Profile Info Actions -->
-                <a href="{{ route('profile') }}" class="user-profile-panel">
-                    <div class="user-info">
-                        <span class="user-name">{{ auth()->user()->name }}</span>
-                        <span class="user-role">Dosen Pengisi</span>
-                    </div>
-                    <div class="user-avatar">
-                        {{ substr(auth()->user()->name, 0, 2) }}
-                    </div>
-                </a>
+                <!-- Theme Toggle + Profile -->
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <button id="theme-toggle-btn" class="theme-toggle-btn" title="Toggle Tema Gelap/Terang" aria-label="Toggle tema">
+                        <!-- Moon icon (shown in dark mode) -->
+                        <svg class="icon-moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/>
+                        </svg>
+                        <!-- Sun icon (shown in light mode) -->
+                        <svg class="icon-sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 100 10A5 5 0 0012 7z"/>
+                        </svg>
+                    </button>
+                    <a href="{{ route('profile') }}" class="user-profile-panel">
+                        <div class="user-info">
+                            <span class="user-name">{{ auth()->user()->name }}</span>
+                            <span class="user-role">Dosen Pengisi</span>
+                        </div>
+                        <div class="user-avatar">
+                            {{ substr(auth()->user()->name, 0, 2) }}
+                        </div>
+                    </a>
+                </div>
             </header>
 
             <!-- Main Content Area -->

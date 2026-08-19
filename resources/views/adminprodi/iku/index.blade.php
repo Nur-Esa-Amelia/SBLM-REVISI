@@ -35,11 +35,11 @@
                 @forelse($iku as $index => $item)
                     <tr>
                         <td>{{ $iku->firstItem() + $index }}</td>
-                        <td style="font-weight: 600; color: #ffffff;">{{ $item->nama_iku }}</td>
+                        <td style="font-weight: 600; color: var(--text-primary);">{{ $item->nama_iku }}</td>
                         <td>
                             <span class="badge-custom badge-purple">{{ $item->kategori->nama_kategori }}</span>
                         </td>
-                        <td style="color: #cbd5e1; font-size: 0.8rem; max-width: 320px; line-height: 1.4;">
+                        <td style="color: var(--text-secondary); font-size: 0.8rem; max-width: 320px; line-height: 1.4;">
                             {{ $item->deskripsi ?? '-' }}
                         </td>
                         @if(auth()->user()->role === 'admin_p2mp')
@@ -65,7 +65,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="{{ auth()->user()->role === 'admin_p2mp' ? 5 : 4 }}" style="text-align: center; color: #64748b; padding: 30px;">
+                        <td colspan="{{ auth()->user()->role === 'admin_p2mp' ? 5 : 4 }}" style="text-align: center; color: var(--text-muted); padding: 30px;">
                             Belum ada data IKU.
                         </td>
                     </tr>

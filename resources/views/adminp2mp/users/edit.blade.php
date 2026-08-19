@@ -8,7 +8,7 @@
 <div class="form-layout-container">
     <!-- Back Link -->
     <div>
-        <a href="{{ route('adminp2mp.users.index') }}" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; color: #94a3b8; text-decoration: none; transition: all 0.2s ease;">
+        <a href="{{ route('adminp2mp.users.index') }}" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: all 0.2s ease;">
             <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
             </svg>
@@ -18,8 +18,8 @@
 
     <!-- Form Card -->
     <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #1e293b;">
-            <h3 style="font-size: 0.95rem; font-weight: 700; color: #ffffff;">Edit Informasi Pengguna</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border);">
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Edit Informasi Pengguna</h3>
             <span class="badge-custom badge-cyan">ID: #{{ $user->id }}</span>
         </div>
 
@@ -47,9 +47,9 @@
 
             <!-- Password -->
             <div class="form-group-custom">
-                <label for="password" class="form-label-custom">Kata Sandi Baru <span style="font-size: 0.65rem; color: #64748b; text-transform: none;">(opsional)</span></label>
+                <label for="password" class="form-label-custom">Kata Sandi Baru <span style="font-size: 0.65rem; color: var(--text-muted); text-transform: none;">(opsional)</span></label>
                 <input type="password" name="password" id="password" placeholder="Kosongkan jika tidak ingin mengubah password" class="form-input-custom">
-                <p style="font-size: 0.65rem; color: #64748b; margin-top: 4px;">Biarkan kosong untuk mempertahankan password lama.</p>
+                <p style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px;">Biarkan kosong untuk mempertahankan password lama.</p>
                 @error('password')
                     <span class="form-error-custom">{{ $message }}</span>
                 @enderror

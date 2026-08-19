@@ -7,7 +7,7 @@
 @section('content')
 <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
     <!-- Filter Year & Upload Action Link -->
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid #1e293b; padding-bottom: 16px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid var(--border); padding-bottom: 16px;">
         <form action="{{ route('dosen.pengisian.index') }}" method="GET" style="display: flex; align-items: flex-end; gap: 12px; flex: 1;">
             <div class="filter-item-custom" style="max-width: 200px;">
                 <label for="tahun" class="form-label-custom">Pilih Tahun Akademik</label>
@@ -56,10 +56,10 @@
                     <tr>
                         <td>{{ $riwayat->firstItem() + $index }}</td>
                         <td>
-                            <div style="font-weight: 600; color: #ffffff;">{{ $item->iku->nama_iku }}</div>
-                            <div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
+                            <div style="font-weight: 600; color: var(--text-primary);">{{ $item->iku->nama_iku }}</div>
+                            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
                         </td>
-                        <td style="font-weight: 500; color: #cbd5e1;">{{ $item->buktiIku->nama_bukti }}</td>
+                        <td style="font-weight: 500; color: var(--text-secondary);">{{ $item->buktiIku->nama_bukti }}</td>
                         <td>
                              @if($item->files->isNotEmpty())
                                  <details>
@@ -69,7 +69,7 @@
                                          </svg>
                                          Detail Berkas ({{ $item->files->count() }})
                                      </summary>
-                                     <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px; padding: 8px; background-color: rgba(15, 23, 42, 0.6); border: 1px solid #1e293b; border-radius: 6px; min-width: 180px;">
+                                     <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px; padding: 8px; background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 6px; min-width: 180px;">
                                          @foreach($item->files as $file)
                                              <a href="{{ asset($file->file_bukti) }}" target="_blank" style="color: #10b981; text-decoration: underline; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px; word-break: break-all;">
                                                  <svg style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -81,10 +81,10 @@
                                      </div>
                                  </details>
                              @else
-                                 <span style="color: #64748b; font-size: 0.75rem;">Tidak ada berkas</span>
+                                 <span style="color: var(--text-muted); font-size: 0.75rem;">Tidak ada berkas</span>
                              @endif
                         </td>
-                        <td style="color: #cbd5e1; font-size: 0.8rem; max-width: 250px; white-space: normal; word-wrap: break-word;">
+                        <td style="color: var(--text-secondary); font-size: 0.8rem; max-width: 250px; white-space: normal; word-wrap: break-word;">
                             <div style="display: flex; flex-direction: column; gap: 6px;">
                                 @forelse($item->files as $file)
                                     <div style="line-height: 1.4;">
@@ -95,14 +95,14 @@
                                 @endforelse
                             </div>
                         </td>
-                        <td style="text-align: center; color: #cbd5e1; font-size: 0.8rem;">
+                        <td style="text-align: center; color: var(--text-secondary); font-size: 0.8rem;">
                             {{ $item->created_at->format('d M Y, H:i') }}
                         </td>
-                        <td style="text-align: center; color: #cbd5e1; font-size: 0.8rem;">
+                        <td style="text-align: center; color: var(--text-secondary); font-size: 0.8rem;">
                             @if($item->status !== 'pending')
                                 {{ $item->updated_at->format('d M Y, H:i') }}
                             @else
-                                <span style="color: #64748b; font-style: italic;">-</span>
+                                <span style="color: var(--text-muted); font-style: italic;">-</span>
                             @endif
                         </td>
                         <td style="text-align: center;">
@@ -131,7 +131,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" style="text-align: center; color: #64748b; padding: 40px;">
+                        <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 40px;">
                             Belum ada riwayat pengisian bukti IKU untuk tahun akademik {{ $tahun }}.
                         </td>
                     </tr>

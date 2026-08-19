@@ -10,8 +10,8 @@
     <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
             <div>
-                <h3 style="font-size: 0.95rem; font-weight: 700; color: #ffffff;">Pilih Tahun Akademik</h3>
-                <p style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">Tampilkan tugas dosen berdasarkan tahun akademik yang dipilih.</p>
+                <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Pilih Tahun Akademik</h3>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Tampilkan tugas dosen berdasarkan tahun akademik yang dipilih.</p>
             </div>
             
             <form action="{{ route('adminprodi.dosen') }}" method="GET" style="display: flex; align-items: flex-end; gap: 12px; width: 220px;">
@@ -50,8 +50,8 @@
                                         {{ substr($dosenItem->name, 0, 2) }}
                                     </div>
                                     <div style="min-width: 0;">
-                                        <h4 style="font-size: 0.875rem; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0;">{{ $dosenItem->name }}</h4>
-                                        <p style="font-size: 0.72rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 2px 0 0 0;">{{ $dosenItem->email }}</p>
+                                        <h4 style="font-size: 0.875rem; font-weight: 700; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0;">{{ $dosenItem->name }}</h4>
+                                        <p style="font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 2px 0 0 0;">{{ $dosenItem->email }}</p>
                                     </div>
                                 </div>
                             </td>
@@ -68,13 +68,13 @@
                                         $percentage = round(($valid / $total) * 100);
                                     @endphp
                                     <div style="display: flex; align-items: center; gap: 8px;">
-                                        <div style="flex: 1; min-width: 100px; height: 6px; background-color: #1e293b; border-radius: 3px; overflow: hidden;">
+                                        <div style="flex: 1; min-width: 100px; height: 6px; background-color: var(--bg-surface2); border-radius: 3px; overflow: hidden;">
                                             <div style="width: {{ $percentage }}%; height: 100%; background-color: #10b981; border-radius: 3px;"></div>
                                         </div>
                                         <span style="font-size: 0.75rem; font-weight: 700; color: #10b981;">{{ $percentage }}%</span>
                                     </div>
                                 @else
-                                    <span style="font-size: 0.75rem; color: #64748b;">-</span>
+                                    <span style="font-size: 0.75rem; color: var(--text-muted);">-</span>
                                 @endif
                             </td>
                             <td>
@@ -105,7 +105,7 @@
                                     @endif
 
                                     @if($dosenItem->assignments->count() == 0)
-                                        <span style="font-size: 0.75rem; color: #64748b;">Tidak ada tugas</span>
+                                        <span style="font-size: 0.75rem; color: var(--text-muted);">Tidak ada tugas</span>
                                     @endif
                                 </div>
                             </td>
@@ -118,31 +118,31 @@
                                 </button>
                             </td>
                         </tr>
-                        <tr id="detail-row-{{ $dosenItem->id }}" style="display: none; background-color: rgba(9, 13, 22, 0.4);">
-                            <td colspan="6" style="padding: 20px; border-bottom: 1px solid #1e293b;">
+                        <tr id="detail-row-{{ $dosenItem->id }}" style="display: none; background-color: var(--tr-hover-bg);">
+                            <td colspan="6" style="padding: 20px; border-bottom: 1px solid var(--border);">
                                 <div style="display: flex; flex-direction: column; gap: 16px;">
                                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <h5 style="font-size: 0.85rem; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+                                        <h5 style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
                                             <span style="display: inline-block; width: 4px; height: 14px; background-color: #3b82f6; border-radius: 2px;"></span>
                                             Daftar Rincian Tugas IKU: {{ $dosenItem->name }}
                                         </h5>
-                                        <span style="font-size: 0.7rem; color: #64748b;">Tahun Akademik: {{ $tahun }}</span>
+                                        <span style="font-size: 0.7rem; color: var(--text-muted);">Tahun Akademik: {{ $tahun }}</span>
                                     </div>
                                     
                                     @if($dosenItem->assignments->count() > 0)
                                         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;">
                                             @foreach($dosenItem->assignments as $assign)
-                                                <div style="padding: 14px; background-color: #0b0f19; border: 1px solid #1e293b; border-radius: 10px; display: flex; flex-direction: column; gap: 10px; justify-content: space-between; transition: all 0.2s;" class="assignment-item-hover">
+                                                <div style="padding: 14px; background-color: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 10px; justify-content: space-between; transition: all 0.2s;" class="assignment-item-hover">
                                                     <div>
-                                                        <div style="font-size: 0.8rem; font-weight: 600; color: #ffffff; line-height: 1.4; margin-bottom: 6px;">
+                                                        <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-primary); line-height: 1.4; margin-bottom: 6px;">
                                                             {{ $assign->iku->nama_iku }}
                                                         </div>
-                                                        <div style="font-size: 0.72rem; color: #64748b;">
+                                                        <div style="font-size: 0.72rem; color: var(--text-muted);">
                                                             Kategori: {{ $assign->iku->kategori->nama_kategori }}
                                                         </div>
                                                     </div>
-                                                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(30, 41, 59, 0.4); padding-top: 8px; margin-top: 4px;">
-                                                        <span style="font-size: 0.65rem; color: #475569;">ID: {{ $assign->iku->kode_iku ?? '-' }}</span>
+                                                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 8px; margin-top: 4px;">
+                                                        <span style="font-size: 0.65rem; color: var(--text-faint);">ID: {{ $assign->iku->kode_iku ?? '-' }}</span>
                                                         @if($assign->proof_status === 'valid')
                                                             <span class="badge-custom badge-green" style="font-size: 0.65rem;">Valid</span>
                                                         @elseif($assign->proof_status === 'invalid')
@@ -157,7 +157,7 @@
                                             @endforeach
                                         </div>
                                     @else
-                                        <div style="text-align: center; color: #64748b; padding: 24px 12px; font-size: 0.8rem; background-color: rgba(15, 23, 42, 0.2); border: 1px dashed #1e293b; border-radius: 8px;">
+                                        <div style="text-align: center; color: var(--text-muted); padding: 24px 12px; font-size: 0.8rem; background-color: var(--bg-surface2); border: 1px dashed var(--border); border-radius: 8px;">
                                             Belum ada penugasan IKU untuk tahun {{ $tahun }}.
                                         </div>
                                     @endif
@@ -166,8 +166,8 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="text-align: center; color: #64748b; padding: 48px;">
-                                <svg style="width: 36px; height: 36px; margin: 0 auto 12px; color: #334155; display: block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 48px;">
+                                <svg style="width: 36px; height: 36px; margin: 0 auto 12px; color: var(--text-faint); display: block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                                 </svg>
                                 Tidak ada data dosen yang terdaftar di program studi Anda.
@@ -182,7 +182,7 @@
     <style>
         .assignment-item-hover:hover {
             border-color: rgba(59, 130, 246, 0.4) !important;
-            background-color: #0f1524 !important;
+            background-color: var(--bg-surface2) !important;
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }

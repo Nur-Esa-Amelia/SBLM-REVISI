@@ -10,8 +10,8 @@
     <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
             <div>
-                <h3 style="font-size: 0.95rem; font-weight: 700; color: #ffffff;">Filter Bukti IKU</h3>
-                <p style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">Saring pengajuan bukti IKU berdasarkan status validasi atau tahun akademik.</p>
+                <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Filter Bukti IKU</h3>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Saring pengajuan bukti IKU berdasarkan status validasi atau tahun akademik.</p>
             </div>
             @if(auth()->user()->role === 'kaprodi')
                 <a href="{{ route('adminprodi.pengisian.create') }}" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.8rem;">
@@ -78,24 +78,24 @@
                             
                             <!-- Pengunggah -->
                             <td>
-                                <div style="font-weight: 700; color: #ffffff;">{{ $item->user->name }}</div>
+                                <div style="font-weight: 700; color: var(--text-primary);">{{ $item->user->name }}</div>
                                 <div style="font-size: 0.72rem; color: #38bdf8; margin-top: 2px; font-weight: 600;">
                                     Role: {{ $item->user->role === 'kaprodi' ? 'Kaprodi' : 'Dosen' }}
                                 </div>
-                                <div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">
+                                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">
                                     Email: {{ $item->user->email }}
                                 </div>
                             </td>
 
                             <!-- Indikator IKU -->
                             <td>
-                                <div style="font-weight: 600; color: #ffffff;">{{ $item->iku->nama_iku }}</div>
-                                <div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
+                                <div style="font-weight: 600; color: var(--text-primary);">{{ $item->iku->nama_iku }}</div>
+                                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
                             </td>
 
                             <!-- Jenis Bukti -->
                             <td>
-                                <span style="font-weight: 500; color: #cbd5e1;">{{ $item->buktiIku->nama_bukti }}</span>
+                                <span style="font-weight: 500; color: var(--text-secondary);">{{ $item->buktiIku->nama_bukti }}</span>
                             </td>
 
                             <!-- Berkas Lampiran -->
@@ -108,7 +108,7 @@
                                             </svg>
                                             Detail Berkas ({{ $item->files->count() }})
                                         </summary>
-                                        <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px; padding: 8px; background-color: rgba(15, 23, 42, 0.6); border: 1px solid #1e293b; border-radius: 6px; min-width: 180px;">
+                                        <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px; padding: 8px; background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 6px; min-width: 180px;">
                                             @foreach($item->files as $file)
                                                 <a href="{{ asset($file->file_bukti) }}" target="_blank" style="color: #10b981; text-decoration: underline; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px; word-break: break-all;">
                                                     <svg style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -120,25 +120,25 @@
                                         </div>
                                     </details>
                                 @else
-                                    <span style="color: #64748b; font-size: 0.75rem;">Tidak ada berkas</span>
+                                    <span style="color: var(--text-muted); font-size: 0.75rem;">Tidak ada berkas</span>
                                 @endif
                             </td>
 
                             <!-- Keterangan -->
-                            <td style="color: #cbd5e1; font-size: 0.8rem; max-width: 250px; white-space: normal; word-wrap: break-word;">
+                            <td style="color: var(--text-secondary); font-size: 0.8rem; max-width: 250px; white-space: normal; word-wrap: break-word;">
                                 <div style="display: flex; flex-direction: column; gap: 6px;">
                                     @forelse($item->files as $file)
                                         <div style="line-height: 1.4;">
                                             {!! preg_replace('~(https?://[^\s<]+)~i', '<a href="$1" target="_blank" style="color: #10b981; text-decoration: underline; word-break: break-all;">$1</a>', e($file->keterangan ?? '-')) !!}
                                         </div>
                                     @empty
-                                        <span style="color: #64748b;">-</span>
+                                        <span style="color: var(--text-muted);">-</span>
                                     @endforelse
                                 </div>
                             </td>
 
                             <!-- Tahun -->
-                            <td style="text-align: center; color: #cbd5e1; font-size: 0.85rem;">
+                            <td style="text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
                                 {{ $item->tahun }}
                             </td>
 
@@ -171,7 +171,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" style="text-align: center; padding: 48px; color: #64748b;">
+                            <td colspan="8" style="text-align: center; padding: 48px; color: var(--text-muted);">
                                 <svg style="width: 32px; height: 32px; margin: 0 auto 12px; color: #334155; display: block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
@@ -184,7 +184,7 @@
         </div>
 
         @if($riwayat->hasPages())
-            <div style="padding: 16px 20px; border-top: 1px solid #1e293b; background-color: rgba(15, 23, 42, 0.2);">
+            <div style="padding: 16px 20px; border-top: 1px solid var(--border); background-color: var(--bg-surface2);">
                 {{ $riwayat->appends(['status' => $status, 'tahun' => $tahun])->links() }}
             </div>
         @endif

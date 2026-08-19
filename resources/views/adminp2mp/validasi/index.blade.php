@@ -10,8 +10,8 @@
     <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
             <div>
-                <h3 style="font-size: 0.95rem; font-weight: 700; color: #ffffff;">Filter Bukti IKU</h3>
-                <p style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">Saring pengajuan bukti IKU berdasarkan program studi, status validasi, atau tahun akademik.</p>
+                <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Filter Bukti IKU</h3>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Saring pengajuan bukti IKU berdasarkan program studi, status validasi, atau tahun akademik.</p>
             </div>
         </div>
 
@@ -61,6 +61,25 @@
 
     <!-- Table Card -->
     <div class="card" style="padding: 0; overflow: hidden;">
+        @php
+            $pendingCount = $riwayat->where('status', 'pending')->count();
+        @endphp
+        
+        @if($pendingCount > 0)
+            <div style="padding: 20px 24px; border-bottom: 1px solid var(--border); background-color: rgba(56, 189, 248, 0.05); display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
+                <div>
+                    <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin: 0; margin-bottom: 2px;">🚀 Setujui Semua Pending</h4>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">{{ $pendingCount }} bukti IKU menunggu validasi - setujui semua sekaligus</p>
+                </div>
+                <button type="button" onclick="showBulkApproveModal()" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.8rem; background-color: #10b981; border-color: #10b981; white-space: nowrap;">
+                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Setujui Semua Sekarang
+                </button>
+            </div>
+        @endif
+
         <div class="table-responsive">
             <table class="table-custom">
                 <thead>
@@ -82,8 +101,8 @@
                             
                             <!-- Dosen / Prodi -->
                             <td>
-                                <div style="font-weight: 700; color: #ffffff;">{{ $item->user->name }}</div>
-                                <div style="font-size: 0.72rem; color: #cbd5e1; margin-top: 2px; font-weight: 600;">
+                                <div style="font-weight: 700; color: var(--text-primary);">{{ $item->user->name }}</div>
+                                <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px; font-weight: 600;">
                                     Role: {{ $item->user->role === 'kaprodi' ? 'Kaprodi' : 'Dosen' }}
                                 </div>
                                 <div style="font-size: 0.72rem; color: #38bdf8; margin-top: 2px;">
@@ -93,13 +112,13 @@
 
                             <!-- Indikator IKU -->
                             <td>
-                                <div style="font-weight: 600; color: #ffffff;">{{ $item->iku->nama_iku }}</div>
-                                <div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
+                                <div style="font-weight: 600; color: var(--text-primary);">{{ $item->iku->nama_iku }}</div>
+                                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
                             </td>
 
                             <!-- Jenis Bukti -->
                             <td>
-                                <span style="font-weight: 500; color: #cbd5e1;">{{ $item->buktiIku->nama_bukti }}</span>
+                                <span style="font-weight: 500; color: var(--text-secondary);">{{ $item->buktiIku->nama_bukti }}</span>
                             </td>
 
                             <!-- Berkas Lampiran -->
@@ -112,7 +131,7 @@
                                             </svg>
                                             Detail Berkas ({{ $item->files->count() }})
                                         </summary>
-                                        <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px; padding: 8px; background-color: rgba(15, 23, 42, 0.6); border: 1px solid #1e293b; border-radius: 6px; min-width: 180px;">
+                                        <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px; padding: 8px; background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 6px; min-width: 180px;">
                                             @foreach($item->files as $file)
                                                 <a href="{{ asset($file->file_bukti) }}" target="_blank" style="color: #10b981; text-decoration: underline; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px; word-break: break-all;">
                                                     <svg style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -124,25 +143,25 @@
                                         </div>
                                     </details>
                                 @else
-                                    <span style="color: #64748b; font-size: 0.75rem;">Tidak ada berkas</span>
+                                    <span style="color: var(--text-muted); font-size: 0.75rem;">Tidak ada berkas</span>
                                 @endif
                             </td>
 
                             <!-- Keterangan -->
-                            <td style="color: #cbd5e1; font-size: 0.8rem; max-width: 250px; white-space: normal; word-wrap: break-word;">
+                            <td style="color: var(--text-secondary); font-size: 0.8rem; max-width: 250px; white-space: normal; word-wrap: break-word;">
                                 <div style="display: flex; flex-direction: column; gap: 6px;">
                                     @forelse($item->files as $file)
                                         <div style="line-height: 1.4;">
                                             {!! preg_replace('~(https?://[^\s<]+)~i', '<a href="$1" target="_blank" style="color: #38bdf8; text-decoration: underline; word-break: break-all;">$1</a>', e($file->keterangan ?? '-')) !!}
                                         </div>
                                     @empty
-                                        <span style="color: #64748b;">-</span>
+                                        <span style="color: var(--text-muted);">-</span>
                                     @endforelse
                                 </div>
                             </td>
 
                             <!-- Tahun -->
-                            <td style="text-align: center; color: #cbd5e1; font-size: 0.85rem;">
+                            <td style="text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
                                 {{ $item->tahun }}
                             </td>
 
@@ -194,8 +213,8 @@
                                         @csrf
                                         <input type="hidden" name="status" value="invalid">
                                         <div style="display: flex; flex-direction: column; gap: 6px; text-align: left;">
-                                            <label for="catatan-{{ $item->id }}" class="form-label-custom" style="font-size: 0.7rem; color: #94a3b8;">Catatan Perbaikan</label>
-                                            <textarea name="catatan_validator" id="catatan-{{ $item->id }}" class="form-input-custom" style="padding: 6px 8px; font-size: 0.75rem; height: 60px; resize: vertical; background-color: #090d16;" placeholder="Alasan penolakan / revisi..." required>{{ $item->catatan_validator }}</textarea>
+                                            <label for="catatan-{{ $item->id }}" class="form-label-custom" style="font-size: 0.7rem; color: var(--text-muted);">Catatan Perbaikan</label>
+                                            <textarea name="catatan_validator" id="catatan-{{ $item->id }}" class="form-input-custom" style="padding: 6px 8px; font-size: 0.75rem; height: 60px; resize: vertical; background-color: var(--bg-base);" placeholder="Alasan penolakan / revisi..." required>{{ $item->catatan_validator }}</textarea>
                                             <div style="display: flex; gap: 6px;">
                                                 <button type="submit" class="btn btn-rose" style="padding: 4px 8px; font-size: 0.7rem; flex: 1; justify-content: center;">
                                                     Kirim
@@ -218,8 +237,8 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" style="text-align: center; padding: 48px; color: #64748b;">
-                                <svg style="width: 32px; height: 32px; margin: 0 auto 12px; color: #334155; display: block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <td colspan="8" style="text-align: center; padding: 48px; color: var(--text-muted);">
+                                <svg style="width: 32px; height: 32px; margin: 0 auto 12px; color: var(--text-muted); display: block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 Belum ada pengajuan bukti IKU yang sesuai dengan kriteria filter.
@@ -231,7 +250,7 @@
         </div>
 
         @if($riwayat->hasPages())
-            <div style="padding: 16px 20px; border-top: 1px solid #1e293b; background-color: rgba(15, 23, 42, 0.2);">
+            <div style="padding: 16px 20px; border-top: 1px solid var(--border); background-color: rgba(15, 23, 42, 0.2);">
                 {{ $riwayat->appends(['prodi_id' => $prodiId, 'status' => $status, 'tahun' => $tahun])->links() }}
             </div>
         @endif
@@ -261,6 +280,90 @@
         document.getElementById('form-reject-' + id).style.display = 'none';
         document.getElementById('btn-reject-trigger-' + id).style.display = 'block';
     }
+
+    function showBulkApproveModal() {
+        const pendingIds = [];
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const statusForm = row.querySelector('[id^="status-form-"]');
+            if (statusForm && statusForm.style.display !== 'none') {
+                const formId = statusForm.id.replace('status-form-', '');
+                pendingIds.push(parseInt(formId));
+            }
+        });
+
+        if (pendingIds.length === 0) {
+            alert('Tidak ada bukti IKU yang menunggu validasi.');
+            return;
+        }
+
+        document.getElementById('bulk-count').textContent = `${pendingIds.length} bukti siap disetujui`;
+        document.getElementById('bulk-count-number').textContent = pendingIds.length;
+        document.getElementById('bulk-ids').value = JSON.stringify(pendingIds);
+        document.getElementById('bulk-approve-modal').style.display = 'flex';
+    }
+
+    function closeBulkApproveModal() {
+        document.getElementById('bulk-approve-modal').style.display = 'none';
+    }
+
+    function submitBulkApprove() {
+        const form = document.getElementById('bulk-approve-form');
+        form.submit();
+    }
+
+    window.addEventListener('click', function(e) {
+        const modal = document.getElementById('bulk-approve-modal');
+        if (e.target === modal) {
+            closeBulkApproveModal();
+        }
+    });
 </script>
+
+<!-- Bulk Approve Modal -->
+<div id="bulk-approve-modal" style="display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: var(--bg-surface); border: 1px solid rgba(16, 185, 129, 0.4); box-shadow: 0 0 30px rgba(16, 185, 129, 0.15); border-radius: 12px; width: 100%; max-width: 420px; display: flex; flex-direction: column; overflow: hidden;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 20px 24px; background: var(--bg-surface);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(16, 185, 129, 0.15); display: flex; align-items: center; justify-content: center; color: #10b981;">
+                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin: 0;">Setujui Semua Bukti IKU?</h3>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin: 2px 0 0 0;" id="bulk-count"></p>
+                </div>
+            </div>
+            <button type="button" onclick="closeBulkApproveModal()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; border-radius: 6px; transition: all 0.2s;">
+                <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <div style="padding: 20px 24px; color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6;">
+            <div style="padding: 12px 16px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 8px; margin-bottom: 16px; color: #38bdf8;">
+                ⚠️ Tindakan ini akan menandai <strong>semua bukti IKU yang menunggu validasi</strong> sebagai <strong>Valid</strong>. Pastikan Anda sudah meriview semua bukti sebelum melanjutkan.
+            </div>
+            <p style="margin: 0 0 4px 0; color: var(--text-muted);">Jumlah bukti yang akan disetujui:</p>
+            <p style="margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--text-primary);" id="bulk-count-number">-</p>
+        </div>
+
+        <div style="display: flex; gap: 10px; padding: 16px 24px; border-top: 1px solid var(--border); background: var(--bg-surface2);">
+            <button type="button" onclick="closeBulkApproveModal()" class="btn btn-secondary" style="flex: 1; padding: 10px 16px; font-size: 0.8rem;">
+                Batal
+            </button>
+            <button type="button" onclick="submitBulkApprove()" class="btn btn-primary" style="flex: 1; padding: 10px 16px; font-size: 0.8rem; background-color: #10b981; border-color: #10b981;">
+                Ya, Setujui Semua
+            </button>
+        </div>
+    </div>
+</div>
+
+<form id="bulk-approve-form" action="{{ route('adminp2mp.validasi.bulk-approve') }}" method="POST" style="display: none;">
+    @csrf
+    <input type="hidden" name="ids" id="bulk-ids" value="">
+</form>
 @endsection
 

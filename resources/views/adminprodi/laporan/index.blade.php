@@ -148,20 +148,20 @@
     </div>
 
     @if($recommendations && $recommendations->isNotEmpty())
-        <div class="alert-box alert-warning" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); color: #cbd5e1; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;">
+        <div class="alert-box alert-warning" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); color: var(--text-secondary); display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;">
             <svg style="width: 18px; height: 18px; color: #c084fc; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21l8.982-11.795H13.62l1.378-6.059L6 15.004h3.813z"></path>
             </svg>
-            <div style="font-size: 0.85rem;">
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">
                 Terdeteksi <strong>{{ $recommendations->count() }}</strong> indikator dengan status warning. Klik tombol <strong>💡 Rekomendasi</strong> di kolom status tabel untuk melihat saran perbaikan AI.
             </div>
         </div>
     @else
-        <div class="alert-box alert-success" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #94a3b8; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;">
+        <div class="alert-box alert-success" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: var(--text-secondary); display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;">
             <svg style="width: 18px; height: 18px; color: #10b981; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-            <div style="font-size: 0.85rem;">
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">
                 Tidak ada rekomendasi karena seluruh indikator dalam kondisi aman.
             </div>
         </div>
@@ -169,9 +169,9 @@
 
     <!-- Table Card -->
     <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
-        <div style="padding: 20px 24px; border-bottom: 1px solid #1e293b;">
-            <h3 class="text-base font-bold text-white" style="font-size: 0.95rem; margin-bottom: 2px;">Capaian IKU Program Studi {{ $prodiName }}</h3>
-            <p style="font-size: 0.75rem; color: #64748b;">Daftar target, realisasi, dan status pencapaian IKU untuk tahun akademik {{ $tahun }}.</p>
+        <div style="padding: 20px 24px; border-bottom: 1px solid var(--border);">
+            <h3 class="text-base font-bold" style="font-size: 0.95rem; margin-bottom: 2px; color: var(--text-primary);">Capaian IKU Program Studi {{ $prodiName }}</h3>
+            <p style="font-size: 0.75rem; color: var(--text-muted);">Daftar target, realisasi, dan status pencapaian IKU untuk tahun akademik {{ $tahun }}.</p>
         </div>
 
         <div class="table-responsive">
@@ -219,10 +219,10 @@
                             <td>
                                 <span class="badge-custom badge-purple">{{ $item->iku->kategori->nama_kategori }}</span>
                             </td>
-                            <td style="font-weight: 600; color: #ffffff;">{{ $item->iku->nama_iku }}</td>
-                            <td style="text-align: center; font-weight: 700; color: #cbd5e1;">
+                            <td style="font-weight: 600; color: var(--text-primary);">{{ $item->iku->nama_iku }}</td>
+                            <td style="text-align: center; font-weight: 700; color: var(--text-secondary);">
                                 {{ $item->target }}{{ $item->satuan === 'persen' ? '%' : '' }}
-                                <span style="font-size: 0.7rem; color: #64748b; display: block; font-weight: normal;">({{ $item->objek }})</span>
+                                <span style="font-size: 0.7rem; color: var(--text-muted); display: block; font-weight: normal;">({{ $item->objek }})</span>
                             </td>
                             <td style="text-align: center; font-weight: 700; color: #3b82f6;">
                                 {{ round($item->realisasi) }} Bukti
@@ -254,7 +254,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" style="text-align: center; color: #64748b; padding: 40px;">
+                            <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">
                                 Belum ada target dan realisasi IKU yang tercatat untuk tahun akademik {{ $tahun }}.
                             </td>
                         </tr>
@@ -269,12 +269,12 @@
                 <div style="text-align: center;">
                     <p>Mengetahui,</p>
                     <p style="font-weight: bold; margin-top: 50px;">Ketua Program Studi</p>
-                    <p style="color: #64748b; font-size: 9pt;">(Tanda Tangan & Nama Terang)</p>
+                    <p style="color: var(--text-muted); font-size: 9pt;">(Tanda Tangan & Nama Terang)</p>
                 </div>
                 <div style="text-align: center;">
                     <p>Dibuat Oleh,</p>
                     <p style="font-weight: bold; margin-top: 50px;">{{ auth()->user()->role === 'kaprodi' ? 'Ketua Program Studi' : 'Admin Program Studi' }}</p>
-                    <p style="color: #64748b; font-size: 9pt;">{{ auth()->user()->name }}</p>
+                    <p style="color: var(--text-muted); font-size: 9pt;">{{ auth()->user()->name }}</p>
                 </div>
             </div>
         </div>
@@ -283,9 +283,9 @@
 
 <!-- Custom AI Recommendation Modal -->
 <div id="custom-ai-modal" style="display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px; transition: all 0.3s ease;">
-    <div style="background: #0f172a; border: 1px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 30px rgba(168, 85, 247, 0.25); border-radius: 12px; width: 100%; max-width: 750px; max-height: 85vh; display: flex; flex-direction: column; animation: modalSlideIn 0.25s ease-out; overflow: hidden;">
+    <div style="background: var(--bg-surface); border: 1px solid var(--border); box-shadow: 0 0 30px rgba(168, 85, 247, 0.12); border-radius: 12px; width: 100%; max-width: 750px; max-height: 85vh; display: flex; flex-direction: column; animation: modalSlideIn 0.25s ease-out; overflow: hidden;">
         <!-- Modal Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding: 16px 20px; background: #0f172a;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 16px 20px; background: var(--bg-surface);">
             <div style="display: flex; align-items: center; gap: 10px;">
                 <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(168, 85, 247, 0.15); display: flex; align-items: center; justify-content: center; color: #a855f7;">
                     <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -293,18 +293,18 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 id="modal-title" style="font-size: 0.95rem; font-weight: 700; color: #ffffff; margin: 0;">Rekomendasi Analisis AI</h3>
-                    <p id="modal-subtitle" style="font-size: 0.75rem; color: #64748b; margin: 2px 0 0 0;"></p>
+                    <h3 id="modal-title" style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin: 0;">Rekomendasi Analisis AI</h3>
+                    <p id="modal-subtitle" style="font-size: 0.75rem; color: var(--text-muted); margin: 2px 0 0 0;"></p>
                 </div>
             </div>
-            <button id="btn-close-modal" style="background: transparent; border: none; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 6px; border-radius: 6px; transition: all 0.2s;">
+            <button id="btn-close-modal" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 6px; border-radius: 6px; transition: all 0.2s;">
                 <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
         </div>
         <!-- Modal Body -->
-        <div id="modal-body-content" style="color: #cbd5e1; font-size: 0.875rem; line-height: 1.6; padding: 20px; overflow-y: auto; flex: 1; max-height: calc(85vh - 75px);">
+        <div id="modal-body-content" style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; padding: 20px; overflow-y: auto; flex: 1; max-height: calc(85vh - 75px);">
             <!-- Rendered markdown recommendation goes here -->
         </div>
     </div>
@@ -372,12 +372,12 @@ document.addEventListener('DOMContentLoaded', function () {
             .replace(/>/g, "&gt;");
             
         // Headers
-        html = html.replace(/^### (.*$)/gim, '<h5 style="color: #f1f5f9; font-weight: 700; margin-top: 14px; margin-bottom: 6px; font-size: 0.9rem;">$1</h5>');
-        html = html.replace(/^## (.*$)/gim, '<h4 style="color: #ffffff; font-weight: 700; margin-top: 18px; margin-bottom: 8px; font-size: 1rem; border-bottom: 1px solid #1e293b; padding-bottom: 4px;">$1</h4>');
-        html = html.replace(/^# (.*$)/gim, '<h3 style="color: #ffffff; font-weight: 800; margin-top: 22px; margin-bottom: 10px; font-size: 1.15rem;">$1</h3>');
+        html = html.replace(/^### (.*$)/gim, '<h5 style="color: var(--text-primary); font-weight: 700; margin-top: 14px; margin-bottom: 6px; font-size: 0.9rem;">$1</h5>');
+        html = html.replace(/^## (.*$)/gim, '<h4 style="color: var(--text-primary); font-weight: 700; margin-top: 18px; margin-bottom: 8px; font-size: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 4px;">$1</h4>');
+        html = html.replace(/^# (.*$)/gim, '<h3 style="color: var(--text-primary); font-weight: 800; margin-top: 22px; margin-bottom: 10px; font-size: 1.15rem;">$1</h3>');
         
         // Bold
-        html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color: #ffffff; font-weight: 600;">$1</strong>');
+        html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color: var(--text-primary); font-weight: 600;">$1</strong>');
         
         // Bullet Lists: match a line beginning with standard bullet characters
         html = html.replace(/^\s*[-*+]\s+(.*)$/gim, '<li style="margin-left: 20px; margin-bottom: 6px; list-style-type: disc; padding-left: 4px;">$1</li>');
@@ -405,7 +405,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else if (line.startsWith('<h')) {
                     processedLines.push(line);
                 } else {
-                    processedLines.push(`<p style="margin-bottom: 12px; text-align: justify; color: #cbd5e1;">${line}</p>`);
+                    processedLines.push(`<p style="margin-bottom: 12px; text-align: justify; color: var(--text-secondary);">${line}</p>`);
                 }
             }
         }

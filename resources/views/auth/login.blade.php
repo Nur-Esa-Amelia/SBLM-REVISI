@@ -13,11 +13,11 @@
     .auth-split-container {
         display: grid;
         grid-template-columns: 1fr;
-        background-color: #171d2c;
-        border: 1px solid #cdd2de;
+        background-color: var(--auth-surface);
+        border: 1px solid var(--auth-border);
         border-radius: 24px;
         overflow: hidden;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.18), 0 10px 10px -5px rgba(15, 23, 42, 0.12);
         width: 100%;
     }
 
@@ -32,10 +32,10 @@
         flex-direction: column;
         justify-content: space-between;
         padding: 40px;
-        background: linear-gradient(135deg, #0b0f19 0%, #171d2c 50%, #080c14 100%);
+        background: linear-gradient(135deg, var(--auth-bg) 0%, var(--auth-surface) 50%, rgba(8,12,20,0.95) 100%);
         position: relative;
         overflow: hidden;
-        border-right: 1px solid #242f47;
+        border-right: 1px solid var(--auth-border);
     }
 
     @media (min-width: 768px) {
@@ -62,7 +62,7 @@
         flex-direction: column;
         justify-content: center;
         position: relative;
-        background-color: #171d2c;
+        background-color: var(--auth-surface);
     }
 
     @media (max-width: 640px) {
@@ -75,14 +75,14 @@
         font-size: 2rem;
         font-weight: 700;
         line-height: 1.25;
-        color: #ffffff;
+        color: var(--auth-text);
         margin-bottom: 12px;
     }
 
     .brand-subtitle {
         font-size: 0.9rem;
-        color: #94a3b8;
-        border-left: 3px solid #38bdf8;
+        color: var(--auth-text-muted);
+        border-left: 3px solid var(--auth-accent);
         padding-left: 12px;
         margin-bottom: 36px;
         line-height: 1.5;
@@ -104,20 +104,20 @@
     .highlight-icon {
         width: 40px;
         height: 40px;
-        background-color: rgba(56, 189, 248, 0.08);
+        background-color: var(--auth-accent-soft);
         border: 1px solid rgba(56, 189, 248, 0.2);
         border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #38bdf8;
+        color: var(--auth-accent);
         flex-shrink: 0;
     }
 
     .highlight-text {
         font-size: 0.9rem;
         font-weight: 500;
-        color: #cbd5e1;
+        color: var(--auth-text-soft);
     }
 
     /* Input Field Styling with Icons */
@@ -159,24 +159,24 @@
 
     .form-input-with-icon {
         width: 100%;
-        background-color: #0f1626;
-        border: 1px solid #242f47;
+        background-color: var(--auth-input-bg);
+        border: 1px solid var(--auth-input-border);
         border-radius: 12px;
         padding: 12px 16px 12px 48px;
         font-size: 0.95rem;
-        color: #ffffff;
+        color: var(--auth-text);
         transition: all 0.2s ease;
         outline: none;
     }
 
     .form-input-with-icon-both {
         width: 100%;
-        background-color: #0f1626;
-        border: 1px solid #242f47;
+        background-color: var(--auth-input-bg);
+        border: 1px solid var(--auth-input-border);
         border-radius: 12px;
         padding: 12px 44px 12px 48px;
         font-size: 0.95rem;
-        color: #ffffff;
+        color: var(--auth-text);
         transition: all 0.2s ease;
         outline: none;
     }

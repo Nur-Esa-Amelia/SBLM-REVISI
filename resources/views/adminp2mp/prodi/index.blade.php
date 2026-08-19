@@ -10,8 +10,8 @@
     <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
             <div>
-                <h3 style="font-size: 0.95rem; font-weight: 700; color: #ffffff;">Daftar Program Studi</h3>
-                <p style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">Kelola data program studi aktif dalam sistem early warning IKU.</p>
+                <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Daftar Program Studi</h3>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Kelola data program studi aktif dalam sistem early warning IKU.</p>
             </div>
             <div>
                 <a href="{{ route('adminp2mp.prodi.create') }}" class="btn btn-primary">
@@ -76,11 +76,11 @@
                                 </span>
                             </td>
                             <!-- Nama Prodi -->
-                            <td style="font-weight: 700; color: #ffffff;">
+                            <td style="font-weight: 700; color: var(--text-primary);">
                                 {{ $prodi->nama_prodi }}
                             </td>
                             <!-- Users Count -->
-                            <td style="font-weight: 600; color: #cbd5e1;">
+                            <td style="font-weight: 600; color: var(--text-secondary);">
                                 {{ $prodi->users_count }} User
                             </td>
                             <!-- Actions -->
@@ -108,8 +108,8 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" style="text-align: center; padding: 48px; color: #64748b;">
-                                <svg style="width: 32px; height: 32px; margin: 0 auto 12px; color: #334155; display: block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <td colspan="4" style="text-align: center; padding: 48px; color: var(--text-muted);">
+                                <svg style="width: 32px; height: 32px; margin: 0 auto 12px; color: var(--text-muted); display: block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 Tidak ditemukan data program studi.

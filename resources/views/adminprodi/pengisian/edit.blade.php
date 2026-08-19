@@ -16,7 +16,7 @@
                 </svg>
                 Catatan Validator (Perlu Perbaikan):
             </div>
-            <p style="font-size: 0.85rem; color: #cbd5e1;">{{ $pengisian->catatan_validator }}</p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">{{ $pengisian->catatan_validator }}</p>
         </div>
     @endif
 
@@ -51,7 +51,7 @@
                     </option>
                 @endforeach
             </select>
-            <small style="color: #64748b; font-size: 0.75rem; margin-top: 2px;">Pilihan jenis bukti disesuaikan secara otomatis berdasarkan IKU yang dipilih di atas.</small>
+            <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 2px;">Pilihan jenis bukti disesuaikan secara otomatis berdasarkan IKU yang dipilih di atas.</small>
             @error('id_bukti_iku')
                 <span class="form-error-custom">{{ $message }}</span>
             @enderror
@@ -62,7 +62,7 @@
             <label class="form-label-custom">Berkas Bukti Saat Ini</label>
             <div id="existing-files-container" style="display: flex; flex-direction: column; gap: 16px;">
                 @forelse($pengisian->files as $index => $file)
-                    <div class="existing-file-card" id="existing-file-{{ $file->id }}" style="background-color: rgba(30, 41, 59, 0.4); border: 1px solid #1e293b; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative;">
+                    <div class="existing-file-card" id="existing-file-{{ $file->id }}" style="background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <a href="{{ asset($file->file_bukti) }}" target="_blank" style="color: #10b981; text-decoration: underline; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; max-width: 80%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 <svg style="width: 14px; height: 14px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                 @empty
-                    <span style="color: #64748b; font-size: 0.85rem;">Tidak ada berkas bukti sebelumnya.</span>
+                    <span style="color: var(--text-muted); font-size: 0.85rem;">Tidak ada berkas bukti sebelumnya.</span>
                 @endforelse
             </div>
             <div id="deleted-files-inputs"></div>
@@ -93,7 +93,7 @@
         <div class="form-group-custom">
             <label class="form-label-custom">Unggah Berkas Bukti Baru (Opsional)</label>
             <div id="file-inputs-container" style="display: flex; flex-direction: column; gap: 16px;">
-                <div class="file-input-card" style="background-color: rgba(30, 41, 59, 0.25); border: 1px solid #1e293b; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative;">
+                <div class="file-input-card" style="background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span class="file-number-label" style="font-size: 0.8rem; font-weight: 700; color: #10b981;">Berkas Bukti Baru #1</span>
                     </div>
@@ -117,7 +117,7 @@
                 Tambah File Lainnya
             </button>
             
-            <small style="color: #64748b; font-size: 0.75rem; display: block; margin-top: 12px;">
+            <small style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 12px;">
                 Format berkas yang didukung: <strong>PDF, JPG, JPEG, PNG, ZIP, DOC, DOCX</strong>. Maksimal ukuran per file: <strong>10 MB</strong>.<br>
                 <span style="color: #fb7185; font-weight: 500;">Catatan: Berkas baru yang diunggah akan ditambahkan ke daftar bukti IKU Anda.</span>
             </small>
@@ -231,7 +231,7 @@
             const nextIdx = fileInputsContainer.querySelectorAll('.file-input-card').length + 1;
             const newCard = document.createElement('div');
             newCard.className = 'file-input-card';
-            newCard.style.cssText = 'background-color: rgba(30, 41, 59, 0.25); border: 1px solid #1e293b; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative; margin-top: 12px;';
+            newCard.style.cssText = 'background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative; margin-top: 12px;';
 
             newCard.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center;">

@@ -7,7 +7,7 @@
 @section('content')
 <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
     <!-- Filter Year & Add Button -->
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid #1e293b; padding-bottom: 16px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid var(--border); padding-bottom: 16px;">
         <form action="{{ route('adminprodi.penugasan.index') }}" method="GET" style="display: flex; align-items: flex-end; gap: 12px; flex: 1;">
             <div class="filter-item-custom" style="max-width: 200px;">
                 <label for="tahun" class="form-label-custom">Pilih Tahun Akademik</label>
@@ -44,14 +44,14 @@
                     <tr>
                         <td>{{ $penugasan->firstItem() + $index }}</td>
                         <td>
-                            <div style="font-weight: 600; color: #ffffff;">{{ $item->user->name }}</div>
-                            <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">Email: {{ $item->user->email }}</div>
+                            <div style="font-weight: 600; color: var(--text-primary);">{{ $item->user->name }}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Email: {{ $item->user->email }}</div>
                         </td>
                         <td>
                             <div style="font-weight: 600; color: #3b82f6; max-width: 350px;">{{ $item->iku->nama_iku }}</div>
-                            <div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
+                            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
                         </td>
-                        <td style="text-align: center; font-weight: 600; color: #cbd5e1;">{{ $item->tahun }}</td>
+                        <td style="text-align: center; font-weight: 600; color: var(--text-secondary);">{{ $item->tahun }}</td>
                         <td style="text-align: center;">
                             <div style="display: inline-flex; gap: 8px; justify-content: center; align-items: center;">
                                 <a href="{{ route('adminprodi.penugasan.edit', $item->id) }}" class="btn-action-edit" title="Edit">
@@ -73,7 +73,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" style="text-align: center; color: #64748b; padding: 40px;">
+                        <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 40px;">
                             Belum ada penugasan dosen untuk tahun akademik {{ $tahun }}.
                         </td>
                     </tr>

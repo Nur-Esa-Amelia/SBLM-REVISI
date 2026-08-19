@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Mail\EwsWarningMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class IkuPencapaian extends Model
 {
@@ -94,10 +97,34 @@ class IkuPencapaian extends Model
                 $status = 'Tidak Tercapai';
             }
 
+            $oldStatus = $pencapaian->status;
+
             $pencapaian->update([
                 'realisasi' => $realisasi,
                 'status' => $status
             ]);
+
+            // Deteksi transisi status dari non-warning (Tercapai, Baru, null) ke warning (Perlu Perhatian, Tidak Tercapai)
+            $isWarning = in_array($status, ['Perlu Perhatian', 'Tidak Tercapai']);
+            $wasWarning = in_array($oldStatus, ['Perlu Perhatian', 'Tidak Tercapai']);
+
+            if ($isWarning && !$wasWarning) {
+                // Ambil Kaprodi dan Admin Prodi terkait
+                $recipients = User::where('prodi_id', $pencapaian->id_prodi)
+                    ->whereIn('role', ['kaprodi', 'admin_prodi'])
+                    ->whereNotNull('email')
+                    ->pluck('email')
+                    ->toArray();
+
+                if (!empty($recipients)) {
+                    try {
+                        Mail::to($recipients)->send(new EwsWarningMail($pencapaian));
+                        Log::info("EWS warning email sent successfully to: " . implode(', ', $recipients) . " for IkuPencapaian ID: " . $pencapaian->id);
+                    } catch (\Exception $e) {
+                        Log::error("Failed to send EWS warning email: " . $e->getMessage() . " for IkuPencapaian ID: " . $pencapaian->id);
+                    }
+                }
+            }
         }
     }
 }
