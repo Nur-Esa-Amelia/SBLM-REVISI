@@ -18,7 +18,6 @@
             <input type="text" 
                    value="{{ $pencapaian->iku->nama_iku }}" 
                    class="form-input-custom" 
-                   style="background-color: rgba(30, 41, 59, 0.4); border-color: #1e293b; color: #94a3b8;" 
                    readonly>
         </div>
 

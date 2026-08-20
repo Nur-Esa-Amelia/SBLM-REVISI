@@ -85,15 +85,18 @@
                              @endif
                         </td>
                         <td style="color: var(--text-secondary); font-size: 0.8rem; max-width: 250px; white-space: normal; word-wrap: break-word;">
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
-                                @forelse($item->files as $file)
-                                    <div style="line-height: 1.4;">
-                                        {!! preg_replace('~(https?://[^\s<]+)~i', '<a href="$1" target="_blank" style="color: #10b981; text-decoration: underline; word-break: break-all;">$1</a>', e($file->keterangan ?? '-')) !!}
-                                    </div>
-                                @empty
-                                    <span style="color: #64748b;">-</span>
-                                @endforelse
-                            </div>
+                            @php
+                                $keteranganFiles = $item->files->pluck('keterangan')->filter()->unique()->values();
+                            @endphp
+                            @if($keteranganFiles->isNotEmpty())
+                                <div style="display: flex; flex-direction: column; gap: 6px; text-align: justify; line-height: 1.4;">
+                                    @foreach($keteranganFiles as $keterangan)
+                                        <div>{!! preg_replace('~(https?://[^\s<]+)~i', '<a href="$1" target="_blank" style="color: #10b981; text-decoration: underline; word-break: break-all;">$1</a>', e($keterangan)) !!}</div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <span style="color: var(--text-muted);">-</span>
+                            @endif
                         </td>
                         <td style="text-align: center; color: var(--text-secondary); font-size: 0.8rem;">
                             {{ $item->created_at->format('d M Y, H:i') }}
@@ -142,7 +145,7 @@
 
     <!-- Pagination -->
     <div>
-        {{ $riwayat->withQueryString()->links() }}
+        {{ $riwayat->withQueryString()->onEachSide(10)->links() }}
     </div>
 </div>
 @endsection

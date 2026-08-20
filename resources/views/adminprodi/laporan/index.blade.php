@@ -209,7 +209,7 @@
 
                             // Persentase pencapaian terhadap target nyata
                             if ($targetNyata > 0) {
-                                $persentase = round(($item->realisasi / $targetNyata) * 100);
+                                $persentase = min(round(($item->realisasi / $targetNyata) * 100), 100);
                             } else {
                                 $persentase = $item->realisasi > 0 ? 100 : 0;
                             }

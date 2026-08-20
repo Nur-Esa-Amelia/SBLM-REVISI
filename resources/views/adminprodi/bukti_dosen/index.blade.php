@@ -185,7 +185,7 @@
 
         @if($riwayat->hasPages())
             <div style="padding: 16px 20px; border-top: 1px solid var(--border); background-color: var(--bg-surface2);">
-                {{ $riwayat->appends(['status' => $status, 'tahun' => $tahun])->links() }}
+                {{ $riwayat->appends(['status' => $status, 'tahun' => $tahun])->onEachSide(10)->links() }}
             </div>
         @endif
     </div>

@@ -45,6 +45,54 @@ class IkuPencapaian extends Model
         return $this->belongsTo(User::class, 'id_user');
     }
 
+    public function targetNyata(?Pengaturan $settings = null): float
+    {
+        $settings ??= Pengaturan::where('id_prodi', $this->id_prodi)->first();
+        $target = (float) $this->target;
+
+        if ($this->satuan !== 'persen') {
+            return $target;
+        }
+
+        if (!in_array($this->objek, ['mahasiswa', 'dosen'], true)) {
+            return $target;
+        }
+
+        $jumlah = $this->objek === 'mahasiswa'
+            ? ($settings?->jml_mahasiswa ?? 0)
+            : ($settings?->jml_dosen ?? 0);
+
+        return ($target / 100) * $jumlah;
+    }
+
+    public function batasBerkas(?Pengaturan $settings = null): int
+    {
+        return max(0, (int) ceil($this->targetNyata($settings)));
+    }
+
+    public static function sisaBerkas($prodiId, $ikuId, $tahun): ?int
+    {
+        $pencapaian = self::where('id_prodi', $prodiId)
+            ->where('id_iku', $ikuId)
+            ->where('tahun', $tahun)
+            ->first();
+
+        if (!$pencapaian) {
+            return null;
+        }
+
+        $terpakai = FileIsiBukti::whereHas('pengisianBukti', function ($query) use ($ikuId, $tahun, $prodiId) {
+            $query->where('id_iku', $ikuId)
+                ->where('tahun', $tahun)
+                ->whereIn('status', ['pending', 'valid'])
+                ->whereHas('user', function ($userQuery) use ($prodiId) {
+                    $userQuery->where('prodi_id', $prodiId);
+                });
+        })->count();
+
+        return max(0, $pencapaian->batasBerkas() - $terpakai);
+    }
+
     /**
      * Hitung realisasi dan sinkronisasikan status berdasarkan bukti yang divalidasi P2MP.
      */
@@ -67,22 +115,11 @@ class IkuPencapaian extends Model
                     });
             })->count();
 
-            $targetVal = floatval($pencapaian->target); 
-            if ($pencapaian->satuan === 'persen') {
-                if ($pencapaian->objek === 'mahasiswa') {
-                    $target_nyata = ($targetVal / 100) * $jml_mahasiswa;
-                } elseif ($pencapaian->objek === 'dosen') {
-                    $target_nyata = ($targetVal / 100) * $jml_dosen;
-                } else {
-                    $target_nyata = $targetVal;
-                }
-            } else {
-                $target_nyata = $targetVal;
-            }
+            $target_nyata = $pencapaian->targetNyata($settings);
 
             // Tentukan status ketercapaian target
             if ($target_nyata > 0) {
-                $persentase = ($realisasi / $target_nyata) * 100;
+                $persentase = min(($realisasi / $target_nyata) * 100, 100);
             } else {
                 $persentase = $realisasi > 0 ? 100 : 0;
             }

@@ -251,7 +251,7 @@
 
         @if($riwayat->hasPages())
             <div style="padding: 16px 20px; border-top: 1px solid var(--border); background-color: rgba(15, 23, 42, 0.2);">
-                {{ $riwayat->appends(['prodi_id' => $prodiId, 'status' => $status, 'tahun' => $tahun])->links() }}
+                {{ $riwayat->appends(['prodi_id' => $prodiId, 'status' => $status, 'tahun' => $tahun])->onEachSide(10)->links() }}
             </div>
         @endif
     </div>

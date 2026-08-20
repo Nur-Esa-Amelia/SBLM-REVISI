@@ -122,7 +122,7 @@
 
         @if($prodis->hasPages())
             <div style="padding: 16px 20px; border-top: 1px solid #1e293b; background-color: rgba(15, 23, 42, 0.2);">
-                {{ $prodis->links() }}
+                {{ $prodis->onEachSide(10)->links() }}
             </div>
         @endif
     </div>

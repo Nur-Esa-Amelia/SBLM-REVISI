@@ -79,7 +79,7 @@ class DashboardController extends Controller
             }
 
             if ($targetNyata > 0) {
-                $persentase = ($item->realisasi / $targetNyata) * 100;
+                $persentase = min(($item->realisasi / $targetNyata) * 100, 100);
             } else {
                 $persentase = $item->realisasi > 0 ? 100 : 0;
             }

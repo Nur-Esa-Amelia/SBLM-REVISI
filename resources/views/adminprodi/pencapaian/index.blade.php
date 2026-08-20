@@ -112,7 +112,7 @@
 
     <!-- Pagination -->
     <div>
-        {{ $pencapaian->appends(['tahun' => $tahun])->links() }}
+        {{ $pencapaian->appends(['tahun' => $tahun])->onEachSide(10)->links() }}
     </div>
 </div>
 @endsection

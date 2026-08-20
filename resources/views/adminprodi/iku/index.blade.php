@@ -39,7 +39,7 @@
                         <td>
                             <span class="badge-custom badge-purple">{{ $item->kategori->nama_kategori }}</span>
                         </td>
-                        <td style="color: var(--text-secondary); font-size: 0.8rem; max-width: 320px; line-height: 1.4;">
+                        <td style="color: var(--text-secondary); font-size: 0.8rem; max-width: 320px; white-space: normal; overflow-wrap: anywhere; text-align: justify; vertical-align: top; line-height: 1.5;">
                             {{ $item->deskripsi ?? '-' }}
                         </td>
                         @if(auth()->user()->role === 'admin_p2mp')
@@ -76,7 +76,7 @@
 
     <!-- Pagination -->
     <div>
-        {{ $iku->links() }}
+        {{ $iku->onEachSide(10)->links() }}
     </div>
 </div>
 @endsection

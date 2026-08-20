@@ -683,6 +683,15 @@
             color: var(--text-faint);
         }
 
+        .form-input-custom[readonly],
+        .form-input-custom:disabled,
+        .form-select-custom:disabled {
+            background-color: var(--bg-surface2);
+            border-color: var(--input-border);
+            color: var(--text-primary);
+            opacity: 1;
+        }
+
         .form-select-custom {
             width: 100%;
             background-color: var(--input-bg);
@@ -694,6 +703,11 @@
             outline: none;
             transition: all 0.2s ease-in-out;
             cursor: pointer;
+        }
+
+        .form-select-custom option {
+            background-color: var(--input-bg);
+            color: var(--text-primary);
         }
 
         .form-select-custom:focus {
@@ -861,11 +875,14 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
             width: 100%;
             margin-top: 10px;
         }
 
         nav[role="navigation"] p {
+            margin: 0;
             font-size: 0.8rem;
             color: #64748b;
         }
@@ -873,7 +890,23 @@
         nav[role="navigation"] div:last-child {
             display: flex;
             align-items: center;
+            flex-wrap: nowrap;
             gap: 6px;
+            margin-left: auto;
+            overflow-x: auto;
+            max-width: 100%;
+            padding-bottom: 2px;
+        }
+
+        nav[role="navigation"] div:last-child > div > span {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        nav[role="navigation"] div:last-child > div > span > a,
+        nav[role="navigation"] div:last-child > div > span > span {
+            margin-left: 0 !important;
         }
 
         nav[role="navigation"] a.relative,
@@ -889,6 +922,7 @@
             font-weight: 600;
             border-radius: 6px;
             text-decoration: none;
+            flex: 0 0 auto;
             background-color: #1e293b;
             border: 1px solid #334155;
             color: #cbd5e1;
@@ -920,6 +954,22 @@
         nav[role="navigation"] svg {
             width: 14px;
             height: 14px;
+        }
+
+        @media (max-width: 640px) {
+            nav[role="navigation"] {
+                align-items: stretch;
+            }
+
+            nav[role="navigation"] p,
+            nav[role="navigation"] div:last-child {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            nav[role="navigation"] div:last-child {
+                justify-content: flex-start;
+            }
         }
     </style>
 

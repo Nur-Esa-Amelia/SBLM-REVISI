@@ -88,7 +88,7 @@ class DashboardController extends Controller
                 })->count();
 
                 // 4. Persentase per IKU = (realisasi / target_nyata) * 100
-                $persentase = $targetNyata > 0 ? ($realisasi / $targetNyata) * 100 : 0;
+                $persentase = $targetNyata > 0 ? min(($realisasi / $targetNyata) * 100, 100) : 0;
 
                 $totalPercentage += $persentase;
                 $countWithTarget++;
@@ -104,7 +104,7 @@ class DashboardController extends Controller
 
         // Kemajuan keseluruhan adalah rata-rata persentase IKU yang ditugaskan
         $achievementPercentage = $countWithTarget > 0 
-            ? round($totalPercentage / $countWithTarget) 
+            ? min(round($totalPercentage / $countWithTarget), 100)
             : 0;
 
         return view('dosen.dashboard', compact(

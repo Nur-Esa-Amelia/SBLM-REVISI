@@ -37,11 +37,11 @@
                         <td>{{ $bukti->firstItem() + $index }}</td>
                         <td style="font-weight: 600; color: var(--text-primary);">{{ $item->nama_bukti }}</td>
                         <td>
-                            <div style="font-weight: 600; color: #3b82f6; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            <div style="font-weight: 600; color: #3b82f6; max-width: 250px; white-space: normal; overflow-wrap: anywhere; line-height: 1.4;">
                                 {{ $item->iku->nama_iku }}
                             </div>
                         </td>
-                        <td style="color: var(--text-secondary); font-size: 0.8rem; max-width: 300px; line-height: 1.4;">
+                        <td style="color: var(--text-secondary); font-size: 0.8rem; max-width: 300px; white-space: normal; overflow-wrap: anywhere; text-align: justify; vertical-align: top; line-height: 1.5;">
                             {{ $item->deskripsi ?? '-' }}
                         </td>
                         @if(auth()->user()->role === 'admin_p2mp')
@@ -78,7 +78,7 @@
 
     <!-- Pagination -->
     <div>
-        {{ $bukti->links() }}
+        {{ $bukti->onEachSide(10)->links() }}
     </div>
 </div>
 @endsection

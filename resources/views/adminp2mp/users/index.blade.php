@@ -162,7 +162,7 @@
 
         @if($users->hasPages())
             <div style="padding: 16px 20px; border-top: 1px solid #1e293b; background-color: rgba(15, 23, 42, 0.2);">
-                {{ $users->links() }}
+                {{ $users->onEachSide(10)->links() }}
             </div>
         @endif
     </div>

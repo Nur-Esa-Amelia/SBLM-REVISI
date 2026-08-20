@@ -142,55 +142,46 @@
                                 @endphp
 
                                 @if($item->my_proofs->isNotEmpty())
-                                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                                        @foreach($item->my_proofs as $proof)
-                                            <div style="padding: 8px; background-color: var(--bg-surface); border: 1px solid var(--border); border-radius: 6px; display: flex; flex-direction: column; gap: 4px;">
-                                                <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-                                                    <span style="font-size: 0.75rem; font-weight: 600; color: #94a3b8;">{{ $proof->buktiIku->nama_bukti }}</span>
-                                                    
-                                                    @if($proof->status === 'valid')
-                                                        <span class="badge-custom badge-green" style="font-size: 0.6rem; padding: 1px 4px;">Valid</span>
-                                                    @elseif($proof->status === 'invalid')
-                                                        <span class="badge-custom badge-rose" style="font-size: 0.6rem; padding: 1px 4px;">Perlu Perbaikan</span>
-                                                    @else
-                                                        <span class="badge-custom badge-yellow" style="font-size: 0.6rem; padding: 1px 4px;">Awaiting</span>
+                                    @php
+                                        $totalFiles = $item->my_proofs->sum(fn ($proof) => $proof->files->count());
+                                    @endphp
+                                    <details style="padding: 8px; background-color: var(--bg-surface); border: 1px solid var(--border); border-radius: 6px;">
+                                        <summary style="font-size: 0.8rem; color: #38bdf8; cursor: pointer; user-select: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: underline; outline: none;">
+                                            <svg style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
+                                            </svg>
+                                            Detail Berkas ({{ $totalFiles }})
+                                        </summary>
+                                        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px; padding: 10px; background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 6px;">
+                                            @foreach($item->my_proofs as $proof)
+                                                <div style="display: flex; flex-direction: column; gap: 6px;">
+                                                    <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">
+                                                        Jenis Bukti: {{ $proof->buktiIku->nama_bukti }}
+                                                    </div>
+                                                    @foreach($proof->files as $file)
+                                                        <div style="display: flex; flex-direction: column; gap: 4px; border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 4px;">
+                                                            <a href="{{ asset($file->file_bukti) }}" target="_blank" style="color: #10b981; text-decoration: underline; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 4px; word-break: break-all; font-weight: 500;">
+                                                                <svg style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                                                </svg>
+                                                                {{ $file->nama_file }}
+                                                            </a>
+                                                            @if($file->keterangan)
+                                                                <div style="font-size: 0.68rem; color: var(--text-muted); padding-left: 16px; line-height: 1.4;">
+                                                                    <strong>Keterangan:</strong> {!! preg_replace('~(https?://[^\s<]+)~i', '<a href="$1" target="_blank" style="color: #3b82f6; text-decoration: underline; word-break: break-all;">$1</a>', e($file->keterangan)) !!}
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    @endforeach
+                                                    @if($proof->catatan_validator)
+                                                        <div style="font-size: 0.68rem; color: #fb7185; padding: 4px; background-color: rgba(244,63,94,0.04); border-radius: 4px; border: 1px solid rgba(244,63,94,0.08);">
+                                                            <strong>Catatan:</strong> {{ $proof->catatan_validator }}
+                                                        </div>
                                                     @endif
                                                 </div>
-
-                                                <!-- Lampiran Files -->
-                                                <details style="margin-top: 6px;">
-                                                    <summary style="font-size: 0.72rem; color: #38bdf8; cursor: pointer; user-select: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: underline; outline: none;">
-                                                        <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
-                                                        </svg>
-                                                        Lihat Lampiran ({{ $proof->files->count() }})
-                                                    </summary>
-                                                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px; padding: 10px; background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 6px;">
-                                                        @foreach($proof->files as $file)
-                                                            <div style="display: flex; flex-direction: column; gap: 4px; border-bottom: 1px solid rgba(30, 41, 59, 0.8); padding-bottom: 6px; margin-bottom: 4px;">
-                                                                <a href="{{ asset($file->file_bukti) }}" target="_blank" style="color: #10b981; text-decoration: underline; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 4px; word-break: break-all; font-weight: 500;">
-                                                                    <svg style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                                                                    </svg>
-                                                                    {{ $file->nama_file }}
-                                                                </a>
-                                                                @if($file->keterangan)
-                                                                    <div style="font-size: 0.68rem; color: #94a3b8; padding-left: 16px; line-height: 1.4;">
-                                                                        <strong>Keterangan:</strong> {!! preg_replace('~(https?://[^\s<]+)~i', '<a href="$1" target="_blank" style="color: #3b82f6; text-decoration: underline; word-break: break-all;">$1</a>', e($file->keterangan)) !!}
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                </details>
-
-                                                @if($proof->catatan_validator)
-                                                    <div style="font-size: 0.68rem; color: #fb7185; margin-top: 2px; padding: 4px; background-color: rgba(244,63,94,0.04); border-radius: 4px; border: 1px solid rgba(244,63,94,0.08);">
-                                                        <strong>Catatan:</strong> {{ $proof->catatan_validator }}
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        @endforeach
+                                            @endforeach
+                                        </div>
+                                    </details>
 
                                         @if($isAssigned)
                                             <a href="{{ route('dosen.pengisian.create', ['id_iku' => $item->id_iku]) }}" class="btn btn-primary" style="padding: 4px 8px; font-size: 0.7rem; border-radius: 6px; align-self: flex-start; justify-content: center; height: 26px;">

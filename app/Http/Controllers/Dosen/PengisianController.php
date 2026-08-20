@@ -9,6 +9,7 @@ use App\Models\PenugasanDosen;
 use App\Models\Pengaturan;
 use App\Models\PengisianBukti;
 use App\Models\FileIsiBukti;
+use App\Models\IkuPencapaian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -105,6 +106,13 @@ class PengisianController extends Controller
             return redirect()->back()->withErrors(['id_iku' => 'Anda tidak memiliki penugasan untuk mengisi indikator IKU ini pada tahun akademik ini.'])->withInput();
         }
 
+        $sisaBerkas = IkuPencapaian::sisaBerkas($prodiId, $request->id_iku, $tahunAktif);
+        if ($sisaBerkas !== null && count($request->file('files', [])) > $sisaBerkas) {
+            return redirect()->back()->withErrors(['files' => $sisaBerkas > 0
+                ? "Upload ditolak. Capaian IKU ini hanya masih dapat menerima {$sisaBerkas} berkas."
+                : 'Upload ditolak. Bukti untuk IKU ini sudah lengkap (capaian maksimal 100%).'])->withInput();
+        }
+
         $keterangans = $request->input('keterangan_files', []);
         $globalKeterangan = implode("; ", array_filter($keterangans));
 
@@ -145,7 +153,11 @@ class PengisianController extends Controller
             }
         }
 
-        return redirect()->route('dosen.pengisian.index')->with('success', 'Bukti IKU berhasil diunggah dan sedang menunggu validasi P2MP.');
+        $pesan = IkuPencapaian::sisaBerkas($prodiId, $request->id_iku, $tahunAktif) === 0
+            ? 'Bukti IKU berhasil diunggah. Bukti untuk IKU ini sudah lengkap (capaian maksimal 100%).'
+            : 'Bukti IKU berhasil diunggah dan sedang menunggu validasi P2MP.';
+
+        return redirect()->route('dosen.pengisian.index')->with('success', $pesan);
     }
 
     /**
@@ -212,6 +224,11 @@ class PengisianController extends Controller
 
         if (!$isAssigned) {
             return redirect()->back()->withErrors(['id_iku' => 'Anda tidak memiliki penugasan untuk mengisi indikator IKU ini pada tahun akademik ini.'])->withInput();
+        }
+
+        $sisaBerkas = IkuPencapaian::sisaBerkas($user->prodi_id, $request->id_iku, $pengisian->tahun);
+        if ($sisaBerkas !== null && count($request->file('files', [])) > $sisaBerkas) {
+            return redirect()->back()->withErrors(['files' => 'Jumlah berkas baru melebihi sisa batas capaian IKU.'])->withInput();
         }
 
         // 1. Perbarui deskripsi berkas yang sudah ada

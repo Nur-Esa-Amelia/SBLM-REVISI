@@ -8,6 +8,7 @@ use App\Models\RekomendasiAi;
 use App\Models\BuktiIku;
 use App\Models\PengisianBukti;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class RekomendasiAiController extends Controller
 {
@@ -23,14 +24,20 @@ class RekomendasiAiController extends Controller
             return collect();
         }
 
-        $apiKey = env('GEMINI_API_KEY');
+        $apiKey = config('services.gemini.key');
+        $model = config('services.gemini.model', 'gemini-2.5-flash');
 
         foreach ($warnings as $item) {
             $rekomendasi = RekomendasiAi::where('id_iku_pencapaian', $item->id)->first();
             if ($rekomendasi) {
                 // Jika data IKU pencapaian diubah/diupdate setelah rekomendasi di-generate,
                 // hapus rekomendasi lama agar di-generate ulang dengan data terbaru.
-                if ($item->updated_at && $rekomendasi->created_at && $item->updated_at->gt($rekomendasi->created_at)) {
+                $isFailedRecommendation = str_contains($rekomendasi->rekomendasi, 'sementara tidak dapat dibuat')
+                    || str_contains($rekomendasi->rekomendasi, 'RESOURCE_EXHAUSTED')
+                    || str_contains($rekomendasi->rekomendasi, 'Gagal menghubungi server Gemini API:');
+
+                if (($item->updated_at && $rekomendasi->created_at && $item->updated_at->gt($rekomendasi->created_at))
+                    || $isFailedRecommendation) {
                     $rekomendasi->delete();
                 } else {
                     continue;
@@ -144,7 +151,7 @@ class RekomendasiAiController extends Controller
             if ($apiKey) {
                 try {
                     $response = Http::timeout(30)->post(
-                        'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=' . $apiKey,
+                        'https://generativelanguage.googleapis.com/v1beta/models/' . $model . ':generateContent?key=' . $apiKey,
                         [
                             'contents' => [
                                 [
@@ -162,14 +169,21 @@ class RekomendasiAiController extends Controller
                         $result = $response->json();
                         $aiText = $result['candidates'][0]['content']['parts'][0]['text'] ?? 'Gagal memproses rekomendasi AI.';
                         $recommendationText = $headerText . $aiText;
+                    } elseif ($response->status() === 429) {
+                        $recommendationText = 'Rekomendasi AI sementara tidak tersedia karena kuota layanan Gemini telah tercapai. Silakan coba lagi setelah kuota API tersedia kembali.';
                     } else {
-                        $recommendationText = 'Gagal menghubungi server Gemini API: ' . $response->body();
+                        Log::error('Gemini API request failed.', [
+                            'status' => $response->status(),
+                            'body' => $response->body(),
+                            'model' => $model,
+                        ]);
+                        $recommendationText = 'Rekomendasi AI sementara tidak dapat dibuat. Silakan coba lagi nanti.';
                     }
                 } catch (\Exception $e) {
-                    $recommendationText = 'Terjadi kesalahan saat memproses rekomendasi AI: ' . $e->getMessage();
+                    $recommendationText = 'Rekomendasi AI sementara tidak dapat dibuat karena layanan sedang tidak tersedia. Silakan coba lagi nanti.';
                 }
             } else {
-                $recommendationText = 'API Key Gemini (GEMINI_API_KEY) belum dikonfigurasi di file .env.';
+                $recommendationText = 'Rekomendasi AI belum tersedia karena API Key Gemini belum dikonfigurasi.';
             }
 
             RekomendasiAi::create([

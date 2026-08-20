@@ -50,11 +50,11 @@
                 </div>
                 <div class="time-text" style="flex: 1;">
                     <span class="time-label">Rata-Rata Capaian Tugas Anda</span>
-                    <span class="time-value" style="color: #ffffff; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                    <span class="time-value" style="color: var(--text-primary); display: flex; align-items: center; justify-content: space-between; gap: 8px;">
                         <span>{{ $achievementPercentage }}%</span>
                     </span>
                     <!-- Progress Bar -->
-                    <div style="width: 100%; height: 4px; background-color: #1e293b; border-radius: 9999px; margin-top: 6px; overflow: hidden;">
+                    <div style="width: 100%; height: 4px; background-color: var(--bg-surface3); border-radius: 9999px; margin-top: 6px; overflow: hidden;">
                         <div style="width: {{ min(100, $achievementPercentage) }}%; height: 100%; background-color: #10b981; border-radius: 9999px;"></div>
                     </div>
                 </div>

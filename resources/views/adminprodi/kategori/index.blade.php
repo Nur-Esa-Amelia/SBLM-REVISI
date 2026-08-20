@@ -35,7 +35,7 @@
                     <tr>
                         <td>{{ $kategori->firstItem() + $index }}</td>
                         <td style="font-weight: 600; color: var(--text-primary);">{{ $item->nama_kategori }}</td>
-                        <td style="color: var(--text-secondary); max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        <td style="color: var(--text-secondary); max-width: 400px; white-space: normal; overflow-wrap: anywhere; text-align: justify; vertical-align: top; line-height: 1.5;">
                             {{ $item->deskripsi ?? '-' }}
                         </td>
                         @if(auth()->user()->role === 'admin_p2mp')
@@ -72,7 +72,7 @@
 
     <!-- Pagination -->
     <div>
-        {{ $kategori->links() }}
+        {{ $kategori->onEachSide(10)->links() }}
     </div>
 </div>
 @endsection
