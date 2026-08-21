@@ -1,6 +1,6 @@
 @extends('dosen.layouts.app')
 
-@section('title', 'Dashboard Dosen - Sistem Early Warning IKU')
+@section('title', 'Dashboard Dosen - Sistem Early Warning IKU/IKT')
 @section('page_title', 'Selamat Datang di Sistem Monitoring Pencapaian Indikator Kinerja Politeknik Sukabumi')
 @section('page_subtitle', '')
 
@@ -12,7 +12,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
     </svg>
     <div>
-        <strong>Perhatian!</strong> Admin Program Studi Anda belum mengatur konfigurasi system tahun akademik. Harap hubungi Admin Prodi Anda untuk mengatur parameter profil IKU program studi.
+        <strong>Perhatian!</strong> Admin Program Studi Anda belum mengatur konfigurasi system tahun akademik. Harap hubungi Admin Prodi Anda untuk mengatur parameter profil IKU/IKT program studi.
     </div>
 </div>
 @endif
@@ -23,7 +23,7 @@
         <span class="welcome-badge">Dosen {{ $prodiName }}</span>
         <h3 class="welcome-title">Halo, {{ auth()->user()->name }}!</h3>
         <p class="welcome-desc">
-            Selamat datang di panel pengisian bukti kinerja. Di sini Anda dapat memantau indikator kinerja utama (IKU) yang telah ditugaskan oleh program studi Anda, mengunggah berkas-berkas bukti penunjang, serta memantau status validasi berkas oleh P2MP.
+            Selamat datang di panel pengisian bukti kinerja. Di sini Anda dapat memantau indikator kinerja utama (IKU/IKT) yang telah ditugaskan oleh program studi Anda, mengunggah berkas-berkas bukti penunjang, serta memantau status validasi berkas oleh P2MP.
         </p>
     </div>
     <div style="display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; min-width: 220px;">
@@ -77,12 +77,12 @@
 
 <!-- Metrics Cards Section -->
 <div class="dashboard-grid">
-    <!-- Total Penugasan IKU -->
+    <!-- Total Penugasan IKU/IKT -->
     <div class="stat-card">
         <div>
             <div class="stat-header">
                 <div class="stat-info">
-                    <span class="stat-label">IKU Ditugaskan</span>
+                    <span class="stat-label">IKU/IKT Ditugaskan</span>
                     <h4 class="stat-value">{{ $totalAssignments }}</h4>
                 </div>
                 <div class="stat-icon assign">
@@ -166,14 +166,14 @@
 
 <!-- Assigned IKUs Table list -->
 <div class="card" style="display: flex; flex-direction: column; gap: 18px;">
-    <h3 style="font-size: 1.1rem; font-weight: 700;">Daftar Tugas Pengisian IKU Anda (Tahun {{ $tahunAktif }})</h3>
+    <h3 style="font-size: 1.1rem; font-weight: 700;">Daftar Tugas Pengisian IKU/IKT Anda (Tahun {{ $tahunAktif }})</h3>
 
     <div class="table-responsive">
         <table class="table-custom">
             <thead>
                 <tr>
                     <th style="width: 60px;">No</th>
-                    <th>Nama Indikator IKU</th>
+                    <th>Nama Indikator IKU/IKT</th>
                     <th>Kategori</th>
                     <th style="text-align: center;">Target Nyata</th>
                     <th style="text-align: center;">Realisasi (Valid)</th>
@@ -199,18 +199,22 @@
                             {{ round($item->persentase) }}%
                         </td>
                         <td style="text-align: center;">
-                            <a href="{{ route('dosen.pengisian.create', ['id_iku' => $item->id_iku]) }}" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.75rem; border-radius: 6px;">
-                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-                                </svg>
-                                Unggah Bukti
-                            </a>
+                            @if(!empty($item->target_tercapai) && $item->target_tercapai)
+                                <span class="badge-custom badge-green" style="font-size: 0.7rem; padding: 6px 10px;">Tercapai</span>
+                            @else
+                                <a href="{{ route('dosen.pengisian.create', ['id_iku' => $item->id_iku]) }}" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.75rem; border-radius: 6px;">
+                                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                    </svg>
+                                    Unggah Bukti
+                                </a>
+                            @endif
                         </td>
                     </tr>
                 @empty
                     <tr>
                         <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">
-                            Anda tidak memiliki penugasan pengisian IKU untuk tahun akademik aktif ({{ $tahunAktif }}). Silakan hubungi Admin Prodi Anda jika ini adalah kesalahan.
+                            Anda tidak memiliki penugasan pengisian IKU/IKT untuk tahun akademik aktif ({{ $tahunAktif }}). Silakan hubungi Admin Prodi Anda jika ini adalah kesalahan.
                         </td>
                     </tr>
                 @endforelse

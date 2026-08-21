@@ -30,11 +30,11 @@
             @enderror
         </div>
 
-        <!-- IKU Select -->
+        <!-- IKU/IKT Select -->
         <div class="form-group-custom">
-            <label for="id_iku" class="form-label-custom">Pilih Indikator IKU</label>
+            <label for="id_iku" class="form-label-custom">Pilih Indikator IKU/IKT</label>
             <select id="id_iku" name="id_iku" class="form-select-custom @error('id_iku') is-invalid @enderror" required>
-                <option value="">-- Pilih Indikator IKU --</option>
+                <option value="">-- Pilih Indikator IKU/IKT --</option>
                 @foreach($iku as $item)
                     <option value="{{ $item->id }}" {{ old('id_iku', $penugasan->id_iku) == $item->id ? 'selected' : '' }}>
                         {{ $item->nama_iku }} (Kategori: {{ $item->kategori->nama_kategori }})

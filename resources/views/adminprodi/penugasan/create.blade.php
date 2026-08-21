@@ -2,7 +2,7 @@
 
 @section('title', 'Tugaskan Dosen - Admin Prodi')
 @section('page_title', 'Tugaskan Dosen')
-@section('page_subtitle', 'Pilih dosen dan IKU terkait untuk membuat penugasan pengisian baru')
+@section('page_subtitle', 'Pilih dosen dan IKU/IKT terkait untuk membuat penugasan pengisian baru')
 
 @section('content')
 <div class="card" style="max-width: 600px; margin: 0 auto;">
@@ -29,11 +29,11 @@
             @enderror
         </div>
 
-        <!-- IKU Select -->
+        <!-- IKU/IKT Select -->
         <div class="form-group-custom">
-            <label for="id_iku" class="form-label-custom">Pilih Indikator IKU</label>
+            <label for="id_iku" class="form-label-custom">Pilih Indikator IKU/IKT</label>
             <select id="id_iku" name="id_iku" class="form-select-custom @error('id_iku') is-invalid @enderror" required>
-                <option value="">-- Pilih Indikator IKU --</option>
+                <option value="">-- Pilih Indikator IKU/IKT --</option>
                 @foreach($iku as $item)
                     <option value="{{ $item->id }}" {{ old('id_iku') == $item->id ? 'selected' : '' }}>
                         {{ $item->nama_iku }} (Kategori: {{ $item->kategori->nama_kategori }})

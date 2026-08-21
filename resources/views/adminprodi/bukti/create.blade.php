@@ -2,20 +2,20 @@
 
 @section('title', 'Tambah Jenis Bukti - Admin Prodi')
 @section('page_title', 'Tambah Jenis Bukti')
-@section('page_subtitle', 'Tambahkan klasifikasi dokumen bukti pengisian IKU')
+@section('page_subtitle', 'Tambahkan klasifikasi dokumen bukti pengisian IKU/IKT')
 
 @section('content')
 <div class="card" style="max-width: 600px; margin: 0 auto;">
-    <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 12px;">Form Tambah Jenis Bukti IKU</h3>
+    <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 12px;">Form Tambah Jenis Bukti IKU/IKT</h3>
 
     <form action="{{ route('adminprodi.bukti.store') }}" method="POST" class="form-layout-container">
         @csrf
 
-        <!-- IKU Select -->
+        <!-- IKU/IKT Select -->
         <div class="form-group-custom">
-            <label for="id_iku" class="form-label-custom">Pilih IKU Terkait</label>
+            <label for="id_iku" class="form-label-custom">Pilih IKU/IKT Terkait</label>
             <select id="id_iku" name="id_iku" class="form-select-custom @error('id_iku') is-invalid @enderror" required>
-                <option value="">-- Pilih Indikator IKU --</option>
+                <option value="">-- Pilih Indikator IKU/IKT --</option>
                 @foreach($iku as $item)
                     <option value="{{ $item->id }}" {{ old('id_iku') == $item->id ? 'selected' : '' }}>
                         {{ $item->nama_iku }} (Kategori: {{ $item->kategori->nama_kategori }})

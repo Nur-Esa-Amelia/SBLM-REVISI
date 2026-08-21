@@ -1,20 +1,12 @@
 @extends('adminp2mp.layouts.app')
 
-@section('title', 'Tambah Prodi Baru - Sistem Early Warning IKU')
+@section('title', 'Tambah Prodi Baru - Sistem Early Warning IKU/IKT')
 @section('page_title', 'Tambah Program Studi Baru')
 @section('page_subtitle', 'Tambahkan entitas program studi baru ke sistem')
 
 @section('content')
 <div class="form-layout-container">
     <!-- Back Link -->
-    <div>
-        <a href="{{ route('adminp2mp.prodi.index') }}" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: all 0.2s ease;">
-            <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
-            Kembali ke Daftar Prodi
-        </a>
-    </div>
 
     <!-- Form Card -->
     <div class="card">

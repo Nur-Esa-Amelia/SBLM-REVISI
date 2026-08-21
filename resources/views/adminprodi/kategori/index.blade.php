@@ -1,21 +1,37 @@
 @extends('adminprodi.layouts.app')
 
-@section('title', 'Kategori IKU - Admin Prodi')
-@section('page_title', 'Kelola Kategori IKU')
+@section('title', 'Kategori IKU/IKT - Admin Prodi')
+@section('page_title', 'Kelola Kategori IKU/IKT')
 @section('page_subtitle', 'Master data kategori indikator kinerja utama sistem')
 
 @section('content')
 <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-        <h3 style="font-size: 1.1rem; font-weight: 700;">Daftar Kategori IKU</h3>
-        @if(auth()->user()->role === 'admin_p2mp')
-            <a href="{{ route('adminprodi.kategori.create') }}" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.8rem;">
-                <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-                </svg>
-                Tambah Kategori
-            </a>
-        @endif
+        <h3 style="font-size: 1.1rem; font-weight: 700;">Daftar Kategori IKU/IKT</h3>
+        <div style="display: flex; align-items: center; gap: 12px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end;">
+            <form method="GET" action="{{ route('adminprodi.kategori.index') }}" style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                <div class="search-wrapper">
+                    <svg class="search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" name="search" class="form-input-custom" placeholder="Cari Kategori..." value="{{ request('search') }}">
+                    <button type="submit" class="btn-search">Cari</button>
+                </div>
+                @if(request('search'))
+                    <a href="{{ route('adminprodi.kategori.index') }}" class="btn-reset" title="Reset Pencarian">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </a>
+                @endif
+            </form>
+            @if(auth()->user()->role === 'admin_p2mp')
+                <a href="{{ route('adminprodi.kategori.create') }}" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.8rem;">
+                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                    </svg>
+                    Tambah Kategori
+                </a>
+            @endif
+        </div>
     </div>
 
     <div class="table-responsive">
@@ -46,7 +62,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                         </svg>
                                     </a>
-                                    <form action="{{ route('adminprodi.kategori.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini? Semua IKU di bawah kategori ini juga akan ikut terhapus.');" style="display: inline-flex;">
+                                    <form action="{{ route('adminprodi.kategori.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini? Semua IKU/IKT di bawah kategori ini juga akan ikut terhapus.');" style="display: inline-flex;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn-action-delete" title="Hapus">
@@ -62,7 +78,7 @@
                 @empty
                     <tr>
                         <td colspan="{{ auth()->user()->role === 'admin_p2mp' ? 4 : 3 }}" style="text-align: center; color: var(--text-muted); padding: 30px;">
-                            Belum ada data kategori IKU.
+                            Belum ada data kategori IKU/IKT.
                         </td>
                     </tr>
                 @endforelse

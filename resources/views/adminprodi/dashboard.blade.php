@@ -1,6 +1,6 @@
 @extends('adminprodi.layouts.app')
 
-@section('title', 'Dashboard Admin Prodi - Sistem Early Warning IKU')
+@section('title', 'Dashboard Admin Prodi - Sistem Early Warning IKU/IKT')
 @section('page_title', 'Selamat Datang di Sistem Monitoring Pencapaian Indikator Kinerja Politeknik Sukabumi')
 @section('page_subtitle', '')
 
@@ -104,12 +104,12 @@
 
 <!-- Metrics Cards Section -->
 <div class="dashboard-grid">
-    <!-- Total Target IKU -->
+    <!-- Total Target IKU/IKT -->
     <div class="stat-card">
         <div>
             <div class="stat-header">
                 <div class="stat-info">
-                    <span class="stat-label">Total Target IKU</span>
+                    <span class="stat-label">Total Target IKU/IKT</span>
                     <h4 class="stat-value">{{ $totalTargets }}</h4>
                 </div>
                 <div class="stat-icon target">
@@ -151,12 +151,12 @@
         </div>
     </div>
 
-    <!-- IKU Tercapai -->
+    <!-- IKU/IKT Tercapai -->
     <div class="stat-card">
         <div>
             <div class="stat-header">
                 <div class="stat-info">
-                    <span class="stat-label">IKU Tercapai</span>
+                    <span class="stat-label">IKU/IKT Tercapai</span>
                     <h4 class="stat-value" style="color: #10b981;">{{ $achievedCount }}</h4>
                 </div>
                 <div class="stat-icon tercapai">
@@ -174,7 +174,7 @@
         </div>
     </div>
 
-    <!-- IKU Belum Tercapai -->
+    <!-- IKU/IKT Belum Tercapai -->
     <div class="stat-card">
         <div>
             <div class="stat-header">
@@ -250,10 +250,10 @@
     @endif
 
 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
-    <!-- IKU Capaian Table -->
+    <!-- IKU/IKT Capaian Table -->
     <div class="card" style="display: flex; flex-direction: column; gap: 18px;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h3 style="font-size: 1.1rem; font-weight: 700;">Monitoring Capaian IKU ({{ $tahunAktif }})</h3>
+            <h3 style="font-size: 1.1rem; font-weight: 700;">Monitoring Capaian IKU/IKT ({{ $tahunAktif }})</h3>
             <a href="{{ route('adminprodi.laporan.index') }}" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem; border-radius: 8px;">Lihat Laporan Lengkap</a>
         </div>
 
@@ -306,7 +306,7 @@
                     @empty
                         <tr>
                             <td colspan="4" style="text-align: center; color: #64748b; padding: 30px;">
-                                Belum ada target IKU yang diatur untuk tahun akademik aktif ({{ $tahunAktif }}). Silakan tambahkan target di menu Target IKU Tahunan.
+                                Belum ada target IKU/IKT yang diatur untuk tahun akademik aktif ({{ $tahunAktif }}). Silakan tambahkan target di menu Target IKU/IKT Tahunan.
                             </td>
                         </tr>
                     @endforelse
@@ -326,7 +326,7 @@
             @forelse($recentAssignments as $assign)
                 <div style="padding: 12px; background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 8px; display: flex; flex-direction: column; gap: 4px;">
                     <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary);">{{ $assign->user->name }}</div>
-                    <div style="font-size: 0.75rem; color: var(--text-secondary);">IKU: {{ $assign->iku->nama_iku }}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">IKU/IKT: {{ $assign->iku->nama_iku }}</div>
                     <div style="font-size: 0.7rem; color: var(--text-muted); align-self: flex-end; margin-top: 4px;">Tahun: {{ $assign->tahun }}</div>
                 </div>
             @empty
@@ -396,7 +396,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const pencapaianId = btn.getAttribute('data-pencapaian-id');
             const data = recommendationsData[pencapaianId];
             if (data) {
-                modalTitle.textContent = 'Rekomendasi Analisis AI: ' + (data.iku_pencapaian.iku ? data.iku_pencapaian.iku.nama_iku : 'IKU');
+                modalTitle.textContent = 'Rekomendasi Analisis AI: ' + (data.iku_pencapaian.iku ? data.iku_pencapaian.iku.nama_iku : 'IKU/IKT');
                 modalSubtitle.innerHTML = 'Status: <span style="font-weight: 600; color: ' + 
                     (data.iku_pencapaian.status === 'Perlu Perhatian' ? '#fbbf24' : '#ef4444') + ';">' + 
                     data.iku_pencapaian.status + '</span> (Realisasi: ' + Math.round(data.iku_pencapaian.realisasi) + ' dari Target: ' + data.iku_pencapaian.target + ')';

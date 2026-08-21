@@ -1,8 +1,8 @@
 @extends('dosen.layouts.app')
 
-@section('title', 'Target & Capaian IKU - Dosen')
-@section('page_title', 'Target & Capaian IKU')
-@section('page_subtitle', 'Target pemenuhan IKU program studi ' . $prodiName . ' dan status bukti yang Anda unggah')
+@section('title', 'Target & Capaian IKU/IKT - Dosen')
+@section('page_title', 'Target & Capaian IKU/IKT')
+@section('page_subtitle', 'Target pemenuhan IKU/IKT program studi ' . $prodiName . ' dan status bukti yang Anda unggah')
 
 @section('content')
 <style>
@@ -41,7 +41,7 @@
         <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
             <div>
                 <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Pilih Tahun Akademik</h3>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Tampilkan target IKU prodi dan bukti capaian Anda pada tahun akademik terpilih.</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Tampilkan target IKU/IKT prodi dan bukti capaian Anda pada tahun akademik terpilih.</p>
             </div>
             
             <form action="{{ route('dosen.pencapaian.index') }}" method="GET" style="display: flex; align-items: flex-end; gap: 12px; width: 220px;">
@@ -95,7 +95,7 @@
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             
-                            <!-- Indikator IKU -->
+                            <!-- Indikator IKU/IKT -->
                             <td>
                                 <div style="font-weight: 600; color: var(--text-primary); line-height: 1.4;">{{ $item->iku->nama_iku }}</div>
                                 <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
@@ -214,7 +214,7 @@
                                 <svg style="width: 32px; height: 32px; margin: 0 auto 12px; color: #334155; display: block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                Belum ada data target IKU prodi untuk tahun akademik {{ $tahun }}.
+                                Belum ada data target IKU/IKT prodi untuk tahun akademik {{ $tahun }}.
                             </td>
                         </tr>
                     @endforelse
@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const pencapaianId = btn.getAttribute('data-pencapaian-id');
             const data = recommendationsData[pencapaianId];
             if (data) {
-                modalTitle.textContent = 'Rekomendasi Analisis AI: ' + (data.iku_pencapaian.iku ? data.iku_pencapaian.iku.nama_iku : 'IKU');
+                modalTitle.textContent = 'Rekomendasi Analisis AI: ' + (data.iku_pencapaian.iku ? data.iku_pencapaian.iku.nama_iku : 'IKU/IKT');
                 modalSubtitle.innerHTML = 'Status: <span style="font-weight: 600; color: ' + 
                     (data.iku_pencapaian.status === 'Perlu Perhatian' ? '#fbbf24' : '#ef4444') + ';">' + 
                     data.iku_pencapaian.status + '</span> (Realisasi: ' + Math.round(data.iku_pencapaian.realisasi) + ' dari Target: ' + data.iku_pencapaian.target + ')';

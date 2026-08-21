@@ -1,6 +1,6 @@
 @extends($layout)
 
-@section('title', 'Profil Saya - Sistem Early Warning IKU')
+@section('title', 'Profil Saya - Sistem Early Warning IKU/IKT')
 
 @section('content')
 <div style="display: flex; justify-content: center; align-items: flex-start; padding-top: 10px;">

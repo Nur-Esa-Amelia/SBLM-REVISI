@@ -24,7 +24,7 @@ class DashboardController extends Controller
         $settings = Pengaturan::where('id_prodi', $prodiId)->first();
         $tahunAktif = $settings?->tahun_aktif ?? date('Y');
 
-        // Ambil IKU yang ditugaskan untuk tahun ini
+        // Ambil IKU/IKT yang ditugaskan untuk tahun ini
         $assignments = PenugasanDosen::with(['iku.kategori'])
             ->where('id_user', $user->id)
             ->where('tahun', $tahunAktif)
@@ -79,7 +79,7 @@ class DashboardController extends Controller
                     $targetNyata = $targetVal;
                 }
 
-                // 3. Realisasi per IKU = HITUNG berkas bukti yang valid untuk user ini
+                // 3. Realisasi per IKU/IKT = HITUNG berkas bukti yang valid untuk user ini
                 $realisasi = FileIsiBukti::whereHas('pengisianBukti', function ($query) use ($assignment, $user, $tahunAktif) {
                     $query->where('id_iku', $assignment->id_iku)
                         ->where('id_user', $user->id)
@@ -87,7 +87,7 @@ class DashboardController extends Controller
                         ->where('status', 'valid');
                 })->count();
 
-                // 4. Persentase per IKU = (realisasi / target_nyata) * 100
+                // 4. Persentase per IKU/IKT = (realisasi / target_nyata) * 100
                 $persentase = $targetNyata > 0 ? min(($realisasi / $targetNyata) * 100, 100) : 0;
 
                 $totalPercentage += $persentase;
@@ -100,9 +100,10 @@ class DashboardController extends Controller
             $assignment->persentase = $persentase;
             $assignment->satuan = $pencapaian ? $pencapaian->satuan : '';
             $assignment->objek = $pencapaian ? $pencapaian->objek : '';
+            $assignment->target_tercapai = $targetNyata > 0 ? $realisasi >= $targetNyata : false;
         }
 
-        // Kemajuan keseluruhan adalah rata-rata persentase IKU yang ditugaskan
+        // Kemajuan keseluruhan adalah rata-rata persentase IKU/IKT yang ditugaskan
         $achievementPercentage = $countWithTarget > 0 
             ? min(round($totalPercentage / $countWithTarget), 100)
             : 0;
@@ -122,7 +123,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Tampilkan target IKU prodi, status pencapaian, dan berkas bukti yang diunggah oleh dosen itu sendiri.
+     * Tampilkan target IKU/IKT prodi, status pencapaian, dan berkas bukti yang diunggah oleh dosen itu sendiri.
      */
     public function pencapaian(Request $request)
     {
@@ -151,7 +152,7 @@ class DashboardController extends Controller
             ->orderBy('id', 'asc')
             ->get();
 
-        // Lampirkan bukti unggahan milik dosen itu sendiri untuk masing-masing IKU
+        // Lampirkan bukti unggahan milik dosen itu sendiri untuk masing-masing IKU/IKT
         foreach ($pencapaianList as $item) {
             $item->my_proofs = PengisianBukti::with(['buktiIku', 'files'])
                 ->where('id_user', $user->id)
@@ -160,7 +161,7 @@ class DashboardController extends Controller
                 ->get();
         }
 
-        // Dapatkan daftar ID IKU yang ditugaskan ke dosen ini untuk tahun akademik berjalan
+        // Dapatkan daftar ID IKU/IKT yang ditugaskan ke dosen ini untuk tahun akademik berjalan
         $assignedIkuIds = PenugasanDosen::where('id_user', $user->id)
             ->where('tahun', $tahun)
             ->pluck('id_iku')

@@ -1,7 +1,7 @@
 @extends('adminprodi.layouts.app')
 
-@section('title', 'Perbaiki Bukti IKU - Kaprodi')
-@section('page_title', 'Perbaiki Bukti IKU')
+@section('title', 'Perbaiki Bukti IKU/IKT - Kaprodi')
+@section('page_title', 'Perbaiki Bukti IKU/IKT')
 @section('page_subtitle', 'Perbarui berkas bukti pemenuhan Indikator Kinerja Utama Program Studi Anda berdasarkan catatan validator')
 
 @section('content')
@@ -24,9 +24,9 @@
         @csrf
         @method('PUT')
 
-        <!-- IKU Select -->
+        <!-- IKU/IKT Select -->
         <div class="form-group-custom">
-            <label for="id_iku" class="form-label-custom">Pilih Indikator IKU Program Studi</label>
+            <label for="id_iku" class="form-label-custom">Pilih Indikator IKU/IKT Program Studi</label>
             <select id="id_iku" name="id_iku" class="form-select-custom @error('id_iku') is-invalid @enderror" required>
                 <option value="">-- Pilih Indikator --</option>
                 @foreach($ikus as $item)
@@ -51,7 +51,7 @@
                     </option>
                 @endforeach
             </select>
-            <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 2px;">Pilihan jenis bukti disesuaikan secara otomatis berdasarkan IKU yang dipilih di atas.</small>
+            <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 2px;">Pilihan jenis bukti disesuaikan secara otomatis berdasarkan IKU/IKT yang dipilih di atas.</small>
             @error('id_bukti_iku')
                 <span class="form-error-custom">{{ $message }}</span>
             @enderror
@@ -119,7 +119,7 @@
             
             <small style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 12px;">
                 Format berkas yang didukung: <strong>PDF, JPG, JPEG, PNG, ZIP, DOC, DOCX</strong>. Maksimal ukuran per file: <strong>10 MB</strong>.<br>
-                <span style="color: #fb7185; font-weight: 500;">Catatan: Berkas baru yang diunggah akan ditambahkan ke daftar bukti IKU Anda.</span>
+                <span style="color: #fb7185; font-weight: 500;">Catatan: Berkas baru yang diunggah akan ditambahkan ke daftar bukti IKU/IKT Anda.</span>
             </small>
             @error('files')
                 <span class="form-error-custom">{{ $message }}</span>
@@ -159,7 +159,7 @@
                     const noOpt = document.createElement('option');
                     noOpt.value = "";
                     noOpt.disabled = true;
-                    noOpt.textContent = "Belum ada jenis bukti yang dikonfigurasi untuk IKU ini";
+                    noOpt.textContent = "Belum ada jenis bukti yang dikonfigurasi untuk IKU/IKT ini";
                     buktiSelect.appendChild(noOpt);
                 }
             }

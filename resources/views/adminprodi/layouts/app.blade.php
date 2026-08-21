@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Admin Prodi - Sistem Early Warning IKU')</title>
+    <title>@yield('title', 'Admin Prodi - Sistem Early Warning IKU/IKT')</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,6 +50,10 @@
             --pagination-bg:  #1e293b;
             --pagination-border:#334155;
             --pagination-dis: #0f172a;
+            --nav-active-bg:  #2563eb;
+            --nav-active-text:#ffffff;
+            --link-accent:    #10b981;
+            --link-hover:     #ffffff;
         }
 
         html[data-theme="light"] {
@@ -77,6 +81,10 @@
             --pagination-bg:  #f1f5f9;
             --pagination-border:#e2e8f0;
             --pagination-dis: #ffffff;
+            --nav-active-bg:  #dbeafe;
+            --nav-active-text:#0f172a;
+            --link-accent:    #047857;
+            --link-hover:     #064e3b;
         }
 
         /* ==================== THEME TOGGLE BUTTON ==================== */
@@ -207,9 +215,9 @@
         }
 
         .nav-link.active {
-            color: var(--text-primary) !important;
-            background-color: #2563eb !important;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            color: var(--nav-active-text) !important;
+            background-color: var(--nav-active-bg) !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.18);
         }
 
         .nav-link svg {
@@ -870,6 +878,85 @@
             margin-top: 8px;
         }
 
+        /* Search Wrapper */
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: stretch;
+            width: 100%;
+            min-width: 250px;
+        }
+        
+        .search-wrapper .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-faint);
+            width: 18px;
+            height: 18px;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .search-wrapper .form-input-custom {
+            padding-left: 42px;
+            padding-right: 16px;
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+            height: 42px;
+            z-index: 1;
+        }
+        
+        .search-wrapper .btn-search {
+            height: 42px;
+            border-radius: 0 10px 10px 0;
+            padding: 0 16px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            z-index: 2;
+        }
+        
+        .search-wrapper .btn-search:hover {
+            background-color: var(--bg-surface2);
+            color: var(--text-primary);
+        }
+        
+        .search-wrapper:focus-within .form-input-custom {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+        }
+        
+        .search-wrapper:focus-within .btn-search {
+            border-color: #3b82f6;
+        }
+        
+        .btn-reset {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 42px;
+            padding: 0 16px;
+            border-radius: 10px;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .btn-reset:hover {
+            background-color: #ef4444;
+            color: #fff;
+        }
+
         /* Filter rows */
         .filter-row-custom {
             display: flex;
@@ -1179,7 +1266,7 @@
         <aside id="sidebar" class="sidebar">
             <!-- Sidebar Brand/Logo -->
             <div class="sidebar-header">
-                <h1 class="sidebar-title">Sistem IKU</h1>
+                <h1 class="sidebar-title">Sistem IKU/IKT</h1>
                 <span class="sidebar-subtitle">
                     @if(auth()->user()->role === 'admin_p2mp')
                         Admin P2MP
@@ -1226,11 +1313,11 @@
                             </a>
                             <a href="{{ route('adminprodi.kategori.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.kategori.*') ? 'active' : '' }}">
                                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
-                                Kategori IKU
+                                Kategori IKU/IKT
                             </a>
                             <a href="{{ route('adminprodi.iku.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.iku.*') ? 'active' : '' }}">
                                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                Data IKU
+                                Data IKU/IKT
                             </a>
                             <a href="{{ route('adminprodi.bukti.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.bukti.*') ? 'active' : '' }}">
                                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
@@ -1239,13 +1326,13 @@
                         </div>
                     </div>
 
-                    <!-- Validasi Bukti IKU -->
+                    <!-- Validasi Bukti IKU/IKT -->
                     <a href="{{ route('adminp2mp.validasi') }}" 
                        class="nav-link {{ request()->routeIs('adminp2mp.validasi') ? 'active' : '' }}">
                         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        Validasi Bukti IKU
+                        Validasi Bukti IKU/IKT
                     </a>
 
                     <!-- Laporan & Pengaturan Dropdown -->
@@ -1302,11 +1389,11 @@
                         <div class="sidebar-dropdown-menu {{ (request()->routeIs('adminprodi.kategori.*') || request()->routeIs('adminprodi.iku.*') || request()->routeIs('adminprodi.bukti.*') || request()->routeIs('adminprodi.dosen')) ? 'show' : '' }}">
                             <a href="{{ route('adminprodi.kategori.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.kategori.*') ? 'active' : '' }}">
                                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
-                                Kategori IKU
+                                Kategori IKU/IKT
                             </a>
                             <a href="{{ route('adminprodi.iku.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.iku.*') ? 'active' : '' }}">
                                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                Data IKU
+                                Data IKU/IKT
                             </a>
                             <a href="{{ route('adminprodi.bukti.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.bukti.*') ? 'active' : '' }}">
                                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
@@ -1335,7 +1422,7 @@
                         <div class="sidebar-dropdown-menu {{ (request()->routeIs('adminprodi.pencapaian.*') || request()->routeIs('adminprodi.penugasan.*') || request()->routeIs('adminprodi.bukti-dosen')) ? 'show' : '' }}">
                             <a href="{{ route('adminprodi.pencapaian.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.pencapaian.*') ? 'active' : '' }}">
                                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.003 9.003 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
-                                Target IKU Tahunan
+                                Target IKU/IKT Tahunan
                             </a>
                             <a href="{{ route('adminprodi.penugasan.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.penugasan.*') ? 'active' : '' }}">
                                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
@@ -1343,7 +1430,7 @@
                             </a>
                             <a href="{{ route('adminprodi.bukti-dosen') }}" class="dropdown-link {{ request()->routeIs('adminprodi.bukti-dosen') ? 'active' : '' }}">
                                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
-                                Bukti IKU Dosen
+                                Bukti IKU/IKT Dosen
                             </a>
                         </div>
                     </div>
@@ -1385,7 +1472,7 @@
                     </button>
                     <div class="page-title-group">
                         <h2 class="page-title">@yield('page_title', 'Dashboard')</h2>
-                        <span class="page-subtitle">@yield('page_subtitle', 'Sistem Early Warning IKU')</span>
+                        <span class="page-subtitle">@yield('page_subtitle', 'Sistem Early Warning IKU/IKT')</span>
                     </div>
                 </div>
 

@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Login ke Sistem - Sistem Early Warning IKU')
+@section('title', 'Login ke Sistem - Sistem Early Warning IKU/IKT')
 
 @section('container-class', 'max-w-[1000px]')
 
@@ -32,7 +32,7 @@
         flex-direction: column;
         justify-content: space-between;
         padding: 40px;
-        background: linear-gradient(135deg, var(--auth-bg) 0%, var(--auth-surface) 50%, rgba(8,12,20,0.95) 100%);
+        background: linear-gradient(135deg, #7283B9 0%, #8195d1 45%, #5d6ca6 100%);
         position: relative;
         overflow: hidden;
         border-right: 1px solid var(--auth-border);
@@ -75,14 +75,14 @@
         font-size: 2rem;
         font-weight: 700;
         line-height: 1.25;
-        color: var(--auth-text);
+        color: #ffffff;
         margin-bottom: 12px;
     }
 
     .brand-subtitle {
         font-size: 0.9rem;
-        color: var(--auth-text-muted);
-        border-left: 3px solid var(--auth-accent);
+        color: #ffffff;
+        border-left: 3px solid rgba(255,255,255,0.8);
         padding-left: 12px;
         margin-bottom: 36px;
         line-height: 1.5;
@@ -104,20 +104,20 @@
     .highlight-icon {
         width: 40px;
         height: 40px;
-        background-color: var(--auth-accent-soft);
-        border: 1px solid rgba(56, 189, 248, 0.2);
+        background-color: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.25);
         border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--auth-accent);
+        color: #ffffff;
         flex-shrink: 0;
     }
 
     .highlight-text {
         font-size: 0.9rem;
         font-weight: 500;
-        color: var(--auth-text-soft);
+        color: #ffffff;
     }
 
     /* Input Field Styling with Icons */
@@ -215,7 +215,7 @@
 
     .brand-footer-text {
         font-size: 0.8rem;
-        color: #475569;
+        color: rgba(255, 255, 255, 0.9);
     }
 </style>
 
@@ -235,7 +235,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                     </svg>
                 </div>
-                <span class="highlight-text">Pemantauan Capaian IKU Real-time</span>
+                <span class="highlight-text">Pemantauan Capaian IKU/IKT Real-time</span>
             </div>
             <!-- Item 2 -->
             <div class="highlight-item">
@@ -253,7 +253,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                     </svg>
                 </div>
-                <span class="highlight-text">Peringatan Dini Kinerja IKU</span>
+                <span class="highlight-text">Peringatan Dini Kinerja IKU/IKT</span>
             </div>
             <!-- Item 4 -->
             <div class="highlight-item">

@@ -1,21 +1,13 @@
 @extends('adminp2mp.layouts.app')
 
-@section('title', 'Edit User - Sistem Early Warning IKU')
+@section('title', 'Edit User - Sistem Early Warning IKU/IKT')
 @section('page_title', 'Perbarui Pengguna')
 @section('page_subtitle', 'Edit informasi detail akun pengguna')
 
 @section('content')
 <div class="form-layout-container">
     <!-- Back Link -->
-    <div>
-        <a href="{{ route('adminp2mp.users.index') }}" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: all 0.2s ease;">
-            <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
-            Kembali ke Daftar User
-        </a>
-    </div>
-
+   
     <!-- Form Card -->
     <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border);">

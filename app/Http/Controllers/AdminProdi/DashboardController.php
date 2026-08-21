@@ -166,7 +166,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Tampilkan daftar dosen di prodi ini beserta tugas indikator IKU mereka.
+     * Tampilkan daftar dosen di prodi ini beserta tugas indikator IKU/IKT mereka.
      */
     public function dosen(Request $request)
     {

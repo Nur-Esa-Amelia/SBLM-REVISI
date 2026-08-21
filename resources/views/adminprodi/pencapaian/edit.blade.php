@@ -1,20 +1,20 @@
 @extends('adminprodi.layouts.app')
 
-@section('title', 'Edit Target IKU Tahunan - Admin Prodi')
-@section('page_title', 'Edit Target IKU')
-@section('page_subtitle', 'Perbarui nilai atau parameter pencapaian target IKU')
+@section('title', 'Edit Target IKU/IKT Tahunan - Admin Prodi')
+@section('page_title', 'Edit Target IKU/IKT')
+@section('page_subtitle', 'Perbarui nilai atau parameter pencapaian target IKU/IKT')
 
 @section('content')
 <div class="card" style="max-width: 600px; margin: 0 auto;">
-    <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 12px;">Form Edit Target IKU - Tahun {{ $pencapaian->tahun }}</h3>
+    <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 12px;">Form Edit Target IKU/IKT - Tahun {{ $pencapaian->tahun }}</h3>
 
     <form action="{{ route('adminprodi.pencapaian.update', $pencapaian->id) }}" method="POST" class="form-layout-container">
         @csrf
         @method('PUT')
 
-        <!-- Readonly IKU Name -->
+        <!-- Readonly IKU/IKT Name -->
         <div class="form-group-custom">
-            <label class="form-label-custom">Indikator IKU Terpilih</label>
+            <label class="form-label-custom">Indikator IKU/IKT Terpilih</label>
             <input type="text" 
                    value="{{ $pencapaian->iku->nama_iku }}" 
                    class="form-input-custom" 

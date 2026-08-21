@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Dashboard - Sistem Early Warning IKU')
+@section('title', 'Dashboard - Sistem Early Warning IKU/IKT')
 
 @section('content')
 <div class="auth-card">
@@ -11,7 +11,7 @@
         </span>
 
         <h1 class="auth-title">Dashboard</h1>
-        <p class="auth-subtitle">Selamat datang di portal monitoring IKU Anda</p>
+        <p class="auth-subtitle">Selamat datang di portal monitoring IKU/IKT Anda</p>
     </div>
 
     <!-- Success Message Alert -->

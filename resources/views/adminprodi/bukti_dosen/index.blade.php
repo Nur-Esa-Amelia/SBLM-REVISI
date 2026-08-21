@@ -1,8 +1,8 @@
 @extends('adminprodi.layouts.app')
 
-@section('title', 'Bukti IKU Dosen - Admin Prodi')
-@section('page_title', 'Bukti IKU Dosen')
-@section('page_subtitle', 'Melihat bukti pemenuhan IKU yang diunggah oleh dosen program studi ' . $prodiName)
+@section('title', 'Bukti IKU/IKT Dosen - Admin Prodi')
+@section('page_title', 'Bukti IKU/IKT Dosen')
+@section('page_subtitle', 'Melihat bukti pemenuhan IKU/IKT yang diunggah oleh dosen program studi ' . $prodiName)
 
 @section('content')
 <div style="display: flex; flex-direction: column; gap: 24px;">
@@ -10,8 +10,8 @@
     <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
             <div>
-                <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Filter Bukti IKU</h3>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Saring pengajuan bukti IKU berdasarkan status validasi atau tahun akademik.</p>
+                <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Filter Bukti IKU/IKT</h3>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Saring pengajuan bukti IKU/IKT berdasarkan status validasi atau tahun akademik.</p>
             </div>
             @if(auth()->user()->role === 'kaprodi')
                 <a href="{{ route('adminprodi.pengisian.create') }}" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.8rem;">
@@ -63,7 +63,7 @@
                     <tr>
                         <th style="width: 50px;">No</th>
                         <th style="min-width: 160px;">Pengunggah</th>
-                        <th style="min-width: 180px;">Indikator IKU</th>
+                        <th style="min-width: 180px;">Indikator IKU/IKT</th>
                         <th style="min-width: 140px;">Jenis Bukti</th>
                         <th style="min-width: 150px;">Berkas Lampiran</th>
                         <th>Keterangan Dosen</th>
@@ -87,7 +87,7 @@
                                 </div>
                             </td>
 
-                            <!-- Indikator IKU -->
+                            <!-- Indikator IKU/IKT -->
                             <td>
                                 <div style="font-weight: 600; color: var(--text-primary);">{{ $item->iku->nama_iku }}</div>
                                 <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
@@ -175,7 +175,7 @@
                                 <svg style="width: 32px; height: 32px; margin: 0 auto 12px; color: #334155; display: block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                Belum ada pengisian bukti IKU dari dosen.
+                                Belum ada pengisian bukti IKU/IKT dari dosen.
                             </td>
                         </tr>
                     @endforelse

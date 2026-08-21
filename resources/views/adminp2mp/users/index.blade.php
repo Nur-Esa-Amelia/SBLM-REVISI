@@ -1,6 +1,6 @@
 @extends('adminp2mp.layouts.app')
 
-@section('title', 'Kelola User - Sistem Early Warning IKU')
+@section('title', 'Kelola User - Sistem Early Warning IKU/IKT')
 @section('page_title', 'Kelola Pengguna')
 @section('page_subtitle', 'Kelola hak akses dan asosiasi program studi pengguna')
 

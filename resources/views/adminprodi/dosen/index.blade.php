@@ -2,7 +2,7 @@
 
 @section('title', 'Dosen Program Studi - Admin Prodi')
 @section('page_title', 'Data Dosen')
-@section('page_subtitle', 'Melihat daftar dosen program studi ' . $prodiName . ' beserta tugas indikator IKU')
+@section('page_subtitle', 'Melihat daftar dosen program studi ' . $prodiName . ' beserta tugas indikator IKU/IKT')
 
 @section('content')
 <div style="display: flex; flex-direction: column; gap: 24px;">
@@ -124,7 +124,7 @@
                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                         <h5 style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
                                             <span style="display: inline-block; width: 4px; height: 14px; background-color: #3b82f6; border-radius: 2px;"></span>
-                                            Daftar Rincian Tugas IKU: {{ $dosenItem->name }}
+                                            Daftar Rincian Tugas IKU/IKT: {{ $dosenItem->name }}
                                         </h5>
                                         <span style="font-size: 0.7rem; color: var(--text-muted);">Tahun Akademik: {{ $tahun }}</span>
                                     </div>
@@ -158,7 +158,7 @@
                                         </div>
                                     @else
                                         <div style="text-align: center; color: var(--text-muted); padding: 24px 12px; font-size: 0.8rem; background-color: var(--bg-surface2); border: 1px dashed var(--border); border-radius: 8px;">
-                                            Belum ada penugasan IKU untuk tahun {{ $tahun }}.
+                                            Belum ada penugasan IKU/IKT untuk tahun {{ $tahun }}.
                                         </div>
                                     @endif
                                 </div>

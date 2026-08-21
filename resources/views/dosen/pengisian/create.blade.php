@@ -1,7 +1,7 @@
 @extends('dosen.layouts.app')
 
-@section('title', 'Unggah Bukti IKU - Dosen')
-@section('page_title', 'Unggah Bukti IKU')
+@section('title', 'Unggah Bukti IKU/IKT - Dosen')
+@section('page_title', 'Unggah Bukti IKU/IKT')
 @section('page_subtitle', 'Kirim berkas bukti pemenuhan Indikator Kinerja Utama Anda')
 
 @section('content')
@@ -11,9 +11,9 @@
     <form action="{{ route('dosen.pengisian.store') }}" method="POST" enctype="multipart/form-data" class="form-layout-container">
         @csrf
 
-        <!-- IKU Select -->
+        <!-- IKU/IKT Select -->
         <div class="form-group-custom">
-            <label for="id_iku" class="form-label-custom">Pilih Indikator IKU Ditugaskan</label>
+            <label for="id_iku" class="form-label-custom">Pilih Indikator IKU/IKT Ditugaskan</label>
             <select id="id_iku" name="id_iku" class="form-select-custom @error('id_iku') is-invalid @enderror" required>
                 <option value="">-- Pilih Indikator --</option>
                 @foreach($ikus as $item)
@@ -38,7 +38,7 @@
                     </option>
                 @endforeach
             </select>
-            <small style="color: #64748b; font-size: 0.75rem; margin-top: 2px;">Pilihan jenis bukti disesuaikan secara otomatis berdasarkan IKU yang Anda pilih di atas.</small>
+            <small style="color: #64748b; font-size: 0.75rem; margin-top: 2px;">Pilihan jenis bukti disesuaikan secara otomatis berdasarkan IKU/IKT yang Anda pilih di atas.</small>
             @error('id_bukti_iku')
                 <span class="form-error-custom">{{ $message }}</span>
             @enderror
@@ -111,7 +111,7 @@
                     const noOpt = document.createElement('option');
                     noOpt.value = "";
                     noOpt.disabled = true;
-                    noOpt.textContent = "Belum ada jenis bukti yang dikonfigurasi untuk IKU ini oleh Admin Prodi";
+                    noOpt.textContent = "Belum ada jenis bukti yang dikonfigurasi untuk IKU/IKT ini oleh Admin Prodi";
                     buktiSelect.appendChild(noOpt);
                 }
             }

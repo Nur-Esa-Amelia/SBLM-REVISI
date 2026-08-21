@@ -1,8 +1,8 @@
 @extends('adminp2mp.layouts.app')
 
-@section('title', 'Validasi Bukti IKU - Sistem Early Warning IKU')
-@section('page_title', 'Validasi Bukti IKU')
-@section('page_subtitle', 'Tinjau dan validasi berkas bukti IKU yang diunggah oleh Dosen')
+@section('title', 'Validasi Bukti IKU/IKT - Sistem Early Warning IKU/IKT')
+@section('page_title', 'Validasi Bukti IKU/IKT')
+@section('page_subtitle', 'Tinjau dan validasi berkas bukti IKU/IKT yang diunggah oleh Dosen')
 
 @section('content')
 <div style="display: flex; flex-direction: column; gap: 24px;">
@@ -10,8 +10,8 @@
     <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
             <div>
-                <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Filter Bukti IKU</h3>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Saring pengajuan bukti IKU berdasarkan program studi, status validasi, atau tahun akademik.</p>
+                <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Filter Bukti IKU/IKT</h3>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Saring pengajuan bukti IKU/IKT berdasarkan program studi, status validasi, atau tahun akademik.</p>
             </div>
         </div>
 
@@ -69,7 +69,7 @@
             <div style="padding: 20px 24px; border-bottom: 1px solid var(--border); background-color: rgba(56, 189, 248, 0.05); display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
                 <div>
                     <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin: 0; margin-bottom: 2px;">🚀 Setujui Semua Pending</h4>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">{{ $pendingCount }} bukti IKU menunggu validasi - setujui semua sekaligus</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">{{ $pendingCount }} bukti IKU/IKT menunggu validasi - setujui semua sekaligus</p>
                 </div>
                 <button type="button" onclick="showBulkApproveModal()" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.8rem; background-color: #10b981; border-color: #10b981; white-space: nowrap;">
                     <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -86,7 +86,7 @@
                     <tr>
                         <th style="width: 50px;">No</th>
                         <th style="min-width: 160px;">Pengunggah / Prodi</th>
-                        <th style="min-width: 180px;">Indikator IKU</th>
+                        <th style="min-width: 180px;">Indikator IKU/IKT</th>
                         <th style="min-width: 140px;">Jenis Bukti</th>
                         <th style="min-width: 150px;">Berkas Lampiran</th>
                         <th>Keterangan</th>
@@ -110,7 +110,7 @@
                                 </div>
                             </td>
 
-                            <!-- Indikator IKU -->
+                            <!-- Indikator IKU/IKT -->
                             <td>
                                 <div style="font-weight: 600; color: var(--text-primary);">{{ $item->iku->nama_iku }}</div>
                                 <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Kategori: {{ $item->iku->kategori->nama_kategori }}</div>
@@ -241,7 +241,7 @@
                                 <svg style="width: 32px; height: 32px; margin: 0 auto 12px; color: var(--text-muted); display: block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                Belum ada pengajuan bukti IKU yang sesuai dengan kriteria filter.
+                                Belum ada pengajuan bukti IKU/IKT yang sesuai dengan kriteria filter.
                             </td>
                         </tr>
                     @endforelse
@@ -293,7 +293,7 @@
         });
 
         if (pendingIds.length === 0) {
-            alert('Tidak ada bukti IKU yang menunggu validasi.');
+            alert('Tidak ada bukti IKU/IKT yang menunggu validasi.');
             return;
         }
 
@@ -331,7 +331,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin: 0;">Setujui Semua Bukti IKU?</h3>
+                    <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin: 0;">Setujui Semua Bukti IKU/IKT?</h3>
                     <p style="font-size: 0.75rem; color: var(--text-muted); margin: 2px 0 0 0;" id="bulk-count"></p>
                 </div>
             </div>
@@ -344,7 +344,7 @@
         
         <div style="padding: 20px 24px; color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6;">
             <div style="padding: 12px 16px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 8px; margin-bottom: 16px; color: #38bdf8;">
-                ⚠️ Tindakan ini akan menandai <strong>semua bukti IKU yang menunggu validasi</strong> sebagai <strong>Valid</strong>. Pastikan Anda sudah meriview semua bukti sebelum melanjutkan.
+                ⚠️ Tindakan ini akan menandai <strong>semua bukti IKU/IKT yang menunggu validasi</strong> sebagai <strong>Valid</strong>. Pastikan Anda sudah meriview semua bukti sebelum melanjutkan.
             </div>
             <p style="margin: 0 0 4px 0; color: var(--text-muted);">Jumlah bukti yang akan disetujui:</p>
             <p style="margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--text-primary);" id="bulk-count-number">-</p>

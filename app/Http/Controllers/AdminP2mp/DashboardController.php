@@ -43,6 +43,7 @@ class DashboardController extends Controller
             }
         }
 
+        //menentukan daftar tahun
         if ($settings) {
             $tahunList = range($settings->tahun_mulai, $settings->tahun_selesai);
         } else {
@@ -51,6 +52,7 @@ class DashboardController extends Controller
             sort($tahunList);
         }
 
+        // menampilkan iku berdasarkan tahun yg di pilih
         $tahunAktif = $settings?->tahun_aktif ?? date('Y');
         $tahun = $request->query('tahun', $tahunAktif);
 
@@ -61,6 +63,7 @@ class DashboardController extends Controller
         $query = IkuPencapaian::with(['prodi', 'iku.kategori'])
             ->where('tahun', $tahun);
 
+        // filter berdasarkan id prodi
         if ($request->filled('prodi_id')) {
             $query->where('id_prodi', $prodiId);
         }
@@ -94,6 +97,7 @@ class DashboardController extends Controller
                 $targetNyata = $targetVal;
             }
 
+            // menghitung persentase
             if ($targetNyata > 0) {
                 $persentase = min(($item->realisasi / $targetNyata) * 100, 100);
             } else {
@@ -109,10 +113,11 @@ class DashboardController extends Controller
             }
         }
 
+        // rata rata bsc
         $avgMahasiswa = $mahasiswaIkus->count() > 0 ? round($mahasiswaIkus->avg('persentase_capped')) : 0;
         $avgDosen = $dosenIkus->count() > 0 ? round($dosenIkus->avg('persentase_capped')) : 0;
 
-        // Hitung IKU Tercapai & Belum Tercapai untuk kartu metrik
+        // Hitung IKU/IKT Tercapai & Belum Tercapai untuk kartu metrik
         $achievedCount = $laporan->where('status', 'Tercapai')->count();
         $unachievedCount = $laporan->where('status', '!=', 'Tercapai')->count();
 
@@ -136,7 +141,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Tampilkan halaman Validasi Bukti IKU.
+     * Tampilkan halaman Validasi Bukti IKU/IKT.
      */
     public function validasi(Request $request)
     {
@@ -217,7 +222,7 @@ class DashboardController extends Controller
         ]);
 
         $statusText = $request->status === 'valid' ? 'disetujui (Valid)' : 'ditolak (Perlu Perbaikan)';
-        return redirect()->back()->with('success', "Bukti IKU berhasil {$statusText}.");
+        return redirect()->back()->with('success', "Bukti IKU/IKT berhasil {$statusText}.");
     }
 
     /**

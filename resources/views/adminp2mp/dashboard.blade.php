@@ -1,6 +1,6 @@
 @extends('adminp2mp.layouts.app')
 
-@section('title', 'Dashboard Admin P2MP - Sistem Early Warning IKU')
+@section('title', 'Dashboard Admin P2MP - Sistem Early Warning IKU/IKT')
 @section('page_title', 'Selamat Datang di Sistem Monitoring Pencapaian Indikator Kinerja Politeknik Sukabumi')
 @section('page_subtitle', '')
 
@@ -29,12 +29,12 @@
 
 <!-- Metrics Cards Section -->
 <div class="dashboard-grid">
-    <!-- Total Indikator IKU -->
+    <!-- Total Indikator IKU/IKT -->
     <div class="stat-card">
         <div>
             <div class="stat-header">
                 <div class="stat-info">
-                    <span class="stat-label">Total Indikator IKU</span>
+                    <span class="stat-label">Total Indikator IKU/IKT</span>
                     <h4 class="stat-value" style="color: #6366f1;">{{ $totalIku }}</h4>
                 </div>
                 <div class="stat-icon target" style="background-color: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); color: #6366f1; width: 42px; height: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
@@ -45,9 +45,9 @@
             </div>
         </div>
         <div class="stat-footer">
-            <span class="stat-desc">Seluruh Indikator IKU</span>
+            <span class="stat-desc">Seluruh Indikator IKU/IKT</span>
             <a href="{{ route('adminprodi.iku.index') }}" class="stat-link">
-                Data IKU
+                Data IKU/IKT
                 <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
                 </svg>
@@ -55,12 +55,12 @@
         </div>
     </div>
 
-    <!-- Validasi Bukti IKU Card -->
+    <!-- Validasi Bukti IKU/IKT Card -->
     <div class="stat-card">
         <div>
             <div class="stat-header">
                 <div class="stat-info">
-                    <span class="stat-label">Validasi Bukti IKU</span>
+                    <span class="stat-label">Validasi Bukti IKU/IKT</span>
                     <h4 class="stat-value" style="color: {{ $pendingValidationCount > 0 ? '#fbbf24' : '#10b981' }};">{{ $pendingValidationCount }}</h4>
                 </div>
                 <div class="stat-icon validasi">
@@ -83,12 +83,12 @@
         </div>
     </div>
 
-    <!-- IKU Tercapai -->
+    <!-- IKU/IKT Tercapai -->
     <div class="stat-card">
         <div>
             <div class="stat-header">
                 <div class="stat-info">
-                    <span class="stat-label">IKU Tercapai</span>
+                    <span class="stat-label">IKU/IKT Tercapai</span>
                     <h4 class="stat-value" style="color: #10b981;">{{ $achievedCount }}</h4>
                 </div>
                 <div class="stat-icon tercapai" style="background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #10b981; width: 42px; height: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
@@ -161,11 +161,11 @@
     </div>
 </div>
 
-<!-- Table IKU Capaian -->
+<!-- Table IKU/IKT Capaian -->
 <div class="card" style="display: flex; flex-direction: column; gap: 16px; padding: 0; overflow: hidden;">
     <div style="padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
         <div>
-            <h3 class="text-base font-bold" style="font-size: 0.95rem; margin-bottom: 2px; color: var(--text-primary);">Capaian IKU Keseluruhan</h3>
+            <h3 class="text-base font-bold" style="font-size: 0.95rem; margin-bottom: 2px; color: var(--text-primary);">Capaian IKU/IKT Keseluruhan</h3>
             <p style="font-size: 0.75rem; color: var(--text-muted);">Rekap capaian Indikator Kinerja Utama seluruh Program Studi untuk tahun {{ $tahun }}.</p>
         </div>
         
@@ -199,7 +199,7 @@
                 <tr>
                     <th style="width: 50px;">NO</th>
                     <th>PROGRAM STUDI</th>
-                    <th>IKU</th>
+                    <th>IKU/IKT</th>
                     <th>KATEGORI</th>
                     <th style="text-align: center;">TARGET</th>
                     <th style="text-align: center;">REALISASI</th>
@@ -263,7 +263,7 @@
                 @empty
                     <tr>
                         <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 40px;">
-                            Belum ada target dan realisasi IKU keseluruhan yang tercatat untuk tahun akademik {{ $tahun }}.
+                            Belum ada target dan realisasi IKU/IKT keseluruhan yang tercatat untuk tahun akademik {{ $tahun }}.
                         </td>
                     </tr>
                 @endforelse

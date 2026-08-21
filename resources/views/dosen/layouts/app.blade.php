@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Dosen - Sistem Early Warning IKU')</title>
+    <title>@yield('title', 'Dosen - Sistem Early Warning IKU/IKT')</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,6 +49,10 @@
             --pagination-bg:  #1e293b;
             --pagination-border:#334155;
             --pagination-dis: #0f172a;
+            --nav-active-bg:  #10b981;
+            --nav-active-text:#ffffff;
+            --link-accent:    #10b981;
+            --link-hover:     #ffffff;
         }
 
         html[data-theme="light"] {
@@ -75,6 +79,10 @@
             --pagination-bg:  #f1f5f9;
             --pagination-border:#e2e8f0;
             --pagination-dis: #ffffff;
+            --nav-active-bg:  #d1fae5;
+            --nav-active-text:#065f46;
+            --link-accent:    #047857;
+            --link-hover:     #064e3b;
         }
 
         /* ==================== THEME TOGGLE BUTTON ==================== */
@@ -203,9 +211,9 @@
         }
 
         .nav-link.active {
-            color: #ffffff !important;
-            background-color: #10b981 !important;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+            color: var(--nav-active-text) !important;
+            background-color: var(--nav-active-bg) !important;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.18);
         }
 
         .nav-link svg {
@@ -273,12 +281,12 @@
         .page-title {
             font-size: 1.05rem;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--text-primary);
         }
 
         .page-subtitle {
             font-size: 0.75rem;
-            color: #94a3b8;
+            color: var(--text-muted);
         }
 
         .user-profile-panel {
@@ -309,7 +317,7 @@
 
         .user-role {
             font-size: 0.7rem;
-            color: #10b981;
+            color: var(--text-muted);
         }
 
         .user-avatar {
@@ -528,7 +536,7 @@
         .stat-link {
             font-size: 0.75rem;
             font-weight: 700;
-            color: #10b981;
+            color: var(--link-accent);
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -536,7 +544,7 @@
         }
 
         .stat-link:hover {
-            color: #ffffff;
+            color: var(--link-hover);
         }
 
         /* Buttons styling */
@@ -1016,7 +1024,7 @@
         <aside id="sidebar" class="sidebar">
             <!-- Sidebar Brand/Logo -->
             <div class="sidebar-header">
-                <h1 class="sidebar-title">Sistem IKU</h1>
+                <h1 class="sidebar-title">Sistem IKU/IKT</h1>
                 <span class="sidebar-subtitle">{{ auth()->user()->prodi ? auth()->user()->prodi->nama_prodi : 'Program Studi' }}</span>
             </div>
 
@@ -1038,7 +1046,7 @@
                         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
-                        Target & Capaian IKU
+                        Target & Capaian IKU/IKT
                     </a>
                 </div>
 
@@ -1050,7 +1058,7 @@
                         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
                         </svg>
-                        Unggah Bukti IKU
+                        Unggah Bukti IKU/IKT
                     </a>
 
                     <a href="{{ route('dosen.pengisian.index') }}" 
@@ -1089,7 +1097,7 @@
                     </button>
                     <div class="page-title-group">
                         <h2 class="page-title">@yield('page_title', 'Dashboard')</h2>
-                        <span class="page-subtitle">@yield('page_subtitle', 'Sistem Early Warning IKU')</span>
+                        <span class="page-subtitle">@yield('page_subtitle', 'Sistem Early Warning IKU/IKT')</span>
                     </div>
                 </div>
 

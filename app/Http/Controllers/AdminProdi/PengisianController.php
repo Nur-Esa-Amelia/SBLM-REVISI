@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 class PengisianController extends Controller
 {
     /**
-     * Tampilkan form untuk mengunggah bukti IKU yang tidak memerlukan penugasan.
+     * Tampilkan form untuk mengunggah bukti IKU/IKT yang tidak memerlukan penugasan.
      */
     public function create(Request $request)
     {
@@ -29,7 +29,7 @@ class PengisianController extends Controller
         
         $tahunAktif = $settings?->tahun_aktif ?? date('Y');
         
-        // Ambil seluruh IKU yang memiliki target di program studi ini untuk tahun akademik aktif
+        // Ambil seluruh IKU/IKT yang memiliki target di program studi ini untuk tahun akademik aktif
         $ikus = Iku::whereIn('id', function ($query) use ($prodiId, $tahunAktif) {
             $query->select('id_iku')
                 ->from('iku_pencapaian')
@@ -37,7 +37,7 @@ class PengisianController extends Controller
                 ->where('tahun', $tahunAktif);
         })->get();
         
-        // Ambil semua dokumen bukti yang memungkinkan untuk IKU tersebut
+        // Ambil semua dokumen bukti yang memungkinkan untuk IKU/IKT tersebut
         $buktiIku = BuktiIku::whereIn('id_iku', $ikus->pluck('id'))->get();
 
         return view('adminprodi.pengisian.create', compact('ikus', 'buktiIku', 'tahunAktif', 'settings'));
@@ -71,21 +71,21 @@ class PengisianController extends Controller
             'files.*.max' => 'Ukuran berkas bukti maksimal adalah 10 MB.',
         ]);
 
-        // Keamanan: pastikan IKU tersebut dikonfigurasi target pencapaiannya untuk prodi ini
+        // Keamanan: pastikan IKU/IKT tersebut dikonfigurasi target pencapaiannya untuk prodi ini
         $hasTarget = IkuPencapaian::where('id_prodi', $prodiId)
             ->where('id_iku', $request->id_iku)
             ->where('tahun', $tahunAktif)
             ->exists();
 
         if (!$hasTarget) {
-            return redirect()->back()->withErrors(['id_iku' => 'Indikator IKU ini belum dikonfigurasi targetnya untuk program studi Anda pada tahun akademik aktif ini.'])->withInput();
+            return redirect()->back()->withErrors(['id_iku' => 'Indikator IKU/IKT ini belum dikonfigurasi targetnya untuk program studi Anda pada tahun akademik aktif ini.'])->withInput();
         }
 
         $sisaBerkas = IkuPencapaian::sisaBerkas($prodiId, $request->id_iku, $tahunAktif);
         if ($sisaBerkas !== null && count($request->file('files', [])) > $sisaBerkas) {
             return redirect()->back()->withErrors(['files' => $sisaBerkas > 0
-                ? "Upload ditolak. Capaian IKU ini hanya masih dapat menerima {$sisaBerkas} berkas."
-                : 'Upload ditolak. Bukti untuk IKU ini sudah lengkap (capaian maksimal 100%).'])->withInput();
+                ? "Upload ditolak. Capaian IKU/IKT ini hanya masih dapat menerima {$sisaBerkas} berkas."
+                : 'Upload ditolak. Bukti untuk IKU/IKT ini sudah lengkap (capaian maksimal 100%).'])->withInput();
         }
 
         $keterangans = $request->input('keterangan_files', []);
@@ -129,14 +129,14 @@ class PengisianController extends Controller
         IkuPencapaian::calculateAndSync($prodiId, $tahunAktif);
 
         $pesan = IkuPencapaian::sisaBerkas($prodiId, $request->id_iku, $tahunAktif) === 0
-            ? 'Bukti IKU berhasil diunggah. Bukti untuk IKU ini sudah lengkap (capaian maksimal 100%).'
-            : 'Bukti IKU berhasil diunggah oleh Kaprodi dan sedang menunggu validasi P2MP.';
+            ? 'Bukti IKU/IKT berhasil diunggah. Bukti untuk IKU/IKT ini sudah lengkap (capaian maksimal 100%).'
+            : 'Bukti IKU/IKT berhasil diunggah oleh Kaprodi dan sedang menunggu validasi P2MP.';
 
         return redirect()->route('adminprodi.bukti-dosen')->with('success', $pesan);
     }
 
     /**
-     * Tampilkan form untuk mengedit bukti IKU yang diunggah oleh Kaprodi.
+     * Tampilkan form untuk mengedit bukti IKU/IKT yang diunggah oleh Kaprodi.
      */
     public function edit($id)
     {
@@ -155,7 +155,7 @@ class PengisianController extends Controller
         $settings = Pengaturan::where('id_prodi', $prodiId)->first();
         $tahunAktif = $pengisian->tahun;
 
-        // Ambil seluruh IKU yang memiliki target di program studi ini untuk tahun tersebut
+        // Ambil seluruh IKU/IKT yang memiliki target di program studi ini untuk tahun tersebut
         $ikus = Iku::whereIn('id', function ($query) use ($prodiId, $tahunAktif) {
             $query->select('id_iku')
                 ->from('iku_pencapaian')
@@ -200,19 +200,19 @@ class PengisianController extends Controller
             'files.*.max' => 'Ukuran berkas bukti maksimal adalah 10 MB.',
         ]);
 
-        // Keamanan: pastikan IKU tersebut dikonfigurasi target pencapaiannya untuk prodi ini
+        // Keamanan: pastikan IKU/IKT tersebut dikonfigurasi target pencapaiannya untuk prodi ini
         $hasTarget = IkuPencapaian::where('id_prodi', $user->prodi_id)
             ->where('id_iku', $request->id_iku)
             ->where('tahun', $pengisian->tahun)
             ->exists();
 
         if (!$hasTarget) {
-            return redirect()->back()->withErrors(['id_iku' => 'Indikator IKU ini belum dikonfigurasi targetnya untuk program studi Anda pada tahun akademik pengajuan ini.'])->withInput();
+            return redirect()->back()->withErrors(['id_iku' => 'Indikator IKU/IKT ini belum dikonfigurasi targetnya untuk program studi Anda pada tahun akademik pengajuan ini.'])->withInput();
         }
 
         $sisaBerkas = IkuPencapaian::sisaBerkas($user->prodi_id, $request->id_iku, $pengisian->tahun);
         if ($sisaBerkas !== null && count($request->file('files', [])) > $sisaBerkas) {
-            return redirect()->back()->withErrors(['files' => 'Jumlah berkas baru melebihi sisa batas capaian IKU.'])->withInput();
+            return redirect()->back()->withErrors(['files' => 'Jumlah berkas baru melebihi sisa batas capaian IKU/IKT.'])->withInput();
         }
 
         // 1. Perbarui deskripsi berkas yang sudah ada
@@ -287,6 +287,6 @@ class PengisianController extends Controller
         // Jalankan sinkronisasi realisasi
         IkuPencapaian::calculateAndSync($user->prodi_id, $pengisian->tahun);
 
-        return redirect()->route('adminprodi.bukti-dosen')->with('success', 'Bukti IKU berhasil diperbarui oleh Kaprodi dan sedang menunggu validasi ulang.');
+        return redirect()->route('adminprodi.bukti-dosen')->with('success', 'Bukti IKU/IKT berhasil diperbarui oleh Kaprodi dan sedang menunggu validasi ulang.');
     }
 }

@@ -1,7 +1,7 @@
 @extends('adminprodi.layouts.app')
 
-@section('title', 'Target IKU Tahunan - Admin Prodi')
-@section('page_title', 'Kelola Target IKU Tahunan')
+@section('title', 'Target IKU/IKT Tahunan - Admin Prodi')
+@section('page_title', 'Kelola Target IKU/IKT Tahunan')
 @section('page_subtitle', 'Tentukan nilai target indikator kinerja utama per tahun akademik')
 
 @section('content')
@@ -22,7 +22,7 @@
 <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
     <!-- Filter Year & Add Button -->
     <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid #1e293b; padding-bottom: 16px;">
-        <form action="{{ route('adminprodi.pencapaian.index') }}" method="GET" style="display: flex; align-items: flex-end; gap: 12px; flex: 1;">
+        <form action="{{ route('adminprodi.pencapaian.index') }}" method="GET" style="display: flex; align-items: flex-end; gap: 12px; flex: 1; flex-wrap: wrap;">
             <div class="filter-item-custom" style="max-width: 200px;">
                 <label for="tahun" class="form-label-custom">Pilih Tahun Akademik</label>
                 <select id="tahun" name="tahun" class="form-select-custom" onchange="this.form.submit()">
@@ -31,6 +31,21 @@
                     @endforeach
                 </select>
             </div>
+            <div class="filter-item-custom" style="max-width: 250px;">
+                <label for="search" class="form-label-custom">Pencarian</label>
+                <div class="search-wrapper">
+                    <svg class="search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" name="search" id="search" class="form-input-custom" placeholder="Cari IKU/IKT..." value="{{ request('search') }}">
+                    <button type="submit" class="btn-search">Cari</button>
+                </div>
+            </div>
+            @if(request('search'))
+                <a href="{{ route('adminprodi.pencapaian.index', ['tahun' => $tahun]) }}" class="btn-reset" title="Reset Pencarian" style="height: 42px; margin-bottom: 0px;">
+                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </a>
+            @endif
         </form>
 
         <a href="{{ route('adminprodi.pencapaian.create', ['tahun' => $tahun]) }}" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.8rem;">
@@ -47,7 +62,7 @@
             <thead>
                 <tr>
                     <th style="width: 60px;">No</th>
-                    <th>Nama Indikator IKU</th>
+                    <th>Nama Indikator IKU/IKT</th>
                     <th style="text-align: center;">Tahun</th>
                     <th style="text-align: center;">Target</th>
                     <th style="text-align: center;">Realisasi (Valid)</th>
@@ -87,7 +102,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                     </svg>
                                 </a>
-                                <form action="{{ route('adminprodi.pencapaian.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus target IKU ini?');" style="display: inline-flex;">
+                                <form action="{{ route('adminprodi.pencapaian.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus target IKU/IKT ini?');" style="display: inline-flex;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn-action-delete" title="Hapus">
@@ -102,7 +117,7 @@
                 @empty
                     <tr>
                         <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">
-                            Belum ada target IKU yang dikonfigurasi untuk tahun akademik {{ $tahun }}.
+                            Belum ada target IKU/IKT yang dikonfigurasi untuk tahun akademik {{ $tahun }}.
                         </td>
                     </tr>
                 @endforelse

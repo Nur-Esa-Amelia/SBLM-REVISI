@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 class RekomendasiAiController extends Controller
 {
     /**
-     * Dapatkan atau generate rekomendasi AI untuk IKU pencapaian yang bermasalah.
+     * Dapatkan atau generate rekomendasi AI untuk IKU/IKT pencapaian yang bermasalah.
      *
      * @param \Illuminate\Support\Collection $warnings
      * @return \Illuminate\Support\Collection
@@ -30,7 +30,7 @@ class RekomendasiAiController extends Controller
         foreach ($warnings as $item) {
             $rekomendasi = RekomendasiAi::where('id_iku_pencapaian', $item->id)->first();
             if ($rekomendasi) {
-                // Jika data IKU pencapaian diubah/diupdate setelah rekomendasi di-generate,
+                // Jika data IKU/IKT pencapaian diubah/diupdate setelah rekomendasi di-generate,
                 // hapus rekomendasi lama agar di-generate ulang dengan data terbaru.
                 $isFailedRecommendation = str_contains($rekomendasi->rekomendasi, 'sementara tidak dapat dibuat')
                     || str_contains($rekomendasi->rekomendasi, 'RESOURCE_EXHAUSTED')
@@ -53,7 +53,7 @@ class RekomendasiAiController extends Controller
             $realisasi = round($item->realisasi) . " bukti valid"; 
             $status = $item->status;
 
-            // Ambil semua jenis bukti yang wajib dilaporkan untuk IKU ini
+            // Ambil semua jenis bukti yang wajib dilaporkan untuk IKU/IKT ini
             $buktiIkuList = BuktiIku::where('id_iku', $item->id_iku)->get();
 
             $sudahDiunggah = [];
@@ -83,10 +83,10 @@ class RekomendasiAiController extends Controller
                 }
             }
 
-            $prompt = "Anda adalah Asisten AI Sistem Early Warning IKU (Indikator Kinerja Utama) Perguruan Tinggi.\n";
+            $prompt = "Anda adalah Asisten AI Sistem Early Warning IKU/IKT (Indikator Kinerja Utama) Perguruan Tinggi.\n";
             $prompt .= "Berikan analisis risiko dan rekomendasi perbaikan untuk indikator yang tidak tercapai berikut:\n\n";
-            $prompt .= "### 1. Data IKU & Deskripsi\n";
-            $prompt .= "- Nama IKU: " . $namaIku . "\n";
+            $prompt .= "### 1. Data IKU/IKT & Deskripsi\n";
+            $prompt .= "- Nama IKU/IKT: " . $namaIku . "\n";
             $prompt .= "- Deskripsi: " . $deskripsi . "\n";
             $prompt .= "- Program Studi: " . $prodiName . "\n";
             $prompt .= "- Tahun Akademik: " . $tahun . "\n";
@@ -96,7 +96,7 @@ class RekomendasiAiController extends Controller
 
             $prompt .= "### 2. Jenis Bukti yang Wajib Dilaporkan\n";
             if ($buktiIkuList->isEmpty()) {
-                $prompt .= "(Belum didefinisikan untuk IKU ini)\n\n";
+                $prompt .= "(Belum didefinisikan untuk IKU/IKT ini)\n\n";
             } else {
                 foreach ($buktiIkuList as $bukti) {
                     $prompt .= "- **" . $bukti->nama_bukti . "**" . ($bukti->deskripsi ? ": " . $bukti->deskripsi : "") . "\n";
@@ -131,15 +131,15 @@ class RekomendasiAiController extends Controller
             $prompt .= "Berikan analisis terperinci yang mencakup tiga bagian berikut dengan sub-heading yang jelas:\n";
             $prompt .= "1. Prioritas Penanganan: Berikan prioritas penanganan (Tinggi / Sedang / Rendah) beserta alasan taktisnya.\n";
             $prompt .= "2. Analisis Risiko: Uraikan dampak buruk jika indikator ini terus-menerus tidak tercapai.\n";
-            $prompt .= "3. Rekomendasi Perbaikan: Uraikan langkah-langkah konkret, strategis, dan realistis untuk meningkatkan capaian IKU tersebut.\n\n";
+            $prompt .= "3. Rekomendasi Perbaikan: Uraikan langkah-langkah konkret, strategis, dan realistis untuk meningkatkan capaian IKU/IKT tersebut.\n\n";
             $prompt .= "PENTING:\n";
             $prompt .= "- Analisislah perbandingan bukti yang sudah dan belum diunggah di atas secara mendalam. Rekomendasi perbaikan harus didasarkan pada kondisi nyata tersebut (misal: menyuruh mengunggah bukti yang belum ada, menindaklanjuti bukti yang ditolak/pending, dll.), sehingga rekomendasi yang dihasilkan sangat spesifik sesuai dengan kondisi nyata pada indikator tersebut dan tidak bersifat general/umum.\n";
-            $prompt .= "- Jangan ulangi lagi bagian informasi data IKU, jenis bukti wajib, atau perbandingan bukti di jawaban Anda. Mulailah respon Anda langsung dengan heading/sub-heading untuk 3 poin analisis di atas.\n\n";
+            $prompt .= "- Jangan ulangi lagi bagian informasi data IKU/IKT, jenis bukti wajib, atau perbandingan bukti di jawaban Anda. Mulailah respon Anda langsung dengan heading/sub-heading untuk 3 poin analisis di atas.\n\n";
             $prompt .= "Sajikan jawaban Anda dalam Bahasa Indonesia yang formal, ringkas, terstruktur menggunakan format markdown (gunakan bullet points, sub-heading, dan cetak tebal).";
 
             // Mempersiapkan teks detail informasi untuk disimpan ke database dan ditampilkan di modal
-            $headerText = "### Analisis Risiko dan Rekomendasi Perbaikan IKU {$namaIku}\n\n";
-            $headerText .= "- **Nama IKU**: " . $namaIku . " (" . $deskripsi . ")\n";
+            $headerText = "### Analisis Risiko dan Rekomendasi Perbaikan IKU/IKT {$namaIku}\n\n";
+            $headerText .= "- **Nama IKU/IKT**: " . $namaIku . " (" . $deskripsi . ")\n";
             $headerText .= "- **Program Studi**: " . $prodiName . "\n";
             $headerText .= "- **Tahun Akademik**: " . $tahun . "\n";
             $headerText .= "- **Target**: " . $target . "\n";

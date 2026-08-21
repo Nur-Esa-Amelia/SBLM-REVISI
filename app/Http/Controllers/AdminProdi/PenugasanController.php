@@ -25,16 +25,31 @@ class PenugasanController extends Controller
         }
 
         $tahun = $request->query('tahun', $tahunAktif);
+        $selectedIku = $request->query('id_iku');
+        $search = $request->query('search');
+        $ikuList = Iku::orderBy('nama_iku', 'asc')->get();
 
         $penugasan = PenugasanDosen::with(['iku', 'user'])
             ->where('tahun', $tahun)
+            ->when($selectedIku, function ($query, $selectedIku) {
+                return $query->where('id_iku', $selectedIku);
+            })
+            ->when($search, function ($query, $search) {
+                return $query->whereHas('user', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                })->orWhereHas('iku', function ($q) use ($search) {
+                    $q->where('nama_iku', 'like', "%{$search}%")
+                      ->orWhere('kode_iku', 'like', "%{$search}%");
+                });
+            })
             ->whereHas('user', function ($query) use ($prodiId) {
                 $query->where('prodi_id', $prodiId);
             })
             ->orderBy('id', 'asc')
-            ->paginate(10);
+            ->paginate(10)
+            ->appends(['tahun' => $tahun, 'id_iku' => $selectedIku, 'search' => $search]);
 
-        return view('adminprodi.penugasan.index', compact('penugasan', 'tahunList', 'tahun', 'settings'));
+        return view('adminprodi.penugasan.index', compact('penugasan', 'tahunList', 'tahun', 'settings', 'ikuList', 'selectedIku', 'search'));
     }
 
     public function create(Request $request)
@@ -51,7 +66,7 @@ class PenugasanController extends Controller
             $tahunList = range(date('Y') - 2, date('Y') + 5);
         }
 
-        // Ambil hanya IKU yang belum ditugaskan ke dosen mana pun di prodi ini untuk tahun berjalan
+        // Ambil hanya IKU/IKT yang belum ditugaskan ke dosen mana pun di prodi ini untuk tahun berjalan
         $assignedIkuIds = PenugasanDosen::where('tahun', $tahun)
             ->whereHas('user', function ($query) use ($prodiId) {
                 $query->where('prodi_id', $prodiId);
@@ -86,7 +101,7 @@ class PenugasanController extends Controller
             return redirect()->back()->withErrors(['id_user' => 'Dosen yang dipilih tidak valid atau bukan dari program studi Anda.'])->withInput();
         }
 
-        // Periksa apakah IKU ini sudah ditugaskan di prodi ini untuk tahun ini
+        // Periksa apakah IKU/IKT ini sudah ditugaskan di prodi ini untuk tahun ini
         $exists = PenugasanDosen::where('id_iku', $request->id_iku)
             ->where('tahun', $request->tahun)
             ->whereHas('user', function ($query) use ($prodiId) {
@@ -95,7 +110,7 @@ class PenugasanController extends Controller
             ->exists();
 
         if ($exists) {
-            return redirect()->back()->withErrors(['id_iku' => 'Indikator IKU ini sudah ditugaskan kepada dosen lain di program studi Anda pada tahun akademik ini.'])->withInput();
+            return redirect()->back()->withErrors(['id_iku' => 'Indikator IKU/IKT ini sudah ditugaskan kepada dosen lain di program studi Anda pada tahun akademik ini.'])->withInput();
         }
 
         PenugasanDosen::create($request->all());
@@ -119,7 +134,7 @@ class PenugasanController extends Controller
             $tahunList = range(date('Y') - 2, date('Y') + 5);
         }
 
-        // Ambil hanya IKU yang belum ditugaskan ke dosen lain di prodi ini untuk tahun berjalan
+        // Ambil hanya IKU/IKT yang belum ditugaskan ke dosen lain di prodi ini untuk tahun berjalan
         $assignedIkuIds = PenugasanDosen::where('tahun', $penugasan->tahun)
             ->where('id', '!=', $penugasan->id)
             ->whereHas('user', function ($query) use ($prodiId) {
@@ -159,7 +174,7 @@ class PenugasanController extends Controller
             return redirect()->back()->withErrors(['id_user' => 'Dosen yang dipilih tidak valid atau bukan dari program studi Anda.'])->withInput();
         }
 
-        // Periksa apakah IKU ini sudah ditugaskan ke dosen lain di prodi ini untuk tahun akademik berjalan
+        // Periksa apakah IKU/IKT ini sudah ditugaskan ke dosen lain di prodi ini untuk tahun akademik berjalan
         $exists = PenugasanDosen::where('id_iku', $request->id_iku)
             ->where('tahun', $request->tahun)
             ->where('id', '!=', $penugasan->id)
@@ -169,7 +184,7 @@ class PenugasanController extends Controller
             ->exists();
 
         if ($exists) {
-            return redirect()->back()->withErrors(['id_iku' => 'Indikator IKU ini sudah ditugaskan kepada dosen lain di program studi Anda pada tahun akademik ini.'])->withInput();
+            return redirect()->back()->withErrors(['id_iku' => 'Indikator IKU/IKT ini sudah ditugaskan kepada dosen lain di program studi Anda pada tahun akademik ini.'])->withInput();
         }
 
         $penugasan->update($request->all());

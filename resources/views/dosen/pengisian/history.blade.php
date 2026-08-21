@@ -42,7 +42,7 @@
             <thead>
                 <tr>
                     <th style="width: 60px;">No</th>
-                    <th>Indikator IKU</th>
+                    <th>Indikator IKU/IKT</th>
                     <th>Jenis Bukti</th>
                     <th>Berkas Lampiran</th>
                     <th>Keterangan</th>
@@ -135,7 +135,7 @@
                 @empty
                     <tr>
                         <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 40px;">
-                            Belum ada riwayat pengisian bukti IKU untuk tahun akademik {{ $tahun }}.
+                            Belum ada riwayat pengisian bukti IKU/IKT untuk tahun akademik {{ $tahun }}.
                         </td>
                     </tr>
                 @endforelse

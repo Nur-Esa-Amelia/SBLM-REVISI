@@ -1,7 +1,7 @@
 @extends('adminprodi.layouts.app')
 
-@section('title', 'Laporan Capaian IKU - Admin Prodi')
-@section('page_title', 'Laporan Capaian IKU')
+@section('title', 'Laporan Capaian IKU/IKT - Admin Prodi')
+@section('page_title', 'Laporan Capaian IKU/IKT')
 @section('page_subtitle', 'Rekapitulasi pencapaian target Indikator Kinerja Utama Program Studi')
 
 @section('content')
@@ -108,7 +108,7 @@
 
 <!-- Printable Header -->
 <div class="print-header">
-    <div class="print-title">LAPORAN CAPAIAN INDIKATOR KINERJA UTAMA (IKU)</div>
+    <div class="print-title">LAPORAN CAPAIAN INDIKATOR KINERJA UTAMA (IKU/IKT)</div>
     <div class="print-subtitle">PROGRAM STUDI: {{ strtoupper($prodiName) }} - TAHUN AKADEMIK {{ $tahun }}</div>
     <hr style="border: 0; border-top: 2px solid #000; margin-top: 15px;">
 </div>
@@ -170,8 +170,8 @@
     <!-- Table Card -->
     <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
         <div style="padding: 20px 24px; border-bottom: 1px solid var(--border);">
-            <h3 class="text-base font-bold" style="font-size: 0.95rem; margin-bottom: 2px; color: var(--text-primary);">Capaian IKU Program Studi {{ $prodiName }}</h3>
-            <p style="font-size: 0.75rem; color: var(--text-muted);">Daftar target, realisasi, dan status pencapaian IKU untuk tahun akademik {{ $tahun }}.</p>
+            <h3 class="text-base font-bold" style="font-size: 0.95rem; margin-bottom: 2px; color: var(--text-primary);">Capaian IKU/IKT Program Studi {{ $prodiName }}</h3>
+            <p style="font-size: 0.75rem; color: var(--text-muted);">Daftar target, realisasi, dan status pencapaian IKU/IKT untuk tahun akademik {{ $tahun }}.</p>
         </div>
 
         <div class="table-responsive">
@@ -179,8 +179,8 @@
                 <thead>
                     <tr>
                         <th style="width: 60px;">No</th>
-                        <th>Kategori IKU</th>
-                        <th>Nama Indikator IKU</th>
+                        <th>Kategori IKU/IKT</th>
+                        <th>Nama Indikator IKU/IKT</th>
                         <th style="text-align: center;">Target Sasaran</th>
                         <th style="text-align: center;">Realisasi (Valid)</th>
                         <th style="text-align: center;">Capaian (%)</th>
@@ -255,7 +255,7 @@
                     @empty
                         <tr>
                             <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">
-                                Belum ada target dan realisasi IKU yang tercatat untuk tahun akademik {{ $tahun }}.
+                                Belum ada target dan realisasi IKU/IKT yang tercatat untuk tahun akademik {{ $tahun }}.
                             </td>
                         </tr>
                     @endforelse
@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const pencapaianId = btn.getAttribute('data-pencapaian-id');
             const data = recommendationsData[pencapaianId];
             if (data) {
-                modalTitle.textContent = 'Rekomendasi Analisis AI: ' + (data.iku_pencapaian.iku ? data.iku_pencapaian.iku.nama_iku : 'IKU');
+                modalTitle.textContent = 'Rekomendasi Analisis AI: ' + (data.iku_pencapaian.iku ? data.iku_pencapaian.iku.nama_iku : 'IKU/IKT');
                 modalSubtitle.innerHTML = 'Status: <span style="font-weight: 600; color: ' + 
                     (data.iku_pencapaian.status === 'Perlu Perhatian' ? '#fbbf24' : '#ef4444') + ';">' + 
                     data.iku_pencapaian.status + '</span> (Realisasi: ' + Math.round(data.iku_pencapaian.realisasi) + ' dari Target: ' + data.iku_pencapaian.target + ')';

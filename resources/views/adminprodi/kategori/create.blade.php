@@ -1,8 +1,8 @@
 @extends('adminprodi.layouts.app')
 
-@section('title', 'Tambah Kategori IKU - Admin Prodi')
+@section('title', 'Tambah Kategori IKU/IKT - Admin Prodi')
 @section('page_title', 'Tambah Kategori')
-@section('page_subtitle', 'Buat kategori IKU baru untuk mengelompokkan indikator kinerja')
+@section('page_subtitle', 'Buat kategori IKU/IKT baru untuk mengelompokkan indikator kinerja')
 
 @section('content')
 <div class="card" style="max-width: 600px; margin: 0 auto;">

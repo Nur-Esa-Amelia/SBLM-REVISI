@@ -1,6 +1,6 @@
 @extends('adminprodi.layouts.app')
 
-@section('title', 'Edit Kategori IKU - Admin Prodi')
+@section('title', 'Edit Kategori IKU/IKT - Admin Prodi')
 @section('page_title', 'Edit Kategori')
 @section('page_subtitle', 'Perbarui detail data kategori indikator kinerja utama')
 

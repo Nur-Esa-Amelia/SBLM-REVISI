@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class BulkApproveController extends Controller
 {
     /**
-     * Setujui semua bukti IKU yang pending (Bulk Approval).
+     * Setujui semua bukti IKU/IKT yang pending (Bulk Approval).
      */
     public function bulkApprove(Request $request)
     {
@@ -20,7 +20,7 @@ class BulkApproveController extends Controller
         $ids = json_decode($request->ids, true);
         
         if (!is_array($ids) || empty($ids)) {
-            return redirect()->back()->with('error', 'Tidak ada bukti IKU yang dipilih untuk disetujui.');
+            return redirect()->back()->with('error', 'Tidak ada bukti IKU/IKT yang dipilih untuk disetujui.');
         }
 
         $updated = PengisianBukti::whereIn('id', $ids)
@@ -30,6 +30,6 @@ class BulkApproveController extends Controller
                 'catatan_validator' => null,
             ]);
 
-        return redirect()->back()->with('success', "Total {$updated} bukti IKU berhasil disetujui.");
+        return redirect()->back()->with('success', "Total {$updated} bukti IKU/IKT berhasil disetujui.");
     }
 }

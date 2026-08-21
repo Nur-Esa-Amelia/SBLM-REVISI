@@ -1,12 +1,12 @@
 @extends('layouts.auth')
 
-@section('title', 'Daftar Akun Dosen - Sistem Early Warning IKU')
+@section('title', 'Daftar Akun Dosen - Sistem Early Warning IKU/IKT')
 
 @section('content')
 <div class="auth-card">
     <div class="text-center mb-6">
         <h1 class="auth-title">Daftar Akun Dosen</h1>
-        <p class="auth-subtitle">Mulai monitoring pencapaian IKU Program Studi</p>
+        <p class="auth-subtitle">Mulai monitoring pencapaian IKU/IKT Program Studi</p>
     </div>
 
     <!-- Multi-step Form -->

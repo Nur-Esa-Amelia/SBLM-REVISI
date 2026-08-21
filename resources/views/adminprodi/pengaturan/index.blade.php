@@ -86,7 +86,7 @@
                        placeholder="Contoh: 350" 
                        class="form-input-custom @error('jml_mahasiswa') is-invalid @enderror" 
                        required>
-                <small style="color: #64748b; font-size: 0.75rem; margin-top: 2px;">Digunakan untuk menghitung persentase target IKU berbasis mahasiswa.</small>
+                <small style="color: #64748b; font-size: 0.75rem; margin-top: 2px;">Digunakan untuk menghitung persentase target IKU/IKT berbasis mahasiswa.</small>
                 @error('jml_mahasiswa')
                     <span class="form-error-custom">{{ $message }}</span>
                 @enderror
@@ -102,7 +102,7 @@
                        placeholder="Contoh: 15" 
                        class="form-input-custom @error('jml_dosen') is-invalid @enderror" 
                        required>
-                <small style="color: #64748b; font-size: 0.75rem; margin-top: 2px;">Digunakan untuk menghitung persentase target IKU berbasis dosen.</small>
+                <small style="color: #64748b; font-size: 0.75rem; margin-top: 2px;">Digunakan untuk menghitung persentase target IKU/IKT berbasis dosen.</small>
                 @error('jml_dosen')
                     <span class="form-error-custom">{{ $message }}</span>
                 @enderror

@@ -2,20 +2,46 @@
 
 @section('title', 'Jenis Bukti - Admin Prodi')
 @section('page_title', 'Kelola Jenis Bukti')
-@section('page_subtitle', 'Tentukan jenis berkas/dokumen bukti yang wajib diunggah untuk setiap IKU')
+@section('page_subtitle', 'Tentukan jenis berkas/dokumen bukti yang wajib diunggah untuk setiap IKU/IKT')
 
 @section('content')
 <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-        <h3 style="font-size: 1.1rem; font-weight: 700;">Daftar Jenis Bukti IKU</h3>
-        @if(auth()->user()->role === 'admin_p2mp')
-            <a href="{{ route('adminprodi.bukti.create') }}" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.8rem;">
-                <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-                </svg>
-                Tambah Jenis Bukti
-            </a>
-        @endif
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0;">Daftar Jenis Bukti IKU/IKT</h3>
+
+        <div style="display: flex; align-items: center; gap: 12px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end;">
+            <form method="GET" action="{{ route('adminprodi.bukti.index') }}" id="filterBuktiForm" style="display: flex; align-items: center; gap: 10px; margin: 0;">
+                <select id="id_iku" name="id_iku" class="form-select-custom" style="min-width: 220px;" onchange="document.getElementById('filterBuktiForm').submit();">
+                    <option value="">Semua IKU/IKT</option>
+                    @foreach($ikuList as $iku)
+                        <option value="{{ $iku->id }}" {{ (string)$selectedIku === (string)$iku->id ? 'selected' : '' }}>
+                            {{ $iku->nama_iku }}
+                        </option>
+                    @endforeach
+                </select>
+                <div class="search-wrapper">
+                    <svg class="search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" name="search" class="form-input-custom" placeholder="Cari Jenis Bukti..." value="{{ request('search') }}">
+                    <button type="submit" class="btn-search">Cari</button>
+                </div>
+                @if(request('search') || request('id_iku'))
+                    <a href="{{ route('adminprodi.bukti.index') }}" class="btn-reset" title="Reset Pencarian">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </a>
+                @endif
+            </form>
+
+            @if(auth()->user()->role === 'admin_p2mp')
+                <a href="{{ route('adminprodi.bukti.create') }}" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.8rem;">
+                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                    </svg>
+                    Tambah Jenis Bukti
+                </a>
+            @endif
+        </div>
     </div>
 
     <div class="table-responsive">
@@ -24,7 +50,7 @@
                 <tr>
                     <th style="width: 60px;">No</th>
                     <th>Nama Bukti</th>
-                    <th>Terkait IKU</th>
+                    <th>Terkait IKU/IKT</th>
                     <th>Keterangan / Deskripsi</th>
                     @if(auth()->user()->role === 'admin_p2mp')
                         <th style="width: 180px; text-align: center;">Aksi</th>

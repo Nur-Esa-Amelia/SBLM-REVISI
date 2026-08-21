@@ -1,8 +1,8 @@
 @extends('adminp2mp.layouts.app')
 
-@section('title', 'Kelola Program Studi - Sistem Early Warning IKU')
+@section('title', 'Kelola Program Studi - Sistem Early Warning IKU/IKT')
 @section('page_title', 'Kelola Program Studi')
-@section('page_subtitle', 'Kelola data program studi aktif dalam sistem early warning IKU')
+@section('page_subtitle', 'Kelola data program studi aktif dalam sistem early warning IKU/IKT')
 
 @section('content')
 <div style="display: flex; flex-direction: column; gap: 24px;">
@@ -11,7 +11,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
             <div>
                 <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Daftar Program Studi</h3>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Kelola data program studi aktif dalam sistem early warning IKU.</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Kelola data program studi aktif dalam sistem early warning IKU/IKT.</p>
             </div>
             <div>
                 <a href="{{ route('adminp2mp.prodi.create') }}" class="btn btn-primary">

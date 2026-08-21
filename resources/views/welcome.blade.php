@@ -1,19 +1,19 @@
 @extends('layouts.auth')
 
-@section('title', 'Sistem Monitoring IKU')
+@section('title', 'Sistem Monitoring IKU/IKT')
 
 @section('content')
 <style>
     .welcome-container {
         width: 100%;
         max-width: 480px;
-        background-color: #171d2c;
-        border: 1px solid #cdd2de;
+        background: linear-gradient(180deg, #7283B9 0%, #7b8cc2 100%);
+        border: 1px solid rgba(255,255,255,0.18);
         border-radius: 24px;
         padding: 48px 36px;
         text-align: center;
         z-index: 10;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.18), 0 10px 10px -5px rgba(0, 0, 0, 0.12);
         transition: all 0.3s ease;
         position: relative;
     }
@@ -22,19 +22,28 @@
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        margin-bottom: 24px;
+        width: 110px;
+        height: 110px;
+        margin: 0 auto 24px;
+        background-color: #ffffff;
+        border-radius: 50%;
+        border: 4px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
     }
 
-    .logo-wrapper svg {
-        width: 32px;
-        height: 32px;
+    .logo-wrapper img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        display: block;
     }
 
     .badge {
         display: inline-block;
-        background-color: rgba(14, 165, 233, 0.1);
-        border: 1px solid rgba(14, 165, 233, 0.2);
-        color: #38bdf8;
+        background-color: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        color: #ffffff;
         font-size: 0.75rem;
         font-weight: 600;
         padding: 6px 16px;
@@ -54,7 +63,7 @@
 
     .subtitle {
         font-size: 0.95rem;
-        color: #94a3b8;
+        color: rgba(255, 255, 255, 0.9);
         margin-bottom: 40px;
         line-height: 1.6;
     }
@@ -81,31 +90,31 @@
         transition: all 0.2s ease;
     }
 
-    /* Register button: bright outline blue style */
+    /* Register button: outline blue style */
     .btn-register {
         background-color: transparent;
-        border: 1px solid #38bdf8;
-        color: #38bdf8;
+        border: 1px solid #ffffff;
+        color: #ffffff;
     }
 
     .btn-register:hover {
-        background-color: #38bdf8;
-        color: #0b0f19;
-        box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        background-color: rgba(255,255,255,0.16);
+        color: #ffffff;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.12);
         transform: translateY(-2px);
     }
 
     /* Login button: filled white style */
     .btn-login {
-        background-color: #f8fafc;
-        border: 1px solid #f8fafc;
-        color: #0b0f19;
+        background-color: #f3f4f6;
+        border: 1px solid #f3f4f6;
+        color: #1f2937;
     }
 
     .btn-login:hover {
-        background-color: transparent;
-        color: #f8fafc;
-        border-color: #cbd5e1;
+        background-color: rgba(255,255,255,0.9);
+        color: #1f2937;
+        border-color: rgba(255,255,255,0.9);
         transform: translateY(-2px);
     }
 
@@ -120,7 +129,7 @@
 
     .footer-text {
         font-size: 0.8rem;
-        color: #475569;
+        color: rgba(255, 255, 255, 0.9);
         margin-top: 16px;
     }
 </style>
@@ -153,7 +162,7 @@
     </div>
 
     @if(session('success'))
-        <div style="margin-top: 16px; padding: 10px 16px; background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; color: #10b981; font-size: 0.8rem; text-align: center;">
+        <div style="margin-top: 16px; padding: 10px 16px; background-color: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 12px; color: #ffffff; font-size: 0.8rem; text-align: center;">
             {{ session('success') }}
         </div>
     @endif

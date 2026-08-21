@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Admin P2MP - Sistem Early Warning IKU')</title>
+    <title>@yield('title', 'Admin P2MP - Sistem Early Warning IKU/IKT')</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,6 +51,10 @@
             --pagination-bg:  #1e293b;
             --pagination-border:#334155;
             --pagination-dis: #0f172a;
+            --nav-active-bg:  #2563eb;
+            --nav-active-text:#ffffff;
+            --link-accent:    #10b981;
+            --link-hover:     #ffffff;
         }
 
         html[data-theme="light"] {
@@ -79,6 +83,10 @@
             --pagination-bg:  #f1f5f9;
             --pagination-border:#e2e8f0;
             --pagination-dis: #ffffff;
+            --nav-active-bg:  #dbeafe;
+            --nav-active-text:#0f172a;
+            --link-accent:    #047857;
+            --link-hover:     #064e3b;
         }
 
         /* ==================== THEME TOGGLE BUTTON ==================== */
@@ -209,9 +217,9 @@
         }
 
         .nav-link.active {
-            color: #ffffff !important;
-            background-color: #2563eb !important;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            color: var(--nav-active-text) !important;
+            background-color: var(--nav-active-bg) !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.18);
         }
 
         .nav-link svg {
@@ -324,8 +332,8 @@
         }
 
         .dropdown-link.active {
-            color: #ffffff !important;
-            background-color: rgba(37, 99, 235, 0.15) !important;
+            color: var(--nav-active-text) !important;
+            background-color: rgba(37, 99, 235, 0.12) !important;
             border-left: 2px solid #2563eb;
             border-radius: 0 6px 6px 0;
             padding-left: 10px;
@@ -1253,7 +1261,7 @@
         <aside id="sidebar" class="sidebar">
             <!-- Sidebar Brand/Logo -->
             <div class="sidebar-header">
-                <h1 class="sidebar-title">Sistem IKU</h1>
+                <h1 class="sidebar-title">Sistem IKU/IKT</h1>
                 <span class="sidebar-subtitle">Program Studi</span>
             </div>
 
@@ -1293,11 +1301,11 @@
                         </a>
                         <a href="{{ route('adminprodi.kategori.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.kategori.*') ? 'active' : '' }}">
                             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
-                            Kategori IKU
+                            Kategori IKU/IKT
                         </a>
                         <a href="{{ route('adminprodi.iku.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.iku.*') ? 'active' : '' }}">
                             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            Data IKU
+                            Data IKU/IKT
                         </a>
                         <a href="{{ route('adminprodi.bukti.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.bukti.*') ? 'active' : '' }}">
                             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
@@ -1306,13 +1314,13 @@
                     </div>
                 </div>
 
-                <!-- Validasi Bukti IKU -->
+                <!-- Validasi Bukti IKU/IKT -->
                 <a href="{{ route('adminp2mp.validasi') }}" 
                    class="nav-link {{ request()->routeIs('adminp2mp.validasi') ? 'active' : '' }}">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    Validasi Bukti IKU
+                    Validasi Bukti IKU/IKT
                 </a>
 
                 <!-- Laporan & Pengaturan Dropdown -->
@@ -1367,7 +1375,7 @@
                     </button>
                     <div class="page-title-group">
                         <h2 class="page-title">@yield('page_title', 'Dashboard')</h2>
-                        <span class="page-subtitle">@yield('page_subtitle', 'Sistem Early Warning IKU')</span>
+                        <span class="page-subtitle">@yield('page_subtitle', 'Sistem Early Warning IKU/IKT')</span>
                     </div>
                 </div>
 

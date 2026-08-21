@@ -1,21 +1,21 @@
 @extends('adminprodi.layouts.app')
 
-@section('title', 'Tambah Target IKU Tahunan - Admin Prodi')
-@section('page_title', 'Tambah Target IKU')
-@section('page_subtitle', 'Tentukan parameter pencapaian target IKU tahunan baru')
+@section('title', 'Tambah Target IKU/IKT Tahunan - Admin Prodi')
+@section('page_title', 'Tambah Target IKU/IKT')
+@section('page_subtitle', 'Tentukan parameter pencapaian target IKU/IKT tahunan baru')
 
 @section('content')
 <div class="card" style="max-width: 600px; margin: 0 auto;">
-    <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 12px;">Form Target IKU - Tahun {{ $tahun }}</h3>
+    <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 12px;">Form Target IKU/IKT - Tahun {{ $tahun }}</h3>
 
     <form action="{{ route('adminprodi.pencapaian.store') }}" method="POST" class="form-layout-container">
         @csrf
 
         <input type="hidden" name="tahun" value="{{ $tahun }}">
 
-        <!-- IKU Select -->
+        <!-- IKU/IKT Select -->
         <div class="form-group-custom">
-            <label for="id_iku" class="form-label-custom">Pilih Indikator IKU (Yang belum diatur tahun ini)</label>
+            <label for="id_iku" class="form-label-custom">Pilih Indikator IKU/IKT (Yang belum diatur tahun ini)</label>
             <select id="id_iku" name="id_iku" class="form-select-custom @error('id_iku') is-invalid @enderror" required>
                 <option value="">-- Pilih Indikator --</option>
                 @foreach($iku as $item)

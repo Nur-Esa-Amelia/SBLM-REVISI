@@ -9,10 +9,25 @@ use Illuminate\Http\Request;
 
 class BuktiIkuController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $bukti = BuktiIku::with('iku')->orderBy('id', 'asc')->paginate(10);
-        return view('adminprodi.bukti.index', compact('bukti'));
+        $ikuList = Iku::orderBy('nama_iku', 'asc')->get();
+        $selectedIku = $request->input('id_iku');
+        $search = $request->input('search');
+
+        $bukti = BuktiIku::with('iku')
+            ->when($selectedIku, function ($query, $selectedIku) {
+                return $query->where('id_iku', $selectedIku);
+            })
+            ->when($search, function ($query, $search) {
+                return $query->where('nama_bukti', 'like', "%{$search}%")
+                             ->orWhere('deskripsi', 'like', "%{$search}%");
+            })
+            ->orderBy('id', 'asc')
+            ->paginate(10)
+            ->appends(['id_iku' => $selectedIku, 'search' => $search]);
+
+        return view('adminprodi.bukti.index', compact('bukti', 'ikuList', 'selectedIku', 'search'));
     }
 
     public function create()
@@ -31,7 +46,7 @@ class BuktiIkuController extends Controller
 
         BuktiIku::create($request->all());
 
-        return redirect()->route('adminprodi.bukti.index')->with('success', 'Jenis Bukti IKU berhasil ditambahkan.');
+        return redirect()->route('adminprodi.bukti.index')->with('success', 'Jenis Bukti IKU/IKT berhasil ditambahkan.');
     }
 
     public function edit(BuktiIku $bukti)
@@ -50,12 +65,12 @@ class BuktiIkuController extends Controller
 
         $bukti->update($request->all());
 
-        return redirect()->route('adminprodi.bukti.index')->with('success', 'Jenis Bukti IKU berhasil diperbarui.');
+        return redirect()->route('adminprodi.bukti.index')->with('success', 'Jenis Bukti IKU/IKT berhasil diperbarui.');
     }
 
     public function destroy(BuktiIku $bukti)
     {
         $bukti->delete();
-        return redirect()->route('adminprodi.bukti.index')->with('success', 'Jenis Bukti IKU berhasil dihapus.');
+        return redirect()->route('adminprodi.bukti.index')->with('success', 'Jenis Bukti IKU/IKT berhasil dihapus.');
     }
 }

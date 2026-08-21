@@ -48,7 +48,7 @@ class PengisianController extends Controller
     }
 
     /**
-     * Tampilkan form untuk mengunggah bukti IKU yang ditugaskan.
+     * Tampilkan form untuk mengunggah bukti IKU/IKT yang ditugaskan.
      */
     public function create(Request $request)
     {
@@ -58,7 +58,7 @@ class PengisianController extends Controller
         
         $tahunAktif = $settings?->tahun_aktif ?? date('Y');
         
-        // Ambil hanya IKU yang ditugaskan ke dosen ini untuk tahun aktif
+        // Ambil hanya IKU/IKT yang ditugaskan ke dosen ini untuk tahun aktif
         $assignedIkuIds = PenugasanDosen::where('id_user', $user->id)
             ->where('tahun', $tahunAktif)
             ->pluck('id_iku')
@@ -66,7 +66,7 @@ class PengisianController extends Controller
 
         $ikus = Iku::whereIn('id', $assignedIkuIds)->get();
         
-        // Ambil semua dokumen bukti yang memungkinkan untuk IKU yang ditugaskan
+        // Ambil semua dokumen bukti yang memungkinkan untuk IKU/IKT yang ditugaskan
         $buktiIku = BuktiIku::whereIn('id_iku', $assignedIkuIds)->get();
 
         return view('dosen.pengisian.create', compact('ikus', 'buktiIku', 'tahunAktif', 'settings'));
@@ -96,21 +96,21 @@ class PengisianController extends Controller
             'files.*.max' => 'Ukuran berkas bukti maksimal adalah 10 MB.',
         ]);
 
-        // Pemeriksaan keamanan: pastikan IKU ditugaskan ke dosen ini
+        // Pemeriksaan keamanan: pastikan IKU/IKT ditugaskan ke dosen ini
         $isAssigned = PenugasanDosen::where('id_user', $user->id)
             ->where('id_iku', $request->id_iku)
             ->where('tahun', $tahunAktif)
             ->exists();
 
         if (!$isAssigned) {
-            return redirect()->back()->withErrors(['id_iku' => 'Anda tidak memiliki penugasan untuk mengisi indikator IKU ini pada tahun akademik ini.'])->withInput();
+            return redirect()->back()->withErrors(['id_iku' => 'Anda tidak memiliki penugasan untuk mengisi indikator IKU/IKT ini pada tahun akademik ini.'])->withInput();
         }
 
         $sisaBerkas = IkuPencapaian::sisaBerkas($prodiId, $request->id_iku, $tahunAktif);
         if ($sisaBerkas !== null && count($request->file('files', [])) > $sisaBerkas) {
             return redirect()->back()->withErrors(['files' => $sisaBerkas > 0
-                ? "Upload ditolak. Capaian IKU ini hanya masih dapat menerima {$sisaBerkas} berkas."
-                : 'Upload ditolak. Bukti untuk IKU ini sudah lengkap (capaian maksimal 100%).'])->withInput();
+                ? "Upload ditolak. Capaian IKU/IKT ini hanya masih dapat menerima {$sisaBerkas} berkas."
+                : 'Upload ditolak. Bukti untuk IKU/IKT ini sudah lengkap (capaian maksimal 100%).'])->withInput();
         }
 
         $keterangans = $request->input('keterangan_files', []);
@@ -154,14 +154,14 @@ class PengisianController extends Controller
         }
 
         $pesan = IkuPencapaian::sisaBerkas($prodiId, $request->id_iku, $tahunAktif) === 0
-            ? 'Bukti IKU berhasil diunggah. Bukti untuk IKU ini sudah lengkap (capaian maksimal 100%).'
-            : 'Bukti IKU berhasil diunggah dan sedang menunggu validasi P2MP.';
+            ? 'Bukti IKU/IKT berhasil diunggah. Bukti untuk IKU/IKT ini sudah lengkap (capaian maksimal 100%).'
+            : 'Bukti IKU/IKT berhasil diunggah dan sedang menunggu validasi P2MP.';
 
         return redirect()->route('dosen.pengisian.index')->with('success', $pesan);
     }
 
     /**
-     * Tampilkan form untuk mengedit/mengunggah ulang bukti IKU.
+     * Tampilkan form untuk mengedit/mengunggah ulang bukti IKU/IKT.
      */
     public function edit($id)
     {
@@ -176,7 +176,7 @@ class PengisianController extends Controller
         $settings = Pengaturan::where('id_prodi', $prodiId)->first();
         $tahunAktif = $pengisian->tahun;
 
-        // Ambil hanya IKU yang ditugaskan ke dosen ini untuk tahun pengajuan
+        // Ambil hanya IKU/IKT yang ditugaskan ke dosen ini untuk tahun pengajuan
         $assignedIkuIds = PenugasanDosen::where('id_user', $user->id)
             ->where('tahun', $tahunAktif)
             ->pluck('id_iku')
@@ -216,19 +216,19 @@ class PengisianController extends Controller
             'files.*.max' => 'Ukuran berkas bukti maksimal adalah 10 MB.',
         ]);
 
-        // Pemeriksaan keamanan: pastikan IKU ditugaskan ke dosen ini
+        // Pemeriksaan keamanan: pastikan IKU/IKT ditugaskan ke dosen ini
         $isAssigned = PenugasanDosen::where('id_user', $user->id)
             ->where('id_iku', $request->id_iku)
             ->where('tahun', $pengisian->tahun)
             ->exists();
 
         if (!$isAssigned) {
-            return redirect()->back()->withErrors(['id_iku' => 'Anda tidak memiliki penugasan untuk mengisi indikator IKU ini pada tahun akademik ini.'])->withInput();
+            return redirect()->back()->withErrors(['id_iku' => 'Anda tidak memiliki penugasan untuk mengisi indikator IKU/IKT ini pada tahun akademik ini.'])->withInput();
         }
 
         $sisaBerkas = IkuPencapaian::sisaBerkas($user->prodi_id, $request->id_iku, $pengisian->tahun);
         if ($sisaBerkas !== null && count($request->file('files', [])) > $sisaBerkas) {
-            return redirect()->back()->withErrors(['files' => 'Jumlah berkas baru melebihi sisa batas capaian IKU.'])->withInput();
+            return redirect()->back()->withErrors(['files' => 'Jumlah berkas baru melebihi sisa batas capaian IKU/IKT.'])->withInput();
         }
 
         // 1. Perbarui deskripsi berkas yang sudah ada
@@ -300,6 +300,6 @@ class PengisianController extends Controller
             'catatan_validator' => null, // Hapus catatan validator!
         ]);
 
-        return redirect()->route('dosen.pengisian.index')->with('success', 'Bukti IKU berhasil diperbarui dan sedang menunggu validasi ulang.');
+        return redirect()->route('dosen.pengisian.index')->with('success', 'Bukti IKU/IKT berhasil diperbarui dan sedang menunggu validasi ulang.');
     }
 }

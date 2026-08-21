@@ -24,6 +24,7 @@ class IkuPencapaianController extends Controller
         }
 
         $tahun = $request->query('tahun', $tahunAktif);
+        $search = $request->query('search');
 
         // Sinkronisasikan dulu untuk memastikan data di database sudah terbaru
         IkuPencapaian::calculateAndSync($prodiId, $tahun);
@@ -31,10 +32,17 @@ class IkuPencapaianController extends Controller
         $pencapaian = IkuPencapaian::with('iku.kategori')
             ->where('id_prodi', $prodiId)
             ->where('tahun', $tahun)
+            ->when($search, function ($query, $search) {
+                return $query->whereHas('iku', function ($q) use ($search) {
+                    $q->where('nama_iku', 'like', "%{$search}%")
+                      ->orWhere('kode_iku', 'like', "%{$search}%");
+                });
+            })
             ->orderBy('id', 'asc')
-            ->paginate(10);
+            ->paginate(10)
+            ->appends(['tahun' => $tahun, 'search' => $search]);
 
-        return view('adminprodi.pencapaian.index', compact('pencapaian', 'tahunList', 'tahun', 'settings'));
+        return view('adminprodi.pencapaian.index', compact('pencapaian', 'tahunList', 'tahun', 'settings', 'search'));
     }
 
     public function create(Request $request)
@@ -51,7 +59,7 @@ class IkuPencapaianController extends Controller
             $tahunList = range(date('Y') - 2, date('Y') + 5);
         }
 
-        // Hanya tampilkan IKU yang belum memiliki target di tahun ini
+        // Hanya tampilkan IKU/IKT yang belum memiliki target di tahun ini
         $existingIkuIds = IkuPencapaian::where('id_prodi', $prodiId)
             ->where('tahun', $tahun)
             ->pluck('id_iku')
@@ -82,7 +90,7 @@ class IkuPencapaianController extends Controller
             ->exists();
 
         if ($exists) {
-            return redirect()->back()->withErrors(['id_iku' => 'Target untuk IKU ini pada tahun tersebut sudah diatur.'])->withInput();
+            return redirect()->back()->withErrors(['id_iku' => 'Target untuk IKU/IKT ini pada tahun tersebut sudah diatur.'])->withInput();
         }
 
         $pencapaian = IkuPencapaian::create([
@@ -100,7 +108,7 @@ class IkuPencapaianController extends Controller
         // Sinkronisasikan segera
         IkuPencapaian::calculateAndSync($prodiId, $request->tahun);
 
-        return redirect()->route('adminprodi.pencapaian.index', ['tahun' => $request->tahun])->with('success', 'Target IKU berhasil ditambahkan.');
+        return redirect()->route('adminprodi.pencapaian.index', ['tahun' => $request->tahun])->with('success', 'Target IKU/IKT berhasil ditambahkan.');
     }
 
     public function edit(IkuPencapaian $pencapaian)
@@ -148,7 +156,7 @@ class IkuPencapaianController extends Controller
         // Sinkronisasikan segera
         IkuPencapaian::calculateAndSync($pencapaian->id_prodi, $pencapaian->tahun);
 
-        return redirect()->route('adminprodi.pencapaian.index', ['tahun' => $pencapaian->tahun])->with('success', 'Target IKU berhasil diperbarui.');
+        return redirect()->route('adminprodi.pencapaian.index', ['tahun' => $pencapaian->tahun])->with('success', 'Target IKU/IKT berhasil diperbarui.');
     }
 
     public function destroy(IkuPencapaian $pencapaian)
@@ -161,6 +169,6 @@ class IkuPencapaianController extends Controller
         $tahun = $pencapaian->tahun;
         $pencapaian->delete();
 
-        return redirect()->route('adminprodi.pencapaian.index', ['tahun' => $tahun])->with('success', 'Target IKU berhasil dihapus.');
+        return redirect()->route('adminprodi.pencapaian.index', ['tahun' => $tahun])->with('success', 'Target IKU/IKT berhasil dihapus.');
     }
 }

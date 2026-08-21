@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>EWS Alert - Ketercapaian IKU</title>
+    <title>EWS Alert - Ketercapaian IKU/IKT</title>
     <style>
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -129,14 +129,14 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>SISTEM EARLY WARNING IKU</h1>
+            <h1>SISTEM EARLY WARNING IKU/IKT</h1>
             <p>Peringatan Kinerja Ketercapaian Indikator</p>
         </div>
 
         <!-- Content -->
         <div class="content">
             <div class="alert-card">
-                <div class="alert-card-title">Terdeteksi Indikator Kinerja Utama (IKU) Bermasalah</div>
+                <div class="alert-card-title">Terdeteksi Indikator Kinerja Utama (IKU/IKT) Bermasalah</div>
                 <p class="alert-card-text">
                     Sistem Early Warning System (EWS) mendeteksi bahwa indikator di bawah ini memerlukan perhatian segera karena belum memenuhi target yang ditetapkan untuk tahun akademik {{ $pencapaian->tahun }}.
                 </p>
@@ -155,11 +155,11 @@
                         <td>{{ $pencapaian->prodi ? $pencapaian->prodi->nama_prodi : '-' }}</td>
                     </tr>
                     <tr>
-                        <td style="font-weight: 600;">Indikator IKU</td>
+                        <td style="font-weight: 600;">Indikator IKU/IKT</td>
                         <td><strong>{{ $pencapaian->iku ? $pencapaian->iku->nama_iku : '-' }}</strong></td>
                     </tr>
                     <tr>
-                        <td style="font-weight: 600;">Deskripsi IKU</td>
+                        <td style="font-weight: 600;">Deskripsi IKU/IKT</td>
                         <td style="font-size: 13px; color: #4b5563;">{{ $pencapaian->iku ? $pencapaian->iku->deskripsi : '-' }}</td>
                     </tr>
                     <tr>
@@ -188,16 +188,16 @@
             </table>
 
             <p style="font-size: 14px; line-height: 1.6; color: #4b5563;">
-                Mohon untuk segera berkoordinasi dengan dosen penanggung jawab indikator tersebut guna mengunggah bukti tambahan atau memperbaiki bukti yang tidak valid agar status pencapaian IKU ini dapat kembali terpenuhi.
+                Mohon untuk segera berkoordinasi dengan dosen penanggung jawab indikator tersebut guna mengunggah bukti tambahan atau memperbaiki bukti yang tidak valid agar status pencapaian IKU/IKT ini dapat kembali terpenuhi.
             </p>
 
             <!-- CTA Button -->
-            <a href="{{ url('/adminprodi/pencapaian?tahun=' . $pencapaian->tahun) }}" class="btn">Buka Dashboard IKU</a>
+            <a href="{{ url('/adminprodi/pencapaian?tahun=' . $pencapaian->tahun) }}" class="btn">Buka Dashboard IKU/IKT</a>
         </div>
 
         <!-- Footer -->
         <div class="footer">
-            <p>Email ini dikirimkan secara otomatis oleh Sistem Early Warning IKU.</p>
+            <p>Email ini dikirimkan secara otomatis oleh Sistem Early Warning IKU/IKT.</p>
             <p>&copy; {{ date('Y') }} Tim Penjaminan Mutu &ndash; Universitas</p>
         </div>
     </div>

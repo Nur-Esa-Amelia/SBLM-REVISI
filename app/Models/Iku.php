@@ -13,6 +13,7 @@ class Iku extends Model
 
     protected $fillable = [
         'id_kategori',
+        'kode_iku',
         'nama_iku',
         'deskripsi',
     ];
