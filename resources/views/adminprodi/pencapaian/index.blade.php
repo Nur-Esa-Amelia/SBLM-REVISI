@@ -34,26 +34,28 @@
             <div class="filter-item-custom" style="max-width: 250px;">
                 <label for="search" class="form-label-custom">Pencarian</label>
                 <div class="search-wrapper">
-                    <svg class="search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
                     <input type="text" name="search" id="search" class="form-input-custom" placeholder="Cari IKU/IKT..." value="{{ request('search') }}">
-                    <button type="submit" class="btn-search">Cari</button>
+                    <button type="submit" class="btn-search" title="Cari">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="{{ route('adminprodi.pencapaian.index', ['tahun' => $tahun]) }}" class="btn-reset" title="Reset Pencarian">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                    </a>
                 </div>
             </div>
-            @if(request('search'))
-                <a href="{{ route('adminprodi.pencapaian.index', ['tahun' => $tahun]) }}" class="btn-reset" title="Reset Pencarian" style="height: 42px; margin-bottom: 0px;">
-                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </a>
-            @endif
+
         </form>
 
-        <a href="{{ route('adminprodi.pencapaian.create', ['tahun' => $tahun]) }}" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.8rem;">
+        <button type="button" onclick="openModal('modalCreate')" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.8rem;">
             <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
             </svg>
             Atur Target Baru
-        </a>
+        </button>
     </div>
 
     <!-- Table content -->
@@ -97,11 +99,11 @@
                         </td>
                         <td style="text-align: center;">
                             <div style="display: inline-flex; gap: 8px; justify-content: center; align-items: center;">
-                                <a href="{{ route('adminprodi.pencapaian.edit', $item->id) }}" class="btn-action-edit" title="Edit">
+                                <button type="button" onclick="openEditModal({{ $item->id }}, '{{ htmlspecialchars(addslashes($item->iku->nama_iku)) }}', '{{ htmlspecialchars(addslashes($item->target)) }}', '{{ htmlspecialchars(addslashes($item->satuan)) }}', '{{ htmlspecialchars(addslashes($item->objek)) }}', '{{ htmlspecialchars(addslashes($item->keterangan)) }}')" class="btn-action-edit" title="Edit">
                                     <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                     </svg>
-                                </a>
+                                </button>
                                 <form action="{{ route('adminprodi.pencapaian.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus target IKU/IKT ini?');" style="display: inline-flex;">
                                     @csrf
                                     @method('DELETE')
@@ -127,7 +129,135 @@
 
     <!-- Pagination -->
     <div>
-        {{ $pencapaian->appends(['tahun' => $tahun])->onEachSide(10)->links() }}
+        {{ $pencapaian->appends(['tahun' => $tahun, 'search' => request('search')])->onEachSide(10)->links() }}
     </div>
 </div>
+
+<!-- Modal Tambah -->
+<div id="modalCreate" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Tambah Target IKU/IKT Tahun {{ $tahun }}</h5>
+            <button type="button" class="btn-close" onclick="closeModal('modalCreate')">
+                <svg style="width:20px;height:20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <form action="{{ route('adminprodi.pencapaian.store') }}" method="POST" class="ajax-form">
+            @csrf
+            <input type="hidden" name="tahun" value="{{ $tahun }}">
+            <div class="modal-body">
+                <div style="margin-bottom: 16px;">
+                    <label for="id_iku" class="form-label-custom">Pilih Indikator IKU/IKT <span style="color: #ef4444;">*</span></label>
+                    <select id="id_iku" name="id_iku" class="form-select-custom" required>
+                        <option value="">-- Pilih Indikator --</option>
+                        @foreach($ikuList as $item)
+                            <option value="{{ $item->id }}">{{ $item->nama_iku }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                    <div>
+                        <label for="target" class="form-label-custom">Nilai Target (Angka) <span style="color: #ef4444;">*</span></label>
+                        <input type="text" class="form-input-custom" id="target" name="target" required placeholder="Contoh: 80">
+                    </div>
+                    <div>
+                        <label for="satuan" class="form-label-custom">Satuan Target <span style="color: #ef4444;">*</span></label>
+                        <select id="satuan" name="satuan" class="form-select-custom" required>
+                            <option value="persen">Persen (%)</option>
+                            <option value="angka">Angka (Absolut)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <label for="objek" class="form-label-custom">Objek Sasaran / Pembagi <span style="color: #ef4444;">*</span></label>
+                    <select id="objek" name="objek" class="form-select-custom" required>
+                        <option value="mahasiswa">Mahasiswa</option>
+                        <option value="dosen">Dosen</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <label for="keterangan" class="form-label-custom">Keterangan Tambahan</label>
+                    <textarea class="form-input-custom" id="keterangan" name="keterangan" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-header" style="justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('modalCreate')">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan Target</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Edit -->
+<div id="modalEdit" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Edit Target IKU/IKT Tahun {{ $tahun }}</h5>
+            <button type="button" class="btn-close" onclick="closeModal('modalEdit')">
+                <svg style="width:20px;height:20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <form id="formEdit" method="POST" class="ajax-form">
+            @csrf
+            @method('PUT')
+            <div class="modal-body">
+                <div style="margin-bottom: 16px;">
+                    <label class="form-label-custom">Indikator IKU/IKT</label>
+                    <input type="text" class="form-input-custom" id="edit_nama_iku" readonly style="background-color: var(--bg-surface2); cursor: not-allowed;">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                    <div>
+                        <label for="edit_target" class="form-label-custom">Nilai Target (Angka) <span style="color: #ef4444;">*</span></label>
+                        <input type="text" class="form-input-custom" id="edit_target" name="target" required>
+                    </div>
+                    <div>
+                        <label for="edit_satuan" class="form-label-custom">Satuan Target <span style="color: #ef4444;">*</span></label>
+                        <select id="edit_satuan" name="satuan" class="form-select-custom" required>
+                            <option value="persen">Persen (%)</option>
+                            <option value="angka">Angka (Absolut)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <label for="edit_objek" class="form-label-custom">Objek Sasaran / Pembagi <span style="color: #ef4444;">*</span></label>
+                    <select id="edit_objek" name="objek" class="form-select-custom" required>
+                        <option value="mahasiswa">Mahasiswa</option>
+                        <option value="dosen">Dosen</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <label for="edit_keterangan" class="form-label-custom">Keterangan Tambahan</label>
+                    <textarea class="form-input-custom" id="edit_keterangan" name="keterangan" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-header" style="justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('modalEdit')">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openEditModal(id, nama_iku, target, satuan, objek, keterangan) {
+        // Set form action
+        document.getElementById('formEdit').action = `/adminprodi/pencapaian/${id}`;
+        
+        // Populate inputs
+        document.getElementById('edit_nama_iku').value = nama_iku;
+        document.getElementById('edit_target').value = target;
+        document.getElementById('edit_satuan').value = satuan;
+        document.getElementById('edit_objek').value = objek;
+        document.getElementById('edit_keterangan').value = keterangan;
+        
+        // Open modal
+        openModal('modalEdit');
+    }
+</script>
 @endsection

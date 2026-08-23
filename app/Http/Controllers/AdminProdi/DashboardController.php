@@ -153,7 +153,18 @@ class DashboardController extends Controller
             $query->where('status', $status);
         }
 
-        $riwayat = $query->latest()->paginate(10);
+        $riwayat = $query->latest()->paginate(request('per_page', 10));
+
+        // Ambil seluruh IKU/IKT yang memiliki target di program studi ini untuk tahun akademik aktif
+        $ikus = \App\Models\Iku::whereIn('id', function ($query) use ($prodiId, $tahunAktif) {
+            $query->select('id_iku')
+                ->from('iku_pencapaian')
+                ->where('id_prodi', $prodiId)
+                ->where('tahun', $tahunAktif);
+        })->get();
+        
+        // Ambil semua dokumen bukti yang memungkinkan untuk IKU/IKT tersebut
+        $buktiIku = \App\Models\BuktiIku::whereIn('id_iku', $ikus->pluck('id'))->get();
 
         return view('adminprodi.bukti_dosen.index', compact(
             'riwayat',
@@ -161,7 +172,9 @@ class DashboardController extends Controller
             'tahun',
             'status',
             'prodiName',
-            'settings'
+            'settings',
+            'ikus',
+            'buktiIku'
         ));
     }
 
@@ -197,7 +210,7 @@ class DashboardController extends Controller
                 ->where('tahun', $tahun)
                 ->get();
 
-            // Periksa status unggahan bukti untuk masing-masing tugas
+            // mengecek iku sudah di isi/blm dan status bukti
             foreach ($dosenItem->assignments as $assign) {
                 $proof = PengisianBukti::where('id_user', $dosenItem->id)
                     ->where('id_iku', $assign->id_iku)

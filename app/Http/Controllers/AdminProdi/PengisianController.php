@@ -71,7 +71,7 @@ class PengisianController extends Controller
             'files.*.max' => 'Ukuran berkas bukti maksimal adalah 10 MB.',
         ]);
 
-        // Keamanan: pastikan IKU/IKT tersebut dikonfigurasi target pencapaiannya untuk prodi ini
+        // cek punya terget/blm
         $hasTarget = IkuPencapaian::where('id_prodi', $prodiId)
             ->where('id_iku', $request->id_iku)
             ->where('tahun', $tahunAktif)

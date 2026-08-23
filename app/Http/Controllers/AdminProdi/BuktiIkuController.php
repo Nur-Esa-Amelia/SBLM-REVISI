@@ -24,7 +24,7 @@ class BuktiIkuController extends Controller
                              ->orWhere('deskripsi', 'like', "%{$search}%");
             })
             ->orderBy('id', 'asc')
-            ->paginate(10)
+            ->paginate(request('per_page', 10))
             ->appends(['id_iku' => $selectedIku, 'search' => $search]);
 
         return view('adminprodi.bukti.index', compact('bukti', 'ikuList', 'selectedIku', 'search'));

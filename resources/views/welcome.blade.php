@@ -7,7 +7,7 @@
     .welcome-container {
         width: 100%;
         max-width: 480px;
-        background: linear-gradient(180deg, #7283B9 0%, #7b8cc2 100%);
+        background: linear-gradient(180deg, #7283B9 0%, #0080FF 100%);
         border: 1px solid rgba(255,255,255,0.18);
         border-radius: 24px;
         padding: 48px 36px;
@@ -136,7 +136,7 @@
 
 <div class="welcome-container">
     <div class="logo-wrapper">
-        <img src="{{ asset('images/logo politeknik sukabumi.png') }}" alt="Logo" style="height: 80px; width: auto; object-fit: contain;">
+        <img src="{{ asset('images/LOGO POLTEKKKKK.jpg') }}" alt="Logo" style="height: 80px; width: auto; object-fit: contain;">
     </div>
 
     <div>

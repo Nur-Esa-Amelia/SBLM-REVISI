@@ -17,7 +17,7 @@ class IkuController extends Controller
         $search = $request->input('search');
 
         $iku = Iku::with('kategori')
-            ->when($selectedKategori, function ($query, $selectedKategori) {
+            ->when($selectedKategori, function ($query, $selectedKategori) { //filter kategori
                 return $query->where('id_kategori', $selectedKategori);
             })
             ->when($search, function ($query, $search) {
@@ -27,7 +27,7 @@ class IkuController extends Controller
                 });
             })
             ->orderBy('id', 'asc')
-            ->paginate(10)
+            ->paginate(request('per_page', 10))
             ->appends(['id_kategori' => $selectedKategori, 'search' => $search]);
 
         return view('adminprodi.iku.index', compact('iku', 'kategoriList', 'selectedKategori', 'search'));
@@ -43,7 +43,7 @@ class IkuController extends Controller
     {
         $request->validate([
             'id_kategori' => 'required|exists:kategori,id',
-            'kode_iku' => 'required|string|max:50|unique:iku,kode_iku',
+            'kode_iku' => 'nullable|string|max:50|unique:iku,kode_iku',
             'nama_iku' => 'required|string|max:255|unique:iku,nama_iku',
             'deskripsi' => 'nullable|string',
         ]);
@@ -63,7 +63,7 @@ class IkuController extends Controller
     {
         $request->validate([
             'id_kategori' => 'required|exists:kategori,id',
-            'kode_iku' => 'required|string|max:50|unique:iku,kode_iku,' . $iku->id,
+            'kode_iku' => 'nullable|string|max:50|unique:iku,kode_iku,' . $iku->id,
             'nama_iku' => 'required|string|max:255|unique:iku,nama_iku,' . $iku->id,
             'deskripsi' => 'nullable|string',
         ]);

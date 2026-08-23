@@ -20,16 +20,12 @@ class ProdiController extends Controller
             })
             ->withCount('users')
             ->orderBy('nama_prodi')
-            ->paginate(10)
+            ->paginate(request('per_page', 10))
             ->withQueryString();
 
         return view('adminp2mp.prodi.index', compact('prodis', 'search'));
     }
 
-    public function create()
-    {
-        return view('adminp2mp.prodi.create');
-    }
 
     public function store(Request $request)
     {
@@ -48,10 +44,6 @@ class ProdiController extends Controller
             ->with('success', 'Program Studi berhasil ditambahkan.');
     }
 
-    public function edit(Prodi $prodi)
-    {
-        return view('adminp2mp.prodi.edit', compact('prodi'));
-    }
 
     public function update(Request $request, Prodi $prodi)
     {

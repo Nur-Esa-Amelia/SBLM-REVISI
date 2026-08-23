@@ -9,39 +9,40 @@
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
         <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0;">Daftar Indikator Kinerja Utama</h3>
 
-        <div style="display: flex; align-items: center; gap: 12px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end;">
-            <form method="GET" action="{{ route('adminprodi.iku.index') }}" id="filterKategoriForm" style="display: flex; align-items: center; gap: 10px; margin: 0;">
-                <select id="id_kategori" name="id_kategori" class="form-select-custom" style="min-width: 180px;" onchange="document.getElementById('filterKategoriForm').submit();">
-                    <option value="">Semua Kategori</option>
-                    @foreach($kategoriList as $kategori)
-                        <option value="{{ $kategori->id }}" {{ (string)$selectedKategori === (string)$kategori->id ? 'selected' : '' }}>
-                            {{ $kategori->nama_kategori }}
-                        </option>
-                    @endforeach
-                </select>
-                <div class="search-wrapper">
-                    <svg class="search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        @if(auth()->user()->role === 'admin_p2mp')
+            <button type="button" onclick="openModal('modalCreate')" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.8rem;">
+                <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                </svg>
+                Tambah IKU/IKT
+            </button>
+        @endif
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; align-items: center; width: 100%;">
+        <form method="GET" action="{{ route('adminprodi.iku.index') }}" id="filterKategoriForm" style="display: flex; align-items: center; gap: 10px; margin: 0; flex-wrap: nowrap; justify-content: flex-end;">
+            <select id="id_kategori" name="id_kategori" class="form-select-custom" style="width: auto; max-width: 300px;" onchange="document.getElementById('filterKategoriForm').submit();">
+                <option value="">Semua Kategori</option>
+                @foreach($kategoriList as $kategori)
+                    <option value="{{ $kategori->id }}" {{ (string)$selectedKategori === (string)$kategori->id ? 'selected' : '' }}>
+                        {{ $kategori->nama_kategori }}
+                    </option>
+                @endforeach
+            </select>
+            <div class="search-wrapper">
+                <input type="text" name="search" class="form-input-custom" placeholder="Cari Kode/Nama IKU/IKT..." value="{{ request('search') }}">
+                <button type="submit" class="btn-search" title="Cari">
+                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
-                    <input type="text" name="search" class="form-input-custom" placeholder="Cari Kode/Nama IKU/IKT..." value="{{ request('search') }}">
-                    <button type="submit" class="btn-search">Cari</button>
-                </div>
-                @if(request('search') || request('id_kategori'))
-                    <a href="{{ route('adminprodi.iku.index') }}" class="btn-reset" title="Reset Pencarian">
-                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </a>
-                @endif
-            </form>
-
-            @if(auth()->user()->role === 'admin_p2mp')
-                <a href="{{ route('adminprodi.iku.create') }}" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.8rem;">
-                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                </button>
+                <a href="{{ route('adminprodi.iku.index') }}" class="btn-reset" title="Reset Pencarian">
+                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                     </svg>
-                    Tambah IKU/IKT
                 </a>
-            @endif
-        </div>
+            </div>
+        </form>
     </div>
 
     <div class="table-responsive">
@@ -73,11 +74,11 @@
                         @if(auth()->user()->role === 'admin_p2mp')
                             <td style="text-align: center;">
                                 <div style="display: inline-flex; gap: 8px; justify-content: center; align-items: center;">
-                                    <a href="{{ route('adminprodi.iku.edit', $item->id) }}" class="btn-action-edit" title="Edit">
+                                    <button type="button" onclick="openEditModal({{ $item->id }}, '{{ $item->id_kategori }}', '{{ htmlspecialchars(addslashes($item->kode_iku)) }}', '{{ htmlspecialchars(addslashes($item->nama_iku)) }}', '{{ htmlspecialchars(addslashes($item->deskripsi)) }}')" class="btn-action-edit" title="Edit">
                                         <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                         </svg>
-                                    </a>
+                                    </button>
                                     <form action="{{ route('adminprodi.iku.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data IKU/IKT ini? Target tahunan dan pengisian bukti terkait juga akan terhapus.');" style="display: inline-flex;">
                                         @csrf
                                         @method('DELETE')
@@ -104,7 +105,110 @@
 
     <!-- Pagination -->
     <div>
-        {{ $iku->onEachSide(10)->links() }}
+        {{ $iku->appends(['search' => request('search'), 'id_kategori' => request('id_kategori')])->onEachSide(10)->links() }}
     </div>
 </div>
+
+@if(auth()->user()->role === 'admin_p2mp')
+<!-- Modal Tambah -->
+<div id="modalCreate" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Tambah Data IKU/IKT Baru</h5>
+            <button type="button" class="btn-close" onclick="closeModal('modalCreate')">
+                <svg style="width:20px;height:20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <form action="{{ route('adminprodi.iku.store') }}" method="POST" class="ajax-form">
+            @csrf
+            <div class="modal-body">
+                <div style="margin-bottom: 16px;">
+                    <label for="id_kategori_create" class="form-label-custom">Kategori IKU/IKT <span style="color: #ef4444;">*</span></label>
+                    <select id="id_kategori_create" name="id_kategori" class="form-select-custom" required>
+                        <option value="">-- Pilih Kategori --</option>
+                        @foreach($kategoriList as $kategori)
+                            <option value="{{ $kategori->id }}">{{ $kategori->nama_kategori }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label for="kode_iku" class="form-label-custom">Kode IKU/IKT (Opsional)</label>
+                    <input type="text" class="form-input-custom" id="kode_iku" name="kode_iku" placeholder="Contoh: IKU-01">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label for="nama_iku" class="form-label-custom">Nama Indikator IKU/IKT <span style="color: #ef4444;">*</span></label>
+                    <input type="text" class="form-input-custom" id="nama_iku" name="nama_iku" required>
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label for="deskripsi" class="form-label-custom">Deskripsi / Keterangan</label>
+                    <textarea class="form-input-custom" id="deskripsi" name="deskripsi" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-header" style="justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('modalCreate')">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan IKU/IKT</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Edit -->
+<div id="modalEdit" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Edit Data IKU/IKT</h5>
+            <button type="button" class="btn-close" onclick="closeModal('modalEdit')">
+                <svg style="width:20px;height:20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <form id="formEdit" method="POST" class="ajax-form">
+            @csrf
+            @method('PUT')
+            <div class="modal-body">
+                <div style="margin-bottom: 16px;">
+                    <label for="edit_id_kategori" class="form-label-custom">Kategori IKU/IKT <span style="color: #ef4444;">*</span></label>
+                    <select id="edit_id_kategori" name="id_kategori" class="form-select-custom" required>
+                        <option value="">-- Pilih Kategori --</option>
+                        @foreach($kategoriList as $kategori)
+                            <option value="{{ $kategori->id }}">{{ $kategori->nama_kategori }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label for="edit_kode_iku" class="form-label-custom">Kode IKU/IKT (Opsional)</label>
+                    <input type="text" class="form-input-custom" id="edit_kode_iku" name="kode_iku" placeholder="Contoh: IKU-01">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label for="edit_nama_iku" class="form-label-custom">Nama Indikator IKU/IKT <span style="color: #ef4444;">*</span></label>
+                    <input type="text" class="form-input-custom" id="edit_nama_iku" name="nama_iku" required>
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label for="edit_deskripsi" class="form-label-custom">Deskripsi / Keterangan</label>
+                    <textarea class="form-input-custom" id="edit_deskripsi" name="deskripsi" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-header" style="justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('modalEdit')">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openEditModal(id, id_kategori, kode_iku, nama_iku, deskripsi) {
+        // Set form action
+        document.getElementById('formEdit').action = `/adminprodi/iku/${id}`;
+        
+        // Populate inputs
+        document.getElementById('edit_id_kategori').value = id_kategori;
+        document.getElementById('edit_kode_iku').value = kode_iku;
+        document.getElementById('edit_nama_iku').value = nama_iku;
+        document.getElementById('edit_deskripsi').value = deskripsi;
+        
+        // Open modal
+        openModal('modalEdit');
+    }
+</script>
+@endif
 @endsection

@@ -52,7 +52,7 @@ class DashboardController extends Controller
             sort($tahunList);
         }
 
-        // menampilkan iku berdasarkan tahun yg di pilih
+        // menentukan tahun yang akan digunakan
         $tahunAktif = $settings?->tahun_aktif ?? date('Y');
         $tahun = $request->query('tahun', $tahunAktif);
 
@@ -178,6 +178,7 @@ class DashboardController extends Controller
 
         $query = PengisianBukti::with(['user.prodi', 'iku.kategori', 'buktiIku', 'files']);
 
+        //menampilkan data pengisian bukti hanya dari dosen yang berasal dari prodi yang dipilih
         if ($request->filled('prodi_id')) {
             $query->whereHas('user', function ($q) use ($prodiId) {
                 $q->where('prodi_id', $prodiId);
@@ -192,7 +193,7 @@ class DashboardController extends Controller
             $query->where('tahun', $tahun);
         }
 
-        $riwayat = $query->latest()->paginate(10);
+        $riwayat = $query->latest()->paginate(request('per_page', 10));
 
         return view('adminp2mp.validasi.index', compact(
             'riwayat',

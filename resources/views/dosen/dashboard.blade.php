@@ -29,28 +29,28 @@
     <div style="display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; min-width: 220px;">
         <!-- System Time Card -->
         <div class="system-time-card" style="margin: 0; width: 100%;">
-            <div class="time-icon">
+            <div class="time-icon time-icon-1">
                 <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
             </div>
             <div class="time-text">
                 <span class="time-label">Tahun Akademik Berjalan</span>
-                <span class="time-value" style="color: #10b981;">{{ $tahunAktif }}</span>
+                <span class="time-value time-value-1">{{ $tahunAktif }}</span>
             </div>
         </div>
 
         <!-- Achievement Progress Card -->
         @if($totalAssignments > 0)
-            <div class="system-time-card" style="margin: 0; width: 100%; border-color: rgba(16, 185, 129, 0.2); background-color: rgba(16, 185, 129, 0.03);">
-                <div class="time-icon" style="background-color: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.2); color: #10b981;">
+            <div class="system-time-card" style="margin: 0; width: 100%;">
+                <div class="time-icon time-icon-1">
                     <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
                 <div class="time-text" style="flex: 1;">
                     <span class="time-label">Rata-Rata Capaian Tugas Anda</span>
-                    <span class="time-value" style="color: var(--text-primary); display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                    <span class="time-value" style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
                         <span>{{ $achievementPercentage }}%</span>
                     </span>
                     <!-- Progress Bar -->
@@ -61,14 +61,14 @@
             </div>
         @else
             <div class="system-time-card" style="margin: 0; width: 100%;">
-                <div class="time-icon" style="color: #64748b; background-color: rgba(100, 116, 139, 0.1); border-color: rgba(100, 116, 139, 0.2);">
+                <div class="time-icon time-icon-2">
                     <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
                 <div class="time-text">
                     <span class="time-label">Capaian Tugas Anda</span>
-                    <span class="time-value" style="color: #64748b; font-size: 0.75rem;">Belum ada tugas ditugaskan</span>
+                    <span class="time-value time-value-2" style="font-size: 0.75rem;">Belum ada tugas ditugaskan</span>
                 </div>
             </div>
         @endif

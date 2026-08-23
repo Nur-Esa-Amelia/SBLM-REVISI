@@ -15,14 +15,14 @@
         </p>
     </div>
     <div class="system-time-card">
-        <div class="time-icon">
+        <div class="time-icon time-icon-1">
             <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
             </svg>
         </div>
         <div class="time-text">
             <span class="time-label">Waktu Sistem</span>
-            <span class="time-value">{{ date('d M Y') }}</span>
+            <span class="time-value time-value-1">{{ date('d M Y') }}</span>
         </div>
     </div>
 </div>
@@ -138,7 +138,6 @@
         </div>
         <div style="display: flex; flex-direction: column; gap: 4px;">
             <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); margin: 0;">Perspektif Mahasiswa</h4>
-            <span style="font-size: 0.65rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Balanced Scorecard</span>
             <span class="badge-custom {{ $avgMahasiswa >= 100 ? 'badge-green' : ($avgMahasiswa >= 60 ? 'badge-blue' : 'badge-rose') }}" style="align-self: flex-start; font-size: 0.6rem; margin-top: 2px;">
                 {{ $avgMahasiswa >= 100 ? 'Sangat Baik' : ($avgMahasiswa >= 60 ? 'Cukup Baik' : 'Kurang/Risiko') }}
             </span>
@@ -153,7 +152,6 @@
         </div>
         <div style="display: flex; flex-direction: column; gap: 4px;">
             <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); margin: 0;">Perspektif Dosen</h4>
-            <span style="font-size: 0.65rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Balanced Scorecard</span>
             <span class="badge-custom {{ $avgDosen >= 100 ? 'badge-green' : ($avgDosen >= 60 ? 'badge-purple' : 'badge-rose') }}" style="align-self: flex-start; font-size: 0.6rem; margin-top: 2px;">
                 {{ $avgDosen >= 100 ? 'Sangat Baik' : ($avgDosen >= 60 ? 'Cukup Baik' : 'Kurang/Risiko') }}
             </span>

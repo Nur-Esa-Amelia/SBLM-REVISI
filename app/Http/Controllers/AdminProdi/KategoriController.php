@@ -17,7 +17,7 @@ class KategoriController extends Controller
                              ->orWhere('deskripsi', 'like', "%{$search}%");
             })
             ->orderBy('id', 'asc')
-            ->paginate(10)
+            ->paginate(request('per_page', 10))
             ->appends(['search' => $search]);
             
         return view('adminprodi.kategori.index', compact('kategori', 'search'));

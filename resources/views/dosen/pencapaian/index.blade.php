@@ -183,14 +183,14 @@
                                         </div>
                                     </details>
 
-                                        @if($isAssigned)
+                                        @if($isAssigned && $item->status !== 'Tercapai')
                                             <a href="{{ route('dosen.pengisian.create', ['id_iku' => $item->id_iku]) }}" class="btn btn-primary" style="padding: 4px 8px; font-size: 0.7rem; border-radius: 6px; align-self: flex-start; justify-content: center; height: 26px;">
                                                 + Tambah Bukti Baru
                                             </a>
                                         @endif
                                     </div>
                                 @else
-                                    @if($isAssigned)
+                                    @if($isAssigned && $item->status !== 'Tercapai')
                                         <div style="display: flex; flex-direction: column; gap: 6px;">
                                             <span style="font-size: 0.75rem; color: #f59e0b; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
                                                 <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -202,6 +202,8 @@
                                                 Unggah Bukti Sekarang
                                             </a>
                                         </div>
+                                    @elseif($isAssigned && $item->status === 'Tercapai')
+                                        <span style="font-size: 0.75rem; color: #10b981; font-weight: 500;">Target prodi sudah terpenuhi</span>
                                     @else
                                         <span style="font-size: 0.75rem; color: #64748b; font-style: italic;">Bukan Tugas Anda</span>
                                     @endif

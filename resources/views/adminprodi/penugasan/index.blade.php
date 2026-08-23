@@ -33,28 +33,30 @@
             <div class="filter-item-custom" style="max-width: 250px;">
                 <label for="search" class="form-label-custom">Pencarian</label>
                 <div class="search-wrapper">
-                    <svg class="search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
                     <input type="text" name="search" id="search" class="form-input-custom" placeholder="Cari Dosen/IKU/IKT..." value="{{ request('search') }}">
-                    <button type="submit" class="btn-search">Cari</button>
+                    <button type="submit" class="btn-search" title="Cari">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="{{ route('adminprodi.penugasan.index', ['tahun' => $tahun]) }}" class="btn-reset" title="Reset Pencarian">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                    </a>
                 </div>
             </div>
         </form>
 
         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-            @if(request('id_iku') || request('search'))
-                <a href="{{ route('adminprodi.penugasan.index', ['tahun' => $tahun]) }}" class="btn-reset" title="Reset Pencarian" style="height: 42px;">
-                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </a>
-            @endif
 
-            <a href="{{ route('adminprodi.penugasan.create', ['tahun' => $tahun]) }}" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.8rem;">
+
+            <button type="button" onclick="openModal('modalCreate')" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.8rem;">
                 <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
                 </svg>
                 Tugaskan Dosen
-            </a>
+            </button>
         </div>
     </div>
 
@@ -85,11 +87,11 @@
                         <td style="text-align: center; font-weight: 600; color: var(--text-secondary);">{{ $item->tahun }}</td>
                         <td style="text-align: center;">
                             <div style="display: inline-flex; gap: 8px; justify-content: center; align-items: center;">
-                                <a href="{{ route('adminprodi.penugasan.edit', $item->id) }}" class="btn-action-edit" title="Edit">
+                                <button type="button" onclick="openEditModal({{ $item->id }}, '{{ $item->id_user }}', '{{ $item->id_iku }}')" class="btn-action-edit" title="Edit">
                                     <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                     </svg>
-                                </a>
+                                </button>
                                 <form action="{{ route('adminprodi.penugasan.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus penugasan dosen ini?');" style="display: inline-flex;">
                                     @csrf
                                     @method('DELETE')
@@ -118,4 +120,101 @@
         {{ $penugasan->appends(['tahun' => $tahun, 'id_iku' => request('id_iku')])->onEachSide(10)->links() }}
     </div>
 </div>
+
+<!-- Modal Tambah -->
+<div id="modalCreate" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Penugasan Dosen - Tahun {{ $tahun }}</h5>
+            <button type="button" class="btn-close" onclick="closeModal('modalCreate')">
+                <svg style="width:20px;height:20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <form action="{{ route('adminprodi.penugasan.store') }}" method="POST" class="ajax-form">
+            @csrf
+            <input type="hidden" name="tahun" value="{{ $tahun }}">
+            <div class="modal-body">
+                <div style="margin-bottom: 16px;">
+                    <label for="id_user_create" class="form-label-custom">Pilih Dosen Penerima Tugas <span style="color: #ef4444;">*</span></label>
+                    <select id="id_user_create" name="id_user" class="form-select-custom" required>
+                        <option value="">-- Pilih Dosen --</option>
+                        @foreach($dosenList as $d)
+                            <option value="{{ $d->id }}">{{ $d->name }} ({{ $d->email }})</option>
+                        @endforeach
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label for="id_iku_create" class="form-label-custom">Pilih Indikator IKU/IKT <span style="color: #ef4444;">*</span></label>
+                    <select id="id_iku_create" name="id_iku" class="form-select-custom" required>
+                        <option value="">-- Pilih Indikator IKU/IKT --</option>
+                        @foreach($unassignedIku as $item)
+                            <option value="{{ $item->id }}">{{ $item->nama_iku }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="modal-header" style="justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('modalCreate')">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan Penugasan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Edit -->
+<div id="modalEdit" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Edit Penugasan Dosen - Tahun {{ $tahun }}</h5>
+            <button type="button" class="btn-close" onclick="closeModal('modalEdit')">
+                <svg style="width:20px;height:20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <form id="formEdit" method="POST" class="ajax-form">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="tahun" value="{{ $tahun }}">
+            <div class="modal-body">
+                <div style="margin-bottom: 16px;">
+                    <label for="edit_id_user" class="form-label-custom">Pilih Dosen Penerima Tugas <span style="color: #ef4444;">*</span></label>
+                    <select id="edit_id_user" name="id_user" class="form-select-custom" required>
+                        <option value="">-- Pilih Dosen --</option>
+                        @foreach($dosenList as $d)
+                            <option value="{{ $d->id }}">{{ $d->name }} ({{ $d->email }})</option>
+                        @endforeach
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label for="edit_id_iku" class="form-label-custom">Pilih Indikator IKU/IKT <span style="color: #ef4444;">*</span></label>
+                    <select id="edit_id_iku" name="id_iku" class="form-select-custom" required>
+                        <option value="">-- Pilih Indikator IKU/IKT --</option>
+                        @foreach($ikuList as $item)
+                            <option value="{{ $item->id }}">{{ $item->nama_iku }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="modal-header" style="justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('modalEdit')">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openEditModal(id, id_user, id_iku) {
+        // Set form action
+        document.getElementById('formEdit').action = `/adminprodi/penugasan/${id}`;
+        
+        // Populate inputs
+        document.getElementById('edit_id_user').value = id_user;
+        document.getElementById('edit_id_iku').value = id_iku;
+        
+        // Open modal
+        openModal('modalEdit');
+    }
+</script>
 @endsection

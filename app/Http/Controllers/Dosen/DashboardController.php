@@ -63,21 +63,8 @@ class DashboardController extends Controller
             $persentase = 0;
 
             if ($pencapaian) {
-                // 1. Nilai target
-                $targetVal = floatval($pencapaian->target);
-                
-                // 2. Konversi jika satuannya persen
-                if ($pencapaian->satuan === 'persen') {
-                    if ($pencapaian->objek === 'mahasiswa') {
-                        $targetNyata = ($targetVal / 100) * ($settings ? $settings->jml_mahasiswa : 0);
-                    } elseif ($pencapaian->objek === 'dosen') {
-                        $targetNyata = ($targetVal / 100) * ($settings ? $settings->jml_dosen : 0);
-                    } else {
-                        $targetNyata = $targetVal;
-                    }
-                } else {
-                    $targetNyata = $targetVal;
-                }
+                // Gunakan fungsi targetNyata dari model
+                $targetNyata = $pencapaian->targetNyata($settings);
 
                 // 3. Realisasi per IKU/IKT = HITUNG berkas bukti yang valid untuk user ini
                 $realisasi = FileIsiBukti::whereHas('pengisianBukti', function ($query) use ($assignment, $user, $tahunAktif) {

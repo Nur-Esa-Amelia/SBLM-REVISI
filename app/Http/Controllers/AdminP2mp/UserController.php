@@ -32,7 +32,7 @@ class UserController extends Controller
                 $query->where('prodi_id', $prodiId);
             })
             ->orderBy('name')
-            ->paginate(10)
+            ->paginate(request('per_page', 10))
             ->withQueryString();
 
         $prodis = Prodi::orderBy('nama_prodi')->get();
@@ -46,18 +46,6 @@ class UserController extends Controller
         return view('adminp2mp.users.index', compact('users', 'prodis', 'roles', 'search', 'role', 'prodiId'));
     }
 
-    public function create()
-    {
-        $prodis = Prodi::orderBy('nama_prodi')->get();
-        $roles = [
-            'admin_p2mp' => 'Admin P2MP',
-            'admin_prodi' => 'Admin Prodi',
-            'kaprodi' => 'Kaprodi',
-            'dosen' => 'Dosen',
-        ];
-
-        return view('adminp2mp.users.create', compact('prodis', 'roles'));
-    }
 
     public function store(Request $request)
     {
@@ -92,18 +80,6 @@ class UserController extends Controller
             ->with('success', 'User berhasil ditambahkan.');
     }
 
-    public function edit(User $user)
-    {
-        $prodis = Prodi::orderBy('nama_prodi')->get();
-        $roles = [
-            'admin_p2mp' => 'Admin P2MP',
-            'admin_prodi' => 'Admin Prodi',
-            'kaprodi' => 'Kaprodi',
-            'dosen' => 'Dosen',
-        ];
-
-        return view('adminp2mp.users.edit', compact('user', 'prodis', 'roles'));
-    }
 
     public function update(Request $request, User $user)
     {

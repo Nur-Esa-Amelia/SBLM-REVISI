@@ -39,10 +39,18 @@ class IkuPencapaianController extends Controller
                 });
             })
             ->orderBy('id', 'asc')
-            ->paginate(10)
+            ->paginate(request('per_page', 10))
             ->appends(['tahun' => $tahun, 'search' => $search]);
 
-        return view('adminprodi.pencapaian.index', compact('pencapaian', 'tahunList', 'tahun', 'settings', 'search'));
+        // mencari IKU yang memiliki target pada tahun yang dipilih.
+        $existingIkuIds = IkuPencapaian::where('id_prodi', $prodiId)
+            ->where('tahun', $tahun)
+            ->pluck('id_iku')
+            ->toArray();
+
+        $ikuList = Iku::whereNotIn('id', $existingIkuIds)->get();
+
+        return view('adminprodi.pencapaian.index', compact('pencapaian', 'tahunList', 'tahun', 'settings', 'search', 'ikuList'));
     }
 
     public function create(Request $request)

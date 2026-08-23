@@ -62,7 +62,7 @@ class IkuPencapaian extends Model
             ? ($settings?->jml_mahasiswa ?? 0)
             : ($settings?->jml_dosen ?? 0);
 
-        return ($target / 100) * $jumlah;
+        return round(($target / 100) * $jumlah);
     }
 
     public function batasBerkas(?Pengaturan $settings = null): int

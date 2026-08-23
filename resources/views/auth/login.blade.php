@@ -32,7 +32,7 @@
         flex-direction: column;
         justify-content: space-between;
         padding: 40px;
-        background: linear-gradient(135deg, #7283B9 0%, #8195d1 45%, #5d6ca6 100%);
+        background: linear-gradient(135deg, #0080FF 100%);
         position: relative;
         overflow: hidden;
         border-right: 1px solid var(--auth-border);
@@ -223,7 +223,7 @@
     <!-- Left Pane: Info & Branding (Desktop only) -->
     <div class="auth-left-panel">
         <div>
-            <h1 class="brand-title">Sistem Monitoring IKU/IKT Politekni Sukabumi</h1>
+            <h1 class="brand-title">Sistem Monitoring IKU/IKT Politeknik Sukabumi</h1>
             <p class="brand-subtitle">Pemantauan & Evaluasi Pencapaian IKU/IKT</p>
         </div>
 
@@ -285,13 +285,13 @@
 
             <!-- Logo -->
             <div>
-                <img src="{{ asset('images/logo Politeknik Sukabumi.png') }}" alt="Logo Politeknik Sukabumi" style="height: 40px; width: auto; object-fit: contain;">
+                <img src="{{ asset('images/LOGO POLTEKKKKK.jpg') }}" alt="Logo Politeknik Sukabumi" style="height: 40px; width: auto; object-fit: contain;">
             </div>
         </div>
 
         <div>
             <h2 class="auth-title" style="text-align: left; margin-bottom: 6px;">Selamat Datang</h2>
-            <p class="auth-subtitle" style="text-align: left; margin-bottom: 28px;">Silakan masukan akun anda untuk mengakses.</p>
+            <p class="auth-subtitle" style="text-align: left; margin-bottom: 28px;">Silakan masukkan akun anda untuk mengakses.</p>
         </div>
 
         <!-- Login Form -->
@@ -301,14 +301,14 @@
             <div style="display: flex; flex-direction: column; gap: 4px;">
                 <!-- Email -->
                 <div class="form-group">
-                    <label for="email" class="form-label">Alamat Email <span style="color: #f43f5e;">*</span></label>
+                    <label for="email" class="form-label">Email <span style="color: #f43f5e;">*</span></label>
                     <div class="input-wrapper">
                         <div class="input-icon-left">
                             <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
                             </svg>
                         </div>
-                        <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="user@polteksmi.ac.id" required class="form-input-with-icon">
+                        <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="Masukkan email yang terdaftar" required class="form-input-with-icon">
                     </div>
                     @error('email')
                         <p class="form-error">{{ $message }}</p>
@@ -317,14 +317,14 @@
 
                 <!-- Password -->
                 <div class="form-group" style="margin-bottom: 20px;">
-                    <label for="password" class="form-label">Kata Sandi <span style="color: #f43f5e;">*</span></label>
+                    <label for="password" class="form-label">Password<span style="color: #f43f5e;">*</span></label>
                     <div class="input-wrapper">
                         <div class="input-icon-left">
                             <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                             </svg>
                         </div>
-                        <input type="password" name="password" id="password" placeholder="Masukkan Kata Sandi" required class="form-input-with-icon-both">
+                        <input type="password" name="password" id="password" placeholder="Masukkan Password" required class="form-input-with-icon-both">
                         <button type="button" id="password-toggle" class="input-icon-right">
                             <svg id="eye-open" style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -355,7 +355,7 @@
 
                 <!-- Submit Button -->
                 <button type="submit" class="btn-login-submit">
-                    <span>Masuk ke Sistem</span>
+                    <span>Masuk</span>
                     <svg style="width: 16px; height: 16px; display: inline-block; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                     </svg>

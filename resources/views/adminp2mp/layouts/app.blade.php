@@ -47,6 +47,20 @@
             --dropdown-border:rgba(255,255,255,0.05);
             --shortcut-bg:    #090d16;
             --time-card-bg:   #090d16;
+            --time-card-border: #1e293b;
+            --time-card-label: #64748b;
+            --time-card-val-1: #38bdf8;
+            --time-card-val-2: #10b981;
+            --time-card-val-3: #f59e0b;
+            --time-icon-bg-1: rgba(56, 189, 248, 0.1);
+            --time-icon-border-1: rgba(56, 189, 248, 0.2);
+            --time-icon-color-1: #38bdf8;
+            --time-icon-bg-2: rgba(16, 185, 129, 0.1);
+            --time-icon-border-2: rgba(16, 185, 129, 0.2);
+            --time-icon-color-2: #10b981;
+            --time-icon-bg-3: rgba(245, 158, 11, 0.1);
+            --time-icon-border-3: rgba(245, 158, 11, 0.2);
+            --time-icon-color-3: #f59e0b;
             --tr-hover-bg:    rgba(30,41,59,0.25);
             --pagination-bg:  #1e293b;
             --pagination-border:#334155;
@@ -78,7 +92,21 @@
             --nav-hover-bg:   rgba(0,0,0,0.04);
             --dropdown-border:rgba(0,0,0,0.06);
             --shortcut-bg:    #f1f5f9;
-            --time-card-bg:   #f1f5f9;
+            --time-card-bg:   linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+            --time-card-border: rgba(37,99,235,0.2);
+            --time-card-label: rgba(255,255,255,0.8);
+            --time-card-val-1: #ffffff;
+            --time-card-val-2: #ffffff;
+            --time-card-val-3: #ffffff;
+            --time-icon-bg-1: rgba(255, 255, 255, 0.15);
+            --time-icon-border-1: rgba(255, 255, 255, 0.3);
+            --time-icon-color-1: #ffffff;
+            --time-icon-bg-2: rgba(255, 255, 255, 0.15);
+            --time-icon-border-2: rgba(255, 255, 255, 0.3);
+            --time-icon-color-2: #ffffff;
+            --time-icon-bg-3: rgba(255, 255, 255, 0.15);
+            --time-icon-border-3: rgba(255, 255, 255, 0.3);
+            --time-icon-color-3: #ffffff;
             --tr-hover-bg:    rgba(226,232,240,0.5);
             --pagination-bg:  #f1f5f9;
             --pagination-border:#e2e8f0;
@@ -134,18 +162,18 @@
             display: flex;
             width: 100vw;
             min-height: 100vh;
+            padding-top: 80px;
         }
 
-        /* Sidebar Styles */
         .sidebar {
             width: 260px;
             background-color: var(--bg-surface);
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            height: calc(100vh - 80px);
             position: sticky;
-            top: 0;
+            top: 80px;
             flex-shrink: 0;
             z-index: 45;
         }
@@ -359,17 +387,19 @@
 
         /* Top Header */
         .top-header {
-            height: 70px;
-            background-color: var(--header-bg);
-            border-bottom: 1px solid var(--border);
+            height: 80px;
+            background-color: #007bff;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 24px;
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 30;
-            backdrop-filter: blur(8px);
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 50;
             flex-shrink: 0;
         }
 
@@ -518,8 +548,8 @@
         }
 
         .system-time-card {
-            background-color: var(--time-card-bg);
-            border: 1px solid var(--border);
+            background: var(--time-card-bg);
+            border: 1px solid var(--time-card-border);
             border-radius: 12px;
             padding: 12px 18px;
             display: flex;
@@ -527,18 +557,34 @@
             gap: 12px;
             z-index: 2;
             flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .time-icon {
             width: 40px;
             height: 40px;
             border-radius: 8px;
-            background-color: rgba(56, 189, 248, 0.1);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            color: #38bdf8;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        
+        .time-icon-1 {
+            background-color: var(--time-icon-bg-1);
+            border: 1px solid var(--time-icon-border-1);
+            color: var(--time-icon-color-1);
+        }
+        
+        .time-icon-2 {
+            background-color: var(--time-icon-bg-2);
+            border: 1px solid var(--time-icon-border-2);
+            color: var(--time-icon-color-2);
+        }
+        
+        .time-icon-3 {
+            background-color: var(--time-icon-bg-3);
+            border: 1px solid var(--time-icon-border-3);
+            color: var(--time-icon-color-3);
         }
 
         .time-text {
@@ -548,13 +594,24 @@
 
         .time-label {
             font-size: 0.65rem;
-            color: var(--text-faint);
+            color: var(--time-card-label);
         }
 
         .time-value {
-            font-size: 0.85rem;
+            font-size: 1rem;
             font-weight: 700;
-            color: var(--text-primary);
+        }
+        
+        .time-value-1 {
+            color: var(--time-card-val-1);
+        }
+        
+        .time-value-2 {
+            color: var(--time-card-val-2);
+        }
+        
+        .time-value-3 {
+            color: var(--time-card-val-3);
         }
 
         /* Responsive Dashboard Grid */
@@ -713,6 +770,78 @@
             font-size: 0.8rem;
             font-weight: 600;
             color: var(--text-muted);
+        }
+
+        /* Search Wrapper */
+        .search-wrapper {
+            display: flex;
+            align-items: stretch;
+            width: auto;
+            max-width: 100%;
+        }
+
+        .search-wrapper .form-input-custom {
+            flex: none;
+            width: 180px;
+            padding: 0 12px !important;
+            border-radius: 4px 0 0 4px;
+            border: 1px solid #d1d5db;
+            border-right: none;
+            height: 38px;
+            background-color: #fff;
+            color: #374151;
+            font-size: 0.875rem;
+            z-index: 1;
+            box-shadow: none;
+        }
+
+        .search-wrapper .form-input-custom:focus {
+            border-color: #00a65a;
+            outline: none;
+        }
+
+        .search-wrapper .btn-search {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 38px;
+            width: 44px;
+            padding: 0;
+            background-color: #00a65a;
+            border: 1px solid #00a65a;
+            color: #fff;
+            cursor: pointer;
+            z-index: 2;
+            border-radius: 0;
+            transition: background-color 0.2s;
+        }
+        
+        .search-wrapper .btn-search:hover {
+            background-color: #008d4c;
+            border-color: #008d4c;
+        }
+
+        .search-wrapper .btn-reset {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 38px;
+            width: 44px;
+            padding: 0;
+            background-color: #3b5998;
+            border: 1px solid #3b5998;
+            border-radius: 0 4px 4px 0;
+            color: #fff;
+            cursor: pointer;
+            z-index: 2;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .search-wrapper .btn-reset:hover {
+            background-color: #2d4373;
+            border-color: #2d4373;
+            color: #fff;
         }
 
         /* Buttons styling */
@@ -1080,6 +1209,83 @@
             }
         }
 
+        /* ==================== MODAL STYLES ==================== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: var(--bg-surface);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: scale(0.95) translateY(-20px);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-close:hover {
+            background-color: var(--bg-surface2);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+        }
+
         /* Laravel Pagination CSS Fix */
         nav[role="navigation"] {
             display: flex;
@@ -1238,6 +1444,69 @@
                 });
             });
 
+            // ===== AJAX FORM SUBMISSION HANDLER =====
+            const ajaxForms = document.querySelectorAll('.ajax-form');
+            ajaxForms.forEach(form => {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = 'Menyimpan...';
+                    submitBtn.disabled = true;
+
+                    // Remove existing error messages
+                    form.querySelectorAll('.form-error-custom').forEach(el => el.remove());
+                    form.querySelectorAll('.form-input-custom, .form-select-custom').forEach(el => {
+                        el.style.borderColor = 'var(--input-border)';
+                    });
+
+                    try {
+                        const formData = new FormData(form);
+                        const method = form.getAttribute('method').toUpperCase();
+                        let fetchOptions = {
+                            method: method === 'GET' ? 'GET' : 'POST',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            }
+                        };
+                        
+                        if (method !== 'GET') {
+                            fetchOptions.body = formData;
+                        }
+                        
+                        const response = await fetch(form.getAttribute('action'), fetchOptions);
+                        
+                        if (response.ok) {
+                            window.location.reload();
+                        } else if (response.status === 422) {
+                            const data = await response.json();
+                            const errors = data.errors;
+                            
+                            for (const field in errors) {
+                                const input = form.querySelector(`[name="${field}"]`);
+                                if (input) {
+                                    input.style.borderColor = '#ef4444';
+                                    const errorDiv = document.createElement('div');
+                                    errorDiv.className = 'form-error-custom';
+                                    errorDiv.innerText = errors[field][0];
+                                    input.parentNode.appendChild(errorDiv);
+                                }
+                            }
+                        } else {
+                            alert('Terjadi kesalahan pada server.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan koneksi.');
+                    } finally {
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.disabled = false;
+                    }
+                });
+            });
+
             // ===== Theme Toggle =====
             const themeBtn = document.getElementById('theme-toggle-btn');
             if (themeBtn) {
@@ -1259,12 +1528,6 @@
 
         <!-- Sidebar -->
         <aside id="sidebar" class="sidebar">
-            <!-- Sidebar Brand/Logo -->
-            <div class="sidebar-header">
-                <h1 class="sidebar-title">Sistem IKU/IKT</h1>
-                <span class="sidebar-subtitle">Program Studi</span>
-            </div>
-
             <!-- Sidebar Navigation -->
             <!-- Sidebar Navigation -->
             <nav class="sidebar-nav">
@@ -1349,57 +1612,64 @@
                 </div>
             </nav>
 
-            <!-- Sidebar Logout -->
-            <div class="sidebar-footer">
-                <form action="{{ route('logout') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin keluar dari sistem?')">
-                    @csrf
-                    <button type="submit" class="btn btn-rose" style="width: 100%; font-size: 0.75rem; padding: 8px 12px;">
-                        <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
-                        </svg>
-                        Keluar Sistem
-                    </button>
-                </form>
-            </div>
         </aside>
 
         <!-- Main Workspace -->
         <div class="main-content">
             <!-- Top bar Header -->
-            <header class="top-header">
-                <div class="header-title-area">
-                    <button id="mobile-menu-btn" class="menu-toggle-btn">
-                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                    <div class="page-title-group">
-                        <h2 class="page-title">@yield('page_title', 'Dashboard')</h2>
-                        <span class="page-subtitle">@yield('page_subtitle', 'Sistem Early Warning IKU/IKT')</span>
+            <header class="top-header" style="position: fixed; top: 0; left: 0; width: 100%; z-index: 50; background-color: #007bff; color: white; border-bottom: none; display: flex; align-items: center; justify-content: space-between; padding: 0 24px;">
+                <div class="header-left" style="display: flex; align-items: center; gap: 16px;">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <!-- Logo Placeholder -->
+                        <div style="width: 52px; height: 52px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; padding: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                            <img src="{{ asset('images/LOGO POLTEKKKKK.jpg') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-size: 0.8rem; font-weight: 500; opacity: 0.9; margin-bottom: 2px;">SISTEM IKU/IKT</span>
+                            <strong style="font-size: 1.25rem; font-weight: 700; letter-spacing: 0.5px; line-height: 1;">POLITEKNIK SUKABUMI</strong>
+                        </div>
                     </div>
-                </div>
+                </div
 
-                <!-- Theme Toggle + Profile -->
-                <div style="display:flex;align-items:center;gap:12px;">
-                    <button id="theme-toggle-btn" class="theme-toggle-btn" title="Toggle Tema Gelap/Terang" aria-label="Toggle tema">
-                        <!-- Moon icon (shown in dark mode) -->
-                        <svg class="icon-moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <!-- Theme Toggle + Right Actions -->
+                <div style="display:flex;align-items:center;gap:20px;">
+                    <button id="theme-toggle-btn" class="theme-toggle-btn" style="background: transparent; border: none; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center;" title="Toggle Tema Gelap/Terang" aria-label="Toggle tema">
+                        <!-- Moon icon -->
+                        <svg class="icon-moon" style="width:20px;height:20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/>
                         </svg>
-                        <!-- Sun icon (shown in light mode) -->
-                        <svg class="icon-sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <!-- Sun icon -->
+                        <svg class="icon-sun" style="width:20px;height:20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 100 10A5 5 0 0012 7z"/>
                         </svg>
                     </button>
-                    <a href="{{ route('profile') }}" class="user-profile-panel">
-                        <div class="user-info">
-                            <span class="user-name">{{ auth()->user()->name }}</span>
-                            <span class="user-role">{{ str_replace('_', ' ', auth()->user()->role) }}</span>
+                    
+
+
+                    <!-- User Profile Dropdown -->
+                    <div style="position: relative;" id="profile-dropdown-container">
+                        <div id="profile-btn" style="display: flex; align-items: center; gap: 8px; cursor: pointer; text-decoration: none;">
+                            <div style="width: 38px; height: 38px; border-radius: 50%; background-color: #1e293b; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid rgba(255,255,255,0.8); font-size: 0.85rem;">
+                                {{ substr(auth()->user()->name, 0, 2) }}
+                            </div>
+                            <svg style="width: 14px; height: 14px; color: white;" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                            </svg>
                         </div>
-                        <div class="user-avatar">
-                            {{ substr(auth()->user()->name, 0, 2) }}
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="profile-menu" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 8px; width: 160px; background: white; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); overflow: hidden; z-index: 100;">
+                            <a href="{{ route('profile') }}" style="display: block; padding: 12px 16px; color: #1e293b; text-decoration: none; font-size: 0.9rem; border-bottom: 1px solid #f1f5f9; transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                                Profil
+                            </a>
+                            <form action="{{ route('logout') }}" method="POST" style="margin: 0;" onsubmit="return confirm('Apakah Anda yakin ingin keluar dari sistem?')">
+                                @csrf
+                                <button type="submit" style="width: 100%; text-align: left; background: none; border: none; padding: 12px 16px; color: #e11d48; font-size: 0.9rem; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                                    Keluar
+                                </button>
+                            </form>
                         </div>
-                    </a>
+                    </div>
                 </div>
             </header>
 
@@ -1433,6 +1703,24 @@
         </div>
     </div>
 
+    <script>
+        // Profile Dropdown Toggle
+        const profileBtn = document.getElementById('profile-btn');
+        const profileMenu = document.getElementById('profile-menu');
+        
+        if(profileBtn && profileMenu) {
+            profileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                profileMenu.style.display = profileMenu.style.display === 'none' || profileMenu.style.display === '' ? 'block' : 'none';
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                    profileMenu.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
 

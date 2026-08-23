@@ -60,6 +60,7 @@ class PengaturanController extends Controller
             'jml_dosen' => 'required|integer|min:0',
         ];
 
+        // rentang 
         if ($request->filled('tahun_mulai')) {
             $rules['tahun_aktif'] .= '|min:' . $request->tahun_mulai;
         }

@@ -42,7 +42,7 @@ class PengisianController extends Controller
             $query->where('status', $status);
         }
 
-        $riwayat = $query->latest()->paginate(10);
+        $riwayat = $query->latest()->paginate(request('per_page', 10));
 
         return view('dosen.pengisian.history', compact('riwayat', 'tahunList', 'tahun', 'settings', 'status'));
     }

@@ -46,10 +46,22 @@ class PenugasanController extends Controller
                 $query->where('prodi_id', $prodiId);
             })
             ->orderBy('id', 'asc')
-            ->paginate(10)
+            ->paginate(request('per_page', 10))
             ->appends(['tahun' => $tahun, 'id_iku' => $selectedIku, 'search' => $search]);
 
-        return view('adminprodi.penugasan.index', compact('penugasan', 'tahunList', 'tahun', 'settings', 'ikuList', 'selectedIku', 'search'));
+        // Ambil hanya IKU/IKT yang belum ditugaskan ke dosen mana pun di prodi ini untuk tahun berjalan
+        $assignedIkuIds = PenugasanDosen::where('tahun', $tahun)
+            ->whereHas('user', function ($query) use ($prodiId) {
+                $query->where('prodi_id', $prodiId);
+            })
+            ->pluck('id_iku')
+            ->toArray();
+
+        $unassignedIku = Iku::whereNotIn('id', $assignedIkuIds)->get();
+        // Muat hanya dosen dari prodi ini
+        $dosenList = User::where('role', 'dosen')->where('prodi_id', $prodiId)->get();
+
+        return view('adminprodi.penugasan.index', compact('penugasan', 'tahunList', 'tahun', 'settings', 'ikuList', 'selectedIku', 'search', 'unassignedIku', 'dosenList'));
     }
 
     public function create(Request $request)

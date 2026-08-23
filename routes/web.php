@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminP2mp\DashboardController as AdminP2mpDashboardController;
 use App\Http\Controllers\AdminP2mp\UserController as AdminP2mpUserController;
 use App\Http\Controllers\AdminP2mp\ProdiController as AdminP2mpProdiController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Http;
@@ -44,20 +45,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     
-    Route::get('/profile', function () {
-        $user = auth()->user();
-        if ($user->role === 'admin_p2mp') {
-            $layout = 'adminp2mp.layouts.app';
-        } elseif ($user->role === 'admin_prodi' || $user->role === 'kaprodi') {
-            $layout = 'adminprodi.layouts.app';
-        } else {
-            $layout = 'dosen.layouts.app';
-        }
-        return view('profile', [
-            'layout' => $layout,
-            'user' => $user
-        ]);
-    })->name('profile');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::get('/dashboard', function () {
         $user = auth()->user();

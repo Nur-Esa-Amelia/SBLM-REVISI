@@ -27,13 +27,6 @@
                 </select>
             </div>
         </form>
-
-        <a href="{{ route('dosen.pengisian.create') }}" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.8rem;">
-            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-            </svg>
-            Unggah Bukti Baru
-        </a>
     </div>
 
     <!-- Table of submission history -->
@@ -86,14 +79,27 @@
                         </td>
                         <td style="color: var(--text-secondary); font-size: 0.8rem; max-width: 250px; white-space: normal; word-wrap: break-word;">
                             @php
-                                $keteranganFiles = $item->files->pluck('keterangan')->filter()->unique()->values();
+                                $hasKeterangan = $item->files->whereNotNull('keterangan')->where('keterangan', '!=', '')->count() > 0;
                             @endphp
-                            @if($keteranganFiles->isNotEmpty())
-                                <div style="display: flex; flex-direction: column; gap: 6px; text-align: justify; line-height: 1.4;">
-                                    @foreach($keteranganFiles as $keterangan)
-                                        <div>{!! preg_replace('~(https?://[^\s<]+)~i', '<a href="$1" target="_blank" style="color: #10b981; text-decoration: underline; word-break: break-all;">$1</a>', e($keterangan)) !!}</div>
-                                    @endforeach
-                                </div>
+                            @if($hasKeterangan)
+                                <details>
+                                    <summary style="font-size: 0.8rem; color: #38bdf8; cursor: pointer; user-select: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: underline; outline: none;">
+                                        <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
+                                        </svg>
+                                        Detail Keterangan
+                                    </summary>
+                                    <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px; padding: 8px; background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 6px; min-width: 180px;">
+                                        @foreach($item->files as $file)
+                                            @if($file->keterangan)
+                                                <div style="line-height: 1.4; border-bottom: 1px dashed var(--border); padding-bottom: 4px; margin-bottom: 4px;">
+                                                    <span style="font-size: 0.7rem; font-weight: 600; color: var(--text-muted);">{{ $file->nama_file }}:</span><br>
+                                                    {!! preg_replace('~(https?://[^\s<]+)~i', '<a href="$1" target="_blank" style="color: #10b981; text-decoration: underline; word-break: break-all;">$1</a>', e($file->keterangan)) !!}
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </details>
                             @else
                                 <span style="color: var(--text-muted);">-</span>
                             @endif

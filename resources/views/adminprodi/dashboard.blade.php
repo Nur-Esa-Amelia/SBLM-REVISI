@@ -61,41 +61,41 @@
     <div style="display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; min-width: 280px; max-width: 480px; width: 100%;">
         <!-- Tahun Akademik Aktif -->
         <div class="system-time-card" style="align-self: center; box-sizing: border-box; margin: 0; min-width: 220px;">
-            <div class="time-icon">
+            <div class="time-icon time-icon-1">
                 <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
             </div>
             <div class="time-text">
                 <span class="time-label">Tahun Akademik Aktif</span>
-                <span class="time-value" style="color: #3b82f6;">{{ $tahunAktif }}</span>
+                <span class="time-value time-value-1">{{ $tahunAktif }}</span>
             </div>
         </div>
 
         <div style="display: flex; gap: 12px; width: 100%;">
             <!-- Jumlah Mahasiswa -->
-            <div class="system-time-card" style="flex: 1; box-sizing: border-box; margin: 0; border-color: rgba(16, 185, 129, 0.2); padding: 10px 14px;">
-                <div class="time-icon" style="background-color: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.2); color: #10b981; width: 36px; height: 36px;">
+            <div class="system-time-card" style="flex: 1; box-sizing: border-box; margin: 0; padding: 10px 14px;">
+                <div class="time-icon time-icon-2" style="width: 36px; height: 36px;">
                     <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
                 </div>
                 <div class="time-text">
                     <span class="time-label" style="font-size: 0.6rem;">Jumlah Mahasiswa</span>
-                    <span class="time-value" style="color: #10b981; font-size: 0.8rem;">{{ $settings?->jml_mahasiswa ?? 0 }} Mhs</span>
+                    <span class="time-value time-value-2" style="font-size: 0.8rem;">{{ $settings?->jml_mahasiswa ?? 0 }} Mhs</span>
                 </div>
             </div>
 
             <!-- Jumlah Dosen -->
-            <div class="system-time-card" style="flex: 1; box-sizing: border-box; margin: 0; border-color: rgba(245, 158, 11, 0.2); padding: 10px 14px;">
-                <div class="time-icon" style="background-color: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.2); color: #f59e0b; width: 36px; height: 36px;">
+            <div class="system-time-card" style="flex: 1; box-sizing: border-box; margin: 0; padding: 10px 14px;">
+                <div class="time-icon time-icon-3" style="width: 36px; height: 36px;">
                     <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                     </svg>
                 </div>
                 <div class="time-text">
                     <span class="time-label" style="font-size: 0.6rem;">Jumlah Dosen</span>
-                    <span class="time-value" style="color: #f59e0b; font-size: 0.8rem;">{{ $settings?->jml_dosen ?? 0 }} Dosen</span>
+                    <span class="time-value time-value-3" style="font-size: 0.8rem;">{{ $settings?->jml_dosen ?? 0 }} Dosen</span>
                 </div>
             </div>
         </div>
@@ -206,7 +206,6 @@
         </div>
         <div style="display: flex; flex-direction: column; gap: 4px;">
             <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin: 0;">Perspektif Mahasiswa</h4>
-            <span style="font-size: 0.65rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Balanced Scorecard</span>
             <span class="badge-custom {{ $avgMahasiswa >= 100 ? 'badge-green' : ($avgMahasiswa >= 60 ? 'badge-blue' : 'badge-rose') }}" style="align-self: flex-start; font-size: 0.6rem; margin-top: 2px;">
                 {{ $avgMahasiswa >= 100 ? 'Sangat Baik' : ($avgMahasiswa >= 60 ? 'Cukup Baik' : 'Kurang/Risiko') }}
             </span>
@@ -221,7 +220,6 @@
         </div>
         <div style="display: flex; flex-direction: column; gap: 4px;">
             <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin: 0;">Perspektif Dosen</h4>
-            <span style="font-size: 0.65rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Balanced Scorecard</span>
             <span class="badge-custom {{ $avgDosen >= 100 ? 'badge-green' : ($avgDosen >= 60 ? 'badge-purple' : 'badge-rose') }}" style="align-self: flex-start; font-size: 0.6rem; margin-top: 2px;">
                 {{ $avgDosen >= 100 ? 'Sangat Baik' : ($avgDosen >= 60 ? 'Cukup Baik' : 'Kurang/Risiko') }}
             </span>

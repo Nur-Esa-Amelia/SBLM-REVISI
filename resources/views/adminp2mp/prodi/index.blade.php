@@ -14,12 +14,12 @@
                 <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Kelola data program studi aktif dalam sistem early warning IKU/IKT.</p>
             </div>
             <div>
-                <a href="{{ route('adminp2mp.prodi.create') }}" class="btn btn-primary">
+                <button type="button" onclick="openAddModal()" class="btn btn-primary">
                     <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
                     </svg>
                     Tambah Prodi Baru
-                </a>
+                </button>
             </div>
         </div>
 
@@ -28,29 +28,20 @@
             <!-- Search -->
             <div class="filter-item-custom" style="flex: 2;">
                 <label for="search" class="form-label-custom">Cari Program Studi</label>
-                <div class="filter-input-search-wrapper">
-                    <input type="text" name="search" id="search" value="{{ $search }}" placeholder="Nama Prodi / Kode Prodi..." class="form-input-custom filter-input-search">
-                    <div class="filter-input-search-icon">
-                        <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <div class="search-wrapper">
+                    <input type="text" name="search" id="search" value="{{ $search }}" placeholder="Nama Prodi / Kode Prodi..." class="form-input-custom">
+                    <button type="submit" class="btn-search" title="Cari">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: flex; align-items: flex-end;">
-                <button type="submit" class="btn btn-secondary" style="height: 38px; min-width: 100px;">
-                    Cari
-                </button>
-            </div>
-            
-            @if($search)
-                <div style="width: 100%; display: flex; justify-content: flex-end; margin-top: -8px;">
-                    <a href="{{ route('adminp2mp.prodi.index') }}" style="font-size: 0.75rem; font-weight: 600; color: #f43f5e; text-decoration: none;">
-                        Hapus Pencarian
+                    </button>
+                    <a href="{{ route('adminp2mp.prodi.index') }}" class="btn-reset" title="Reset Pencarian">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
                     </a>
                 </div>
-            @endif
+            </div>
         </form>
     </div>
 
@@ -87,11 +78,11 @@
                             <td style="text-align: right;">
                                 <div style="display: inline-flex; align-items: center; gap: 8px; justify-content: flex-end;">
                                     <!-- Edit Link -->
-                                    <a href="{{ route('adminp2mp.prodi.edit', $prodi->id) }}" class="btn-action-edit" title="Edit Prodi">
+                                    <button type="button" onclick="openEditModal({{ $prodi->id }}, '{{ htmlspecialchars(addslashes($prodi->kode_prodi)) }}', '{{ htmlspecialchars(addslashes($prodi->nama_prodi)) }}')" class="btn-action-edit" title="Edit Prodi">
                                         <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                         </svg>
-                                    </a>
+                                    </button>
 
                                     <!-- Delete Button -->
                                     <form action="{{ route('adminp2mp.prodi.destroy', $prodi->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus prodi ini? Seluruh user di bawah prodi ini akan dilepas asosiasinya.')" style="display: inline-flex;">
@@ -127,5 +118,96 @@
         @endif
     </div>
 </div>
-@endsection
 
+<!-- Add Modal -->
+<div id="addModal" class="modal">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h2>Tambah Program Studi Baru</h2>
+            <button class="btn-close" onclick="closeAddModal()">
+                <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form action="{{ route('adminp2mp.prodi.store') }}" method="POST" class="ajax-form">
+                @csrf
+                <div class="form-group-custom">
+                    <label for="kode_prodi" class="form-label-custom">Kode Prodi</label>
+                    <input type="text" class="form-input-custom" id="kode_prodi" name="kode_prodi" placeholder="Contoh: PRD-01" required>
+                </div>
+
+                <div class="form-group-custom" style="margin-top: 16px;">
+                    <label for="nama_prodi" class="form-label-custom">Nama Program Studi</label>
+                    <input type="text" class="form-input-custom" id="nama_prodi" name="nama_prodi" placeholder="Contoh: D3 Teknik Informatika" required>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Prodi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="editModal" class="modal">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h2>Edit Program Studi</h2>
+            <button class="btn-close" onclick="closeEditModal()">
+                <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="editForm" method="POST" class="ajax-form">
+                @csrf
+                @method('PUT')
+                
+                <div class="form-group-custom">
+                    <label for="edit_kode_prodi" class="form-label-custom">Kode Prodi</label>
+                    <input type="text" class="form-input-custom" id="edit_kode_prodi" name="kode_prodi" required>
+                </div>
+
+                <div class="form-group-custom" style="margin-top: 16px;">
+                    <label for="edit_nama_prodi" class="form-label-custom">Nama Program Studi</label>
+                    <input type="text" class="form-input-custom" id="edit_nama_prodi" name="nama_prodi" required>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Perbarui Prodi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openAddModal() {
+        document.getElementById('addModal').classList.add('show');
+    }
+
+    function closeAddModal() {
+        document.getElementById('addModal').classList.remove('show');
+    }
+
+    function openEditModal(id, kode, nama) {
+        document.getElementById('edit_kode_prodi').value = kode;
+        document.getElementById('edit_nama_prodi').value = nama;
+        
+        const form = document.getElementById('editForm');
+        form.action = `/adminp2mp/prodi/${id}`;
+        
+        document.getElementById('editModal').classList.add('show');
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').classList.remove('show');
+    }
+</script>
+@endsection
