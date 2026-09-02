@@ -5,7 +5,7 @@
 @section('page_subtitle', 'Master data Indikator Kinerja Utama')
 
 @section('content')
-<div class="card" style="display: flex; flex-direction: column; gap: 20px;">
+<div class="card" style="display: flex; flex-direction: column; gap: 20px; width: 100%;">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
         <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0;">Daftar Indikator Kinerja Utama</h3>
 

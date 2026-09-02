@@ -44,6 +44,10 @@ class PengaturanController extends Controller
             ]);
         }
 
+        if ($request->ajax()) {
+            return view('adminprodi.pengaturan.modal_content', compact('pengaturan', 'prodis', 'selectedProdiId'));
+        }
+
         return view('adminprodi.pengaturan.index', compact('pengaturan', 'prodis', 'selectedProdiId'));
     }
 
@@ -99,11 +103,6 @@ class PengaturanController extends Controller
             ]
         );
 
-        $redirectUrl = route('adminprodi.pengaturan.index');
-        if (auth()->user()->role === 'admin_p2mp') {
-            $redirectUrl .= '?prodi_id=' . $prodiId;
-        }
-
-        return redirect()->to($redirectUrl)->with('success', 'Pengaturan sistem berhasil diperbarui.');
+        return back()->with('success', 'Pengaturan sistem berhasil diperbarui.');
     }
 }

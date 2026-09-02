@@ -17,7 +17,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = auth()->user(); //data user login
         $prodiId = $user->prodi_id;
         $prodiName = $user->prodi ? $user->prodi->nama_prodi : 'Program Studi';
         
@@ -77,8 +77,8 @@ class DashboardController extends Controller
                 // 4. Persentase per IKU/IKT = (realisasi / target_nyata) * 100
                 $persentase = $targetNyata > 0 ? min(($realisasi / $targetNyata) * 100, 100) : 0;
 
-                $totalPercentage += $persentase;
-                $countWithTarget++;
+                $totalPercentage += $persentase; //total persentase
+                $countWithTarget++; //iku punya target
             }
 
             // Lampirkan variabel ke model penugasan untuk dikirim ke view
@@ -90,7 +90,7 @@ class DashboardController extends Controller
             $assignment->target_tercapai = $targetNyata > 0 ? $realisasi >= $targetNyata : false;
         }
 
-        // Kemajuan keseluruhan adalah rata-rata persentase IKU/IKT yang ditugaskan
+        // rata-rata persentase IKU/IKT yang ditugaskan
         $achievementPercentage = $countWithTarget > 0 
             ? min(round($totalPercentage / $countWithTarget), 100)
             : 0;

@@ -13,7 +13,7 @@
     </svg>
     <div>
         <strong>Perhatian!</strong> Jumlah mahasiswa/dosen prodi masih bernilai 0. Silakan isi terlebih dahulu di menu 
-        <a href="{{ route('adminprodi.pengaturan.index') }}" style="color: inherit; text-decoration: underline; font-weight: bold;">Pengaturan System</a> 
+        <a href="{{ route('adminprodi.pengaturan.index') }}" style="color: inherit; text-decoration: underline; font-weight: bold;">Pengaturan Sistem</a> 
         agar kalkulasi pencapaian target persentase berjalan dengan benar.
     </div>
 </div>

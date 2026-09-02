@@ -1494,7 +1494,7 @@
                             </a>
                             <a href="{{ route('adminprodi.pengaturan.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.pengaturan.*') ? 'active' : '' }}">
                                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                Pengaturan System
+                                Pengaturan Sistem
                             </a>
                         </div>
                     </div>
@@ -1791,8 +1791,90 @@
                 });
             });
         });
+
+        // Pengaturan Sistem Modal Logic
+        async function openPengaturanModal(url) {
+            const modal = document.getElementById('pengaturan-sistem-modal');
+            const contentDiv = document.getElementById('pengaturan-modal-content');
+            
+            if (modal && contentDiv) {
+                try {
+                    const response = await fetch(url, {
+                        headers: {
+                            'Accept': 'text/html',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const html = await response.text();
+                        contentDiv.innerHTML = html;
+                        if (!modal.classList.contains('show')) {
+                            openModal('pengaturan-sistem-modal');
+                        }
+                    } else {
+                        alert('Gagal memuat data pengaturan.');
+                    }
+                } catch (error) {
+                    alert('Gagal menghubungi server.');
+                }
+            }
+        }
+
+        // Helper to load new settings when changing prodi in the modal select
+        function loadPengaturanModal(prodiId) {
+            const baseUrl = "{{ route('adminprodi.pengaturan.index') }}";
+            openPengaturanModal(`${baseUrl}?prodi_id=${prodiId}`);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const pengaturanLinks = document.querySelectorAll('a[href^="{{ route('adminprodi.pengaturan.index') }}"]');
+            pengaturanLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openPengaturanModal(this.href);
+                });
+            });
+        });
     </script>
     <style>
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 9999; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px);
+            display: none; align-items: center; justify-content: center; padding: 20px; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show { display: flex; opacity: 1; }
+        .modal-container {
+            background: var(--bg-surface); border: 1px solid var(--border); box-shadow: 0 0 30px rgba(0,0,0,0.2);
+            border-radius: 12px; width: 100%; max-width: 600px; max-height: 90vh; display: flex; flex-direction: column;
+            transform: scale(0.96) translateY(10px); transition: transform 0.3s ease; overflow: hidden;
+        }
+        .modal-overlay.show .modal-container { transform: scale(1) translateY(0); }
+    </style>
+
+    <!-- Modal Pengaturan Sistem -->
+    <div id="pengaturan-sistem-modal" class="modal-overlay">
+        <div class="modal-container" onclick="event.stopPropagation()">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 16px 20px; background: var(--bg-surface);">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(37, 99, 235, 0.15); display: flex; align-items: center; justify-content: center; color: #3b82f6;">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0;">Pengaturan Sistem</h3>
+                        <p style="font-size: 0.75rem; color: var(--text-muted); margin: 2px 0 0 0;">Kelola parameter Program Studi</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeModal('pengaturan-sistem-modal')" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; border-radius: 6px; transition: all 0.2s;">
+                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div id="pengaturan-modal-content" style="padding: 20px; overflow-y: auto;">
+                <!-- Content loaded via AJAX -->
+            </div>
+        </div>
+    </div>
         @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </body>

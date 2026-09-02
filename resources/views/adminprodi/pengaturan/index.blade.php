@@ -1,7 +1,7 @@
 @extends('adminprodi.layouts.app')
 
-@section('title', 'Pengaturan System - Admin Prodi')
-@section('page_title', 'Pengaturan System')
+@section('title', 'Pengaturan Sistem - Admin Prodi')
+@section('page_title', 'Pengaturan Sistem')
 @section('page_subtitle', 'Kelola rentang tahun akademik, tahun aktif, dan data profil mahasiswa/dosen prodi')
 
 @section('content')

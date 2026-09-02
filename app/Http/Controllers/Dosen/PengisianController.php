@@ -106,7 +106,7 @@ class PengisianController extends Controller
             return redirect()->back()->withErrors(['id_iku' => 'Anda tidak memiliki penugasan untuk mengisi indikator IKU/IKT ini pada tahun akademik ini.'])->withInput();
         }
 
-        $sisaBerkas = IkuPencapaian::sisaBerkas($prodiId, $request->id_iku, $tahunAktif);
+        $sisaBerkas = IkuPencapaian::sisaBerkas($prodiId, $request->id_iku, $tahunAktif); //sisa file yg blh di up
         if ($sisaBerkas !== null && count($request->file('files', [])) > $sisaBerkas) {
             return redirect()->back()->withErrors(['files' => $sisaBerkas > 0
                 ? "Upload ditolak. Capaian IKU/IKT ini hanya masih dapat menerima {$sisaBerkas} berkas."
