@@ -83,6 +83,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('prodi', AdminSistemProdiController::class);
         Route::get('/model-ai', [AdminSistemModelTokenAiController::class, 'index'])->name('model_ai.index');
         Route::post('/model-ai', [AdminSistemModelTokenAiController::class, 'store'])->name('model_ai.store');
+        Route::get('/aktivitas', [\App\Http\Controllers\AdminSistem\ActivityLogController::class, 'index'])->name('aktivitas.index');
     });
 
     // Rute yang dapat diakses oleh Admin Prodi, Kaprodi & Admin P2MP

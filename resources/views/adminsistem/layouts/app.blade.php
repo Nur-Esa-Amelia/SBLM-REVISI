@@ -1562,6 +1562,15 @@
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     Kelola Model & Token AI
                 </a>
+
+                <!-- Aktivitas Pengguna -->
+                <a href="{{ route('adminsistem.aktivitas.index') }}" 
+                   class="nav-link {{ request()->routeIs('adminsistem.aktivitas.*') ? 'active' : '' }}">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Aktivitas
+                </a>
             </nav>
 
         </aside>

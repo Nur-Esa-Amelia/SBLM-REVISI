@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AdminProdi;
 use App\Http\Controllers\Controller;
 use App\Models\Iku;
 use App\Models\Kategori;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class IkuController extends Controller
@@ -48,7 +49,9 @@ class IkuController extends Controller
             'deskripsi' => 'nullable|string',
         ]);
 
-        Iku::create($request->all());
+        $newIku = Iku::create($request->all());
+
+        ActivityLog::log('Menambah data', 'Data IKU/IKT', 'Menambahkan IKU/IKT: ' . $newIku->nama_iku);
 
         return redirect()->route('adminprodi.iku.index')->with('success', 'Data IKU/IKT berhasil ditambahkan.');
     }
@@ -70,12 +73,18 @@ class IkuController extends Controller
 
         $iku->update($request->all());
 
+        ActivityLog::log('Mengubah data', 'Data IKU/IKT', 'Mengubah IKU/IKT: ' . $iku->nama_iku);
+
         return redirect()->route('adminprodi.iku.index')->with('success', 'Data IKU/IKT berhasil diperbarui.');
     }
 
     public function destroy(Iku $iku)
     {
+        $ikuName = $iku->nama_iku;
         $iku->delete();
+
+        ActivityLog::log('Menghapus data', 'Data IKU/IKT', 'Menghapus IKU/IKT: ' . $ikuName);
+
         return redirect()->route('adminprodi.iku.index')->with('success', 'Data IKU/IKT berhasil dihapus.');
     }
 }

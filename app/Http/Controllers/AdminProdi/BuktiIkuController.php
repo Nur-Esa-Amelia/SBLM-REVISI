@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AdminProdi;
 use App\Http\Controllers\Controller;
 use App\Models\BuktiIku;
 use App\Models\Iku;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class BuktiIkuController extends Controller
@@ -44,7 +45,9 @@ class BuktiIkuController extends Controller
             'deskripsi' => 'nullable|string',
         ]);
 
-        BuktiIku::create($request->all());
+        $newBukti = BuktiIku::create($request->all());
+
+        ActivityLog::log('Menambah data', 'Jenis Bukti IKU/IKT', 'Menambahkan Jenis Bukti: ' . $newBukti->nama_bukti);
 
         return redirect()->route('adminprodi.bukti.index')->with('success', 'Jenis Bukti IKU/IKT berhasil ditambahkan.');
     }
@@ -65,12 +68,18 @@ class BuktiIkuController extends Controller
 
         $bukti->update($request->all());
 
+        ActivityLog::log('Mengubah data', 'Jenis Bukti IKU/IKT', 'Mengubah Jenis Bukti: ' . $bukti->nama_bukti);
+
         return redirect()->route('adminprodi.bukti.index')->with('success', 'Jenis Bukti IKU/IKT berhasil diperbarui.');
     }
 
     public function destroy(BuktiIku $bukti)
     {
+        $namaBukti = $bukti->nama_bukti;
         $bukti->delete();
+
+        ActivityLog::log('Menghapus data', 'Jenis Bukti IKU/IKT', 'Menghapus Jenis Bukti: ' . $namaBukti);
+
         return redirect()->route('adminprodi.bukti.index')->with('success', 'Jenis Bukti IKU/IKT berhasil dihapus.');
     }
 }

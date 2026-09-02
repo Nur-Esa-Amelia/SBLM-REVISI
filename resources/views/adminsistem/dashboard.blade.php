@@ -80,5 +80,31 @@
             </a>
         </div>
     </div>
+
+    <!-- AI Model -->
+    <div class="stat-card">
+        <div>
+            <div class="stat-header">
+                <div class="stat-info">
+                    <span class="stat-label">Model AI Aktif</span>
+                    <h4 class="stat-value" style="color: #f59e0b; font-size: 1.2rem;">{{ strtoupper($aiModel) }}</h4>
+                </div>
+                <div class="stat-icon" style="background-color: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="stat-footer">
+            <span class="stat-desc">Konfigurasi Model & Token</span>
+            <a href="{{ route('adminsistem.model_ai.index') }}" class="stat-link">
+                Kelola AI
+                <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
 </div>
 @endsection

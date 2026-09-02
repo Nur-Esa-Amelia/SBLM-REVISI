@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AdminSistem;
 
 use App\Http\Controllers\Controller;
 use App\Models\Prodi;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class ProdiController extends Controller
@@ -38,7 +39,9 @@ class ProdiController extends Controller
             'nama_prodi.required' => 'Nama Program Studi wajib diisi.',
         ]);
 
-        Prodi::create($validated);
+        $newProdi = Prodi::create($validated);
+
+        ActivityLog::log('Menambah data', 'Kelola Program Studi', 'Menambahkan program studi: ' . $newProdi->nama_prodi);
 
         return redirect()->route('adminsistem.prodi.index')
             ->with('success', 'Program Studi berhasil ditambahkan.');
@@ -58,6 +61,8 @@ class ProdiController extends Controller
 
         $prodi->update($validated);
 
+        ActivityLog::log('Mengubah data', 'Kelola Program Studi', 'Mengubah data program studi: ' . $prodi->nama_prodi);
+
         return redirect()->route('adminsistem.prodi.index')
             ->with('success', 'Program Studi berhasil diperbarui.');
     }
@@ -66,7 +71,10 @@ class ProdiController extends Controller
     {
         // Keamanan opsional: batasi penghapusan jika ada user yang terikat ke prodi ini, atau tangani cascade/set null
         // Mari kita hapus langsung, user yang terikat dengannya akan memiliki prodi_id bernilai null karena onDelete('set null') pada migrasi.
+        $prodiName = $prodi->nama_prodi;
         $prodi->delete();
+
+        ActivityLog::log('Menghapus data', 'Kelola Program Studi', 'Menghapus program studi: ' . $prodiName);
 
         return redirect()->route('adminsistem.prodi.index')
             ->with('success', 'Program Studi berhasil dihapus.');

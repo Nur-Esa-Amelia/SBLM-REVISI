@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AdminProdi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kategori;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class KategoriController extends Controller
@@ -35,7 +36,9 @@ class KategoriController extends Controller
             'deskripsi' => 'nullable|string',
         ]);
 
-        Kategori::create($request->all());
+        $kategori = Kategori::create($request->all());
+
+        ActivityLog::log('Menambah data', 'Kategori IKU/IKT', 'Menambahkan kategori: ' . $kategori->nama_kategori);
 
         return redirect()->route('adminprodi.kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
@@ -54,6 +57,8 @@ class KategoriController extends Controller
 
         $kategori->update($request->all());
 
+        ActivityLog::log('Mengubah data', 'Kategori IKU/IKT', 'Mengubah kategori: ' . $kategori->nama_kategori);
+
         return redirect()->route('adminprodi.kategori.index')->with('success', 'Kategori berhasil diperbarui.');
     }
 
@@ -63,7 +68,11 @@ class KategoriController extends Controller
             return redirect()->route('adminprodi.kategori.index')->with('error', 'Kategori gagal dihapus karena masih digunakan oleh data IKU.');
         }
 
+        $namaKategori = $kategori->nama_kategori;
         $kategori->delete();
+
+        ActivityLog::log('Menghapus data', 'Kategori IKU/IKT', 'Menghapus kategori: ' . $namaKategori);
+
         return redirect()->route('adminprodi.kategori.index')->with('success', 'Kategori berhasil dihapus.');
     }
 }

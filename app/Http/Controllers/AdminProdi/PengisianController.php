@@ -9,6 +9,7 @@ use App\Models\Pengaturan;
 use App\Models\PengisianBukti;
 use App\Models\FileIsiBukti;
 use App\Models\IkuPencapaian;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -131,6 +132,9 @@ class PengisianController extends Controller
         $pesan = IkuPencapaian::sisaBerkas($prodiId, $request->id_iku, $tahunAktif) === 0
             ? 'Bukti IKU/IKT berhasil diunggah. Bukti untuk IKU/IKT ini sudah lengkap (capaian maksimal 100%).'
             : 'Bukti IKU/IKT berhasil diunggah oleh Kaprodi dan sedang menunggu validasi P2MP.';
+
+        $iku = Iku::find($request->id_iku);
+        ActivityLog::log('Upload bukti', 'Pengisian Bukti', 'Mengunggah bukti IKU/IKT: ' . ($iku ? $iku->nama_iku : ''));
 
         return redirect()->route('adminprodi.bukti-dosen')->with('success', $pesan);
     }
@@ -286,6 +290,9 @@ class PengisianController extends Controller
 
         // Jalankan sinkronisasi realisasi
         IkuPencapaian::calculateAndSync($user->prodi_id, $pengisian->tahun);
+
+        $iku = Iku::find($request->id_iku);
+        ActivityLog::log('Mengubah data', 'Pengisian Bukti', 'Memperbarui bukti IKU/IKT: ' . ($iku ? $iku->nama_iku : ''));
 
         return redirect()->route('adminprodi.bukti-dosen')->with('success', 'Bukti IKU/IKT berhasil diperbarui oleh Kaprodi dan sedang menunggu validasi ulang.');
     }

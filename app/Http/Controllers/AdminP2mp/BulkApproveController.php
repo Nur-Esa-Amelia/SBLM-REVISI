@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AdminP2mp;
 
 use App\Http\Controllers\Controller;
 use App\Models\PengisianBukti;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class BulkApproveController extends Controller
@@ -29,6 +30,8 @@ class BulkApproveController extends Controller
                 'status' => 'valid',
                 'catatan_validator' => null,
             ]);
+
+        ActivityLog::log('Validasi Bukti', 'Validasi Bukti IKU/IKT', "Menyetujui {$updated} bukti IKU/IKT secara massal");
 
         return redirect()->back()->with('success', "Total {$updated} bukti IKU/IKT berhasil disetujui.");
     }

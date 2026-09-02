@@ -31,8 +31,6 @@
                     <label for="ai_provider" class="form-label-custom">Penyedia Layanan AI (Provider)</label>
                     <select id="ai_provider" name="ai_provider" class="form-select-custom">
                         <option value="gemini">Google Gemini</option>
-                        <option value="openai" disabled>OpenAI (Coming Soon)</option>
-                        <option value="anthropic" disabled>Anthropic (Coming Soon)</option>
                     </select>
                 </div>
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Prodi;
+use App\Models\ActivityLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -45,6 +46,8 @@ class AuthController extends Controller
 
         Auth::login($user);
 
+        ActivityLog::log('Registrasi', 'Autentikasi', 'User baru berhasil mendaftar akun');
+
         return redirect()->route('dashboard')->with('success', 'Pendaftaran berhasil! Selamat datang di dashboard Anda.');
     }
 
@@ -68,6 +71,9 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
+            
+            ActivityLog::log('Login', 'Autentikasi', 'User berhasil login ke sistem');
+
             return redirect()->intended(route('dashboard'))->with('success', 'Anda berhasil masuk.');
         }
 
@@ -81,6 +87,8 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        ActivityLog::log('Logout', 'Autentikasi', 'User keluar dari sistem');
+
         Auth::logout();
 
         $request->session()->invalidate();

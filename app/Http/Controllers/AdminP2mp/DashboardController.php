@@ -8,6 +8,7 @@ use App\Models\Prodi;
 use App\Models\PengisianBukti;
 use App\Models\IkuPencapaian;
 use App\Models\Pengaturan;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -223,6 +224,10 @@ class DashboardController extends Controller
         ]);
 
         $statusText = $request->status === 'valid' ? 'disetujui (Valid)' : 'ditolak (Perlu Perbaikan)';
+        
+        $iku = \App\Models\Iku::find($pengisian->id_iku);
+        ActivityLog::log('Validasi Bukti', 'Validasi Bukti IKU/IKT', "Status bukti IKU/IKT '{$iku->nama_iku}' diubah menjadi {$statusText}");
+
         return redirect()->back()->with('success', "Bukti IKU/IKT berhasil {$statusText}.");
     }
 

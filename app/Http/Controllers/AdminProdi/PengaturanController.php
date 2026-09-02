@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AdminProdi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pengaturan;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class PengaturanController extends Controller
@@ -102,6 +103,9 @@ class PengaturanController extends Controller
                 'jml_dosen' => $request->jml_dosen,
             ]
         );
+
+        $prodiName = \App\Models\Prodi::find($prodiId)->nama_prodi ?? 'Prodi';
+        ActivityLog::log('Mengubah pengaturan sistem', 'Pengaturan Prodi', 'Mengubah pengaturan untuk: ' . $prodiName);
 
         return back()->with('success', 'Pengaturan sistem berhasil diperbarui.');
     }

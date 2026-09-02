@@ -16,7 +16,8 @@ class DashboardController extends Controller
     {
         $totalUsers = User::count(); 
         $totalProdi = Prodi::count();
+        $aiModel = env('GEMINI_MODEL', 'Gemini 1.5 Flash');
 
-        return view('adminsistem.dashboard', compact('totalUsers', 'totalProdi'));
+        return view('adminsistem.dashboard', compact('totalUsers', 'totalProdi', 'aiModel'));
     }
 }

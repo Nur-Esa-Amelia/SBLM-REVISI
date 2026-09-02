@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AdminSistem;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Prodi;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -75,7 +76,9 @@ class UserController extends Controller
             'prodi_id' => in_array($request->role, ['admin_p2mp', 'admin_sistem']) ? null : $request->prodi_id,
         ];
 
-        User::create($data);
+        $newUser = User::create($data);
+
+        ActivityLog::log('Menambah data', 'Kelola User', 'Menambahkan user baru: ' . $newUser->name);
 
         return redirect()->route('adminsistem.users.index')
             ->with('success', 'User berhasil ditambahkan.');
@@ -111,6 +114,8 @@ class UserController extends Controller
 
         $user->save();
 
+        ActivityLog::log('Mengubah data', 'Kelola User', 'Mengubah data user: ' . $user->name);
+
         return redirect()->route('adminsistem.users.index')
             ->with('success', 'User berhasil diperbarui.');
     }
@@ -123,7 +128,10 @@ class UserController extends Controller
                 ->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
 
+        $userName = $user->name;
         $user->delete();
+
+        ActivityLog::log('Menghapus data', 'Kelola User', 'Menghapus data user: ' . $userName);
 
         return redirect()->route('adminsistem.users.index')
             ->with('success', 'User berhasil dihapus.');

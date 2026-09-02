@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Iku;
 use App\Models\IkuPencapaian;
 use App\Models\Pengaturan;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class IkuPencapaianController extends Controller
@@ -116,6 +117,9 @@ class IkuPencapaianController extends Controller
         // Sinkronisasikan segera
         IkuPencapaian::calculateAndSync($prodiId, $request->tahun);
 
+        $iku = Iku::find($request->id_iku);
+        ActivityLog::log('Menambah IKU/IKT', 'Target Pencapaian', 'Menginput target IKU/IKT: ' . ($iku ? $iku->nama_iku : $request->id_iku));
+
         return redirect()->route('adminprodi.pencapaian.index', ['tahun' => $request->tahun])->with('success', 'Target IKU/IKT berhasil ditambahkan.');
     }
 
@@ -164,6 +168,9 @@ class IkuPencapaianController extends Controller
         // Sinkronisasikan segera
         IkuPencapaian::calculateAndSync($pencapaian->id_prodi, $pencapaian->tahun);
 
+        $iku = Iku::find($pencapaian->id_iku);
+        ActivityLog::log('Mengubah IKU/IKT', 'Target Pencapaian', 'Mengubah target IKU/IKT: ' . ($iku ? $iku->nama_iku : ''));
+
         return redirect()->route('adminprodi.pencapaian.index', ['tahun' => $pencapaian->tahun])->with('success', 'Target IKU/IKT berhasil diperbarui.');
     }
 
@@ -175,7 +182,11 @@ class IkuPencapaianController extends Controller
         }
 
         $tahun = $pencapaian->tahun;
+        $ikuId = $pencapaian->id_iku;
         $pencapaian->delete();
+
+        $iku = Iku::find($ikuId);
+        ActivityLog::log('Menghapus IKU/IKT', 'Target Pencapaian', 'Menghapus pencapaian IKU/IKT: ' . ($iku ? $iku->nama_iku : ''));
 
         return redirect()->route('adminprodi.pencapaian.index', ['tahun' => $tahun])->with('success', 'Target IKU/IKT berhasil dihapus.');
     }

@@ -118,6 +118,16 @@ class DatabaseSeeder extends Seeder
             );
         }
 
+        // 0. Admin Sistem
+        \App\Models\User::updateOrCreate([
+            'email' => 'admin.sistem@gmail.com'
+        ], [
+            'name' => 'Admin Sistem',
+            'password' => bcrypt('password'),
+            'role' => 'admin_sistem',
+            'prodi_id' => null,
+        ]);
+
         // 1. Admin P2MP 
         \App\Models\User::updateOrCreate([
             'email' => 'admin.p2mp@gmail.com'
