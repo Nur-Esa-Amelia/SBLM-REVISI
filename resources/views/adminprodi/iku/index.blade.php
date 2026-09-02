@@ -21,7 +21,7 @@
 
     <div style="display: flex; justify-content: flex-end; align-items: center; width: 100%;">
         <form method="GET" action="{{ route('adminprodi.iku.index') }}" id="filterKategoriForm" style="display: flex; align-items: center; gap: 10px; margin: 0; flex-wrap: nowrap; justify-content: flex-end;">
-            <select id="id_kategori" name="id_kategori" class="form-select-custom" style="width: auto; max-width: 300px;" onchange="document.getElementById('filterKategoriForm').submit();">
+            <select id="id_kategori" name="id_kategori" class="form-select-custom" style="width: auto; max-width: 220px;" onchange="document.getElementById('filterKategoriForm').submit();">
                 <option value="">Semua Kategori</option>
                 @foreach($kategoriList as $kategori)
                     <option value="{{ $kategori->id }}" {{ (string)$selectedKategori === (string)$kategori->id ? 'selected' : '' }}>

@@ -21,7 +21,7 @@
 
     <div style="display: flex; justify-content: flex-end; align-items: center; width: 100%;">
         <form method="GET" action="{{ route('adminprodi.bukti.index') }}" id="filterBuktiForm" style="display: flex; align-items: center; gap: 10px; margin: 0; flex-wrap: nowrap; justify-content: flex-end;">
-            <select id="id_iku" name="id_iku" class="form-select-custom" style="width: auto; max-width: 400px;" onchange="document.getElementById('filterBuktiForm').submit();">
+            <select id="id_iku" name="id_iku" class="form-select-custom" style="width: auto; max-width: 220px;" onchange="document.getElementById('filterBuktiForm').submit();">
                 <option value="">Semua IKU/IKT</option>
                 @foreach($ikuList as $iku)
                     <option value="{{ $iku->id }}" {{ (string)$selectedIku === (string)$iku->id ? 'selected' : '' }}>

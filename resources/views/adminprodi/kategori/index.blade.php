@@ -5,7 +5,7 @@
 @section('page_subtitle', 'Master data kategori indikator kinerja utama sistem')
 
 @section('content')
-<div class="card" style="display: flex; flex-direction: column; gap: 20px; width: 100%;">
+<div class="card" style="display: flex; flex-direction: column; gap: 20px; width: 100% !important; max-width: none !important; flex: 1; align-self: stretch;">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
         <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0;">Daftar Kategori IKU/IKT</h3>
         @if(auth()->user()->role === 'admin_p2mp')

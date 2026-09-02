@@ -382,6 +382,7 @@
             flex-direction: column;
             flex: 1;
             min-width: 0;
+            width: calc(100vw - 260px);
             min-height: 100vh;
         }
 
@@ -494,6 +495,7 @@
             flex-direction: column;
             gap: 24px;
             flex: 1;
+            width: 100%;
             overflow-y: auto;
         }
 
