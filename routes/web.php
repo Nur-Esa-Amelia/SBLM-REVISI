@@ -83,6 +83,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('prodi', AdminSistemProdiController::class);
         Route::get('/model-ai', [AdminSistemModelTokenAiController::class, 'index'])->name('model_ai.index');
         Route::post('/model-ai', [AdminSistemModelTokenAiController::class, 'store'])->name('model_ai.store');
+        Route::put('/model-ai/{id}', [AdminSistemModelTokenAiController::class, 'update'])->name('model_ai.update');
+        Route::delete('/model-ai/{id}', [AdminSistemModelTokenAiController::class, 'destroy'])->name('model_ai.destroy');
+        Route::post('/model-ai/{id}/activate', [AdminSistemModelTokenAiController::class, 'activate'])->name('model_ai.activate');
         Route::get('/aktivitas', [\App\Http\Controllers\AdminSistem\ActivityLogController::class, 'index'])->name('aktivitas.index');
     });
 

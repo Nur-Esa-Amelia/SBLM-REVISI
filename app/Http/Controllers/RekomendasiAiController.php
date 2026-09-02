@@ -24,6 +24,8 @@ class RekomendasiAiController extends Controller
             return collect();
         }
 
+        $hasTriggeredGeneration = false;
+
         foreach ($warnings as $item) {
             $rekomendasi = RekomendasiAi::where('id_iku_pencapaian', $item->id)->first();
             $needsGeneration = false;
@@ -53,7 +55,12 @@ class RekomendasiAiController extends Controller
 
                 // Dispatch job ke background
                 \App\Jobs\GenerateAiRecommendationJob::dispatch($item->id);
+                $hasTriggeredGeneration = true;
             }
+        }
+
+        if ($hasTriggeredGeneration) {
+            \App\Models\ActivityLog::log('Generate Rekomendasi AI', 'Rekomendasi AI', 'Sistem menggenerate ulang rekomendasi AI untuk indikator bermasalah');
         }
 
         $warningIds = $warnings->pluck('id')->toArray();

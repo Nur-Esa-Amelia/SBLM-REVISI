@@ -39,8 +39,28 @@ class GenerateAiRecommendationJob implements ShouldQueue
             return;
         }
 
-        $apiKey = config('services.gemini.key');
-        $model = config('services.gemini.model', 'gemini-2.5-flash');
+        // Ambil konfigurasi model aktif dari database
+        $activeModel = \App\Models\GeminiModel::where('status', 'aktif')->first();
+
+        if ($activeModel) {
+            $apiKey = $activeModel->api_key;
+            $model = $activeModel->model_id;
+        } else {
+            // Fallback ke .env jika tidak ada model yang aktif di database
+            $apiKey = config('services.gemini.key');
+            $model = config('services.gemini.model', 'gemini-2.5-flash');
+        }
+
+        // Jika sama sekali tidak ada API key
+        if (!$apiKey) {
+            RekomendasiAi::updateOrCreate(
+                ['id_iku_pencapaian' => $item->id],
+                ['rekomendasi' => 'Rekomendasi AI belum tersedia karena tidak ada Konfigurasi Model Gemini yang aktif. Silakan hubungi Admin Sistem.']
+            );
+            return;
+        }
+
+        // Catat aktivitas jika ini dipicu (Opsional, tergantung keperluan. Karena berjalan di background, mungkin user pembuat request sulit di-trace jika tidak di-pass di constructor. Kita lewati log aktivitas di job ini, biasanya di log di Controller jika ada aksi eksplisit)
 
         // prompt untuk AI
         $prodiName = $item->prodi ? $item->prodi->nama_prodi : 'Program Studi'; 
