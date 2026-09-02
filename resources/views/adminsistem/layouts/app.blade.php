@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Admin Prodi - Sistem Early Warning IKU/IKT')</title>
+    <title>@yield('title', 'Admin P2MP - Sistem Early Warning IKU/IKT')</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,6 +45,7 @@
             --input-border:   #334155;
             --nav-hover-bg:   rgba(255,255,255,0.04);
             --dropdown-border:rgba(255,255,255,0.05);
+            --shortcut-bg:    #090d16;
             --time-card-bg:   #090d16;
             --time-card-border: #1e293b;
             --time-card-label: #64748b;
@@ -90,6 +91,7 @@
             --input-border:   #cbd5e1;
             --nav-hover-bg:   rgba(0,0,0,0.04);
             --dropdown-border:rgba(0,0,0,0.06);
+            --shortcut-bg:    #f1f5f9;
             --time-card-bg:   linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
             --time-card-border: rgba(37,99,235,0.2);
             --time-card-label: rgba(255,255,255,0.8);
@@ -163,7 +165,6 @@
             padding-top: 80px;
         }
 
-        /* Sidebar Styles */
         .sidebar {
             width: 260px;
             background-color: var(--bg-surface);
@@ -194,7 +195,7 @@
 
         .sidebar-subtitle {
             font-size: 0.75rem;
-            color: #3b82f6;
+            color: var(--text-faint);
             font-weight: 600;
         }
 
@@ -359,8 +360,8 @@
         }
 
         .dropdown-link.active {
-            color: var(--text-primary) !important;
-            background-color: rgba(37, 99, 235, 0.15) !important;
+            color: var(--nav-active-text) !important;
+            background-color: rgba(37, 99, 235, 0.12) !important;
             border-left: 2px solid #2563eb;
             border-radius: 0 6px 6px 0;
             padding-left: 10px;
@@ -468,7 +469,7 @@
 
         .user-role {
             font-size: 0.7rem;
-            color: #38bdf8;
+            color: var(--text-muted);
         }
 
         .user-avatar {
@@ -487,15 +488,14 @@
             transition: all 0.2s ease;
         }
 
-
+        /* Body container */
         .main-body {
             padding: 24px;
             display: flex;
             flex-direction: column;
             gap: 24px;
             flex: 1;
-            width: 100% !important;
-            max-width: 100% !important;
+            width: 100%;
             overflow-y: auto;
         }
 
@@ -676,28 +676,28 @@
             justify-content: center;
         }
 
-        .stat-icon.target {
-            background-color: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            color: #6366f1;
+        .stat-icon.user {
+            background-color: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
         }
 
-        .stat-icon.realisasi {
-            background-color: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            color: #10b981;
-        }
-
-        .stat-icon.tercapai {
+        .stat-icon.prodi {
             background-color: rgba(59, 130, 246, 0.1);
             border: 1px solid rgba(59, 130, 246, 0.2);
             color: #3b82f6;
         }
 
-        .stat-icon.belum-tercapai {
-            background-color: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: #ef4444;
+        .stat-icon.validasi {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .stat-icon.report {
+            background-color: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            color: #6366f1;
         }
 
         .stat-footer {
@@ -725,6 +725,125 @@
 
         .stat-link:hover {
             color: #ffffff;
+        }
+
+        /* Shortcut Grid */
+        .shortcut-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .shortcut-card {
+            background-color: var(--shortcut-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 12px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .shortcut-card:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            transform: scale(1.02);
+        }
+
+        .shortcut-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .shortcut-card:hover .shortcut-icon {
+            transform: scale(1.1);
+        }
+
+        .shortcut-text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* Search Wrapper */
+        .search-wrapper {
+            display: flex;
+            align-items: stretch;
+            width: auto;
+            max-width: 100%;
+        }
+
+        .search-wrapper .form-input-custom {
+            flex: none;
+            width: 180px;
+            padding: 0 12px !important;
+            border-radius: 4px 0 0 4px;
+            border: 1px solid #d1d5db;
+            border-right: none;
+            height: 38px;
+            background-color: #fff;
+            color: #374151;
+            font-size: 0.875rem;
+            z-index: 1;
+            box-shadow: none;
+        }
+
+        .search-wrapper .form-input-custom:focus {
+            border-color: #00a65a;
+            outline: none;
+        }
+
+        .search-wrapper .btn-search {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 38px;
+            width: 44px;
+            padding: 0;
+            background-color: #00a65a;
+            border: 1px solid #00a65a;
+            color: #fff;
+            cursor: pointer;
+            z-index: 2;
+            border-radius: 0;
+            transition: background-color 0.2s;
+        }
+        
+        .search-wrapper .btn-search:hover {
+            background-color: #008d4c;
+            border-color: #008d4c;
+        }
+
+        .search-wrapper .btn-reset {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 38px;
+            width: 44px;
+            padding: 0;
+            background-color: #3b5998;
+            border: 1px solid #3b5998;
+            border-radius: 0 4px 4px 0;
+            color: #fff;
+            cursor: pointer;
+            z-index: 2;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .search-wrapper .btn-reset:hover {
+            background-color: #2d4373;
+            border-color: #2d4373;
+            color: #fff;
         }
 
         /* Buttons styling */
@@ -939,162 +1058,6 @@
             margin-top: 8px;
         }
 
-        /* Search Wrapper */
-        .search-wrapper {
-            display: flex;
-            align-items: stretch;
-            width: auto;
-            max-width: 100%;
-        }
-
-        .search-wrapper .form-input-custom {
-            flex: none;
-            width: 180px; /* Lebar dikecilkan agar pas dengan teks */
-            padding: 0 12px;
-            border-radius: 4px 0 0 4px;
-            border: 1px solid #d1d5db;
-            border-right: none;
-            height: 38px;
-            background-color: #fff;
-            color: #374151;
-            font-size: 0.875rem;
-            z-index: 1;
-            box-shadow: none;
-        }
-
-        .search-wrapper .form-input-custom:focus {
-            border-color: #00a65a;
-            outline: none;
-        }
-
-        .search-wrapper .btn-search {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 38px;
-            width: 44px;
-            padding: 0;
-            background-color: #00a65a;
-            border: 1px solid #00a65a;
-            color: #fff;
-            cursor: pointer;
-            z-index: 2;
-            border-radius: 0;
-            transition: background-color 0.2s;
-        }
-        
-        .search-wrapper .btn-search:hover {
-            background-color: #008d4c;
-            border-color: #008d4c;
-        }
-
-        .search-wrapper .btn-reset {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 38px;
-            width: 44px;
-            padding: 0;
-            background-color: #3b5998;
-            border: 1px solid #3b5998;
-            border-radius: 0 4px 4px 0;
-            color: #fff;
-            cursor: pointer;
-            z-index: 2;
-            text-decoration: none;
-            transition: background-color 0.2s;
-        }
-
-        .search-wrapper .btn-reset:hover {
-            background-color: #2d4373;
-            border-color: #2d4373;
-            color: #fff;
-        }
-        
-        .btn-reset:hover {
-            background-color: #ef4444;
-            color: #fff;
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            background-color: var(--bg-surface);
-            border-radius: 12px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            transform: scale(0.95) translateY(20px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid var(--border);
-        }
-
-        .modal-overlay.show .modal-content {
-            transform: scale(1) translateY(0);
-        }
-
-        .modal-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .modal-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin: 0;
-        }
-
-        .btn-close {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            padding: 4px;
-            border-radius: 6px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-close:hover {
-            background-color: var(--bg-surface2);
-            color: var(--text-primary);
-        }
-
-        .modal-body {
-            padding: 24px;
-            overflow-y: auto;
-        }
-
         /* Filter rows */
         .filter-row-custom {
             display: flex;
@@ -1109,6 +1072,25 @@
             gap: 6px;
             flex: 1;
             min-width: 180px;
+        }
+
+        .filter-input-search-wrapper {
+            position: relative;
+        }
+
+        .filter-input-search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-faint);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-input-search {
+            padding-left: 36px !important;
         }
 
         /* Table custom designs */
@@ -1170,16 +1152,16 @@
             color: #60a5fa;
         }
 
+        .badge-cyan {
+            background-color: rgba(6, 182, 212, 0.1);
+            border-color: rgba(6, 182, 212, 0.2);
+            color: #22d3ee;
+        }
+
         .badge-green {
             background-color: rgba(16, 185, 129, 0.1);
             border-color: rgba(16, 185, 129, 0.2);
             color: #34d399;
-        }
-
-        .badge-rose {
-            background-color: rgba(244, 63, 94, 0.1);
-            border-color: rgba(244, 63, 94, 0.2);
-            color: #fb7185;
         }
 
         .badge-gray {
@@ -1210,6 +1192,9 @@
             .dashboard-grid {
                 grid-template-columns: 1fr;
             }
+            .shortcut-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
             .welcome-card {
                 flex-direction: column;
                 align-items: stretch;
@@ -1224,6 +1209,83 @@
                 flex-direction: column;
                 align-items: stretch;
             }
+        }
+
+        /* ==================== MODAL STYLES ==================== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: var(--bg-surface);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: scale(0.95) translateY(-20px);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-close:hover {
+            background-color: var(--bg-surface2);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
         }
 
         /* Laravel Pagination CSS Fix */
@@ -1265,6 +1327,7 @@
             margin-left: 0 !important;
         }
 
+        /* Target active span inner element & other page anchors */
         nav[role="navigation"] a.relative,
         nav[role="navigation"] span[aria-current="page"] > span,
         nav[role="navigation"] span[aria-disabled="true"] > span {
@@ -1279,19 +1342,20 @@
             border-radius: 6px;
             text-decoration: none;
             flex: 0 0 auto;
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            color: #cbd5e1;
+            background-color: var(--pagination-bg);
+            border: 1px solid var(--pagination-border);
+            color: var(--text-muted);
             margin: 0;
             transition: all 0.2s ease;
         }
 
         nav[role="navigation"] a.relative:hover {
-            background-color: #334155;
-            color: #ffffff;
-            border-color: #475569;
+            background-color: var(--bg-surface3);
+            color: var(--text-primary);
+            border-color: var(--text-faint);
         }
 
+        /* Active page highlight */
         nav[role="navigation"] span[aria-current="page"] > span {
             background-color: #2563eb !important;
             border-color: #2563eb !important;
@@ -1299,10 +1363,11 @@
             cursor: default;
         }
 
+        /* Disabled arrow links */
         nav[role="navigation"] span[aria-disabled="true"] > span {
-            background-color: #0f172a !important;
-            border-color: #1e293b !important;
-            color: #475569 !important;
+            background-color: var(--pagination-dis) !important;
+            border-color: var(--border) !important;
+            color: var(--text-faint) !important;
             opacity: 0.5;
             cursor: not-allowed;
         }
@@ -1331,23 +1396,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Profile Dropdown Toggle
-            const profileBtn = document.getElementById('profile-btn');
-            const profileMenu = document.getElementById('profile-menu');
-            
-            if(profileBtn && profileMenu) {
-                profileBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    profileMenu.style.display = profileMenu.style.display === 'none' || profileMenu.style.display === '' ? 'block' : 'none';
-                });
-                
-                document.addEventListener('click', (e) => {
-                    if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
-                        profileMenu.style.display = 'none';
-                    }
-                });
-            }
-
             // Mobile menu toggle
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const sidebar = document.getElementById('sidebar');
@@ -1398,6 +1446,69 @@
                 });
             });
 
+            // ===== AJAX FORM SUBMISSION HANDLER =====
+            const ajaxForms = document.querySelectorAll('.ajax-form');
+            ajaxForms.forEach(form => {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = 'Menyimpan...';
+                    submitBtn.disabled = true;
+
+                    // Remove existing error messages
+                    form.querySelectorAll('.form-error-custom').forEach(el => el.remove());
+                    form.querySelectorAll('.form-input-custom, .form-select-custom').forEach(el => {
+                        el.style.borderColor = 'var(--input-border)';
+                    });
+
+                    try {
+                        const formData = new FormData(form);
+                        const method = form.getAttribute('method').toUpperCase();
+                        let fetchOptions = {
+                            method: method === 'GET' ? 'GET' : 'POST',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            }
+                        };
+                        
+                        if (method !== 'GET') {
+                            fetchOptions.body = formData;
+                        }
+                        
+                        const response = await fetch(form.getAttribute('action'), fetchOptions);
+                        
+                        if (response.ok) {
+                            window.location.reload();
+                        } else if (response.status === 422) {
+                            const data = await response.json();
+                            const errors = data.errors;
+                            
+                            for (const field in errors) {
+                                const input = form.querySelector(`[name="${field}"]`);
+                                if (input) {
+                                    input.style.borderColor = '#ef4444';
+                                    const errorDiv = document.createElement('div');
+                                    errorDiv.className = 'form-error-custom';
+                                    errorDiv.innerText = errors[field][0];
+                                    input.parentNode.appendChild(errorDiv);
+                                }
+                            }
+                        } else {
+                            alert('Terjadi kesalahan pada server.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan koneksi.');
+                    } finally {
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.disabled = false;
+                    }
+                });
+            });
+
             // ===== Theme Toggle =====
             const themeBtn = document.getElementById('theme-toggle-btn');
             if (themeBtn) {
@@ -1415,159 +1526,42 @@
 
     <div class="admin-container">
         <!-- Mobile Sidebar Overlay -->
-        <div id="sidebar-overlay" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 40; display: none;"></div>
+        <div id="sidebar-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden lg:hidden"></div>
 
         <!-- Sidebar -->
         <aside id="sidebar" class="sidebar">
             <!-- Sidebar Navigation -->
+            <!-- Sidebar Navigation -->
             <nav class="sidebar-nav">
-                @if(auth()->user()->role === 'admin_p2mp')
-                    <!-- Dashboard -->
-                    <a href="{{ route('adminp2mp.dashboard') }}" 
-                       class="nav-link {{ request()->routeIs('adminp2mp.dashboard') ? 'active' : '' }}">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                        </svg>
-                        Dashboard
-                    </a>
+                <!-- Dashboard -->
+                <a href="{{ route('adminsistem.dashboard') }}" 
+                   class="nav-link {{ request()->routeIs('adminsistem.dashboard') ? 'active' : '' }}">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    Dashboard
+                </a>
 
-                    <!-- Data Master Dropdown -->
-                    <div class="sidebar-dropdown">
-                        <button type="button" class="sidebar-dropdown-toggle {{ (request()->routeIs('adminprodi.kategori.*') || request()->routeIs('adminprodi.iku.*') || request()->routeIs('adminprodi.bukti.*')) ? 'active' : '' }}">
-                            <div class="toggle-content">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
-                                </svg>
-                                <span>Data Master</span>
-                            </div>
-                            <svg class="chevron-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-                        <div class="sidebar-dropdown-menu {{ (request()->routeIs('adminprodi.kategori.*') || request()->routeIs('adminprodi.iku.*') || request()->routeIs('adminprodi.bukti.*')) ? 'show' : '' }}">
+                <!-- Kelola Program Studi -->
+                <a href="{{ route('adminsistem.prodi.index') }}" 
+                   class="nav-link {{ request()->routeIs('adminsistem.prodi.*') ? 'active' : '' }}">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    Kelola Program Studi
+                </a>
 
-                            <a href="{{ route('adminprodi.kategori.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.kategori.*') ? 'active' : '' }}">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
-                                Kategori IKU/IKT
-                            </a>
-                            <a href="{{ route('adminprodi.iku.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.iku.*') ? 'active' : '' }}">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                Data IKU/IKT
-                            </a>
-                            <a href="{{ route('adminprodi.bukti.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.bukti.*') ? 'active' : '' }}">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                                Jenis Bukti
-                            </a>
-                        </div>
-                    </div>
+                <!-- Kelola User -->
+                <a href="{{ route('adminsistem.users.index') }}" 
+                   class="nav-link {{ request()->routeIs('adminsistem.users.*') ? 'active' : '' }}">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    Kelola User
+                </a>
 
-                    <!-- Validasi Bukti IKU/IKT -->
-                    <a href="{{ route('adminp2mp.validasi') }}" 
-                       class="nav-link {{ request()->routeIs('adminp2mp.validasi') ? 'active' : '' }}">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        Validasi Bukti IKU/IKT
-                    </a>
-
-                    <!-- Laporan & Pengaturan Dropdown -->
-                    <div class="sidebar-dropdown">
-                        <button type="button" class="sidebar-dropdown-toggle {{ (request()->routeIs('adminp2mp.monitoring') || request()->routeIs('adminprodi.laporan.index') || request()->routeIs('adminprodi.pengaturan.*')) ? 'active' : '' }}">
-                            <div class="toggle-content">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                                </svg>
-                                <span>Laporan & Pengaturan</span>
-                            </div>
-                            <svg class="chevron-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-                        <div class="sidebar-dropdown-menu {{ (request()->routeIs('adminp2mp.monitoring') || request()->routeIs('adminprodi.laporan.index') || request()->routeIs('adminprodi.pengaturan.*')) ? 'show' : '' }}">
-                            <a href="{{ route('adminp2mp.monitoring') }}" class="dropdown-link {{ request()->routeIs('adminp2mp.monitoring') ? 'active' : '' }}">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                                Monitor & Laporan
-                            </a>
-                            <a href="{{ route('adminprodi.pengaturan.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.pengaturan.*') ? 'active' : '' }}">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                Pengaturan Sistem
-                            </a>
-                        </div>
-                    </div>
-                @else
-                    <!-- Dashboard -->
-                    <a href="{{ route('adminprodi.dashboard') }}" 
-                       class="nav-link {{ request()->routeIs('adminprodi.dashboard') ? 'active' : '' }}">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                        </svg>
-                        Dashboard
-                    </a>
-
-                    <!-- Data Master Dropdown -->
-                    <div class="sidebar-dropdown">
-                        <button type="button" class="sidebar-dropdown-toggle {{ (request()->routeIs('adminprodi.kategori.*') || request()->routeIs('adminprodi.iku.*') || request()->routeIs('adminprodi.bukti.*') || request()->routeIs('adminprodi.dosen')) ? 'active' : '' }}">
-                            <div class="toggle-content">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
-                                </svg>
-                                <span>Data Master</span>
-                            </div>
-                            <svg class="chevron-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-                        <div class="sidebar-dropdown-menu {{ (request()->routeIs('adminprodi.kategori.*') || request()->routeIs('adminprodi.iku.*') || request()->routeIs('adminprodi.bukti.*') || request()->routeIs('adminprodi.dosen')) ? 'show' : '' }}">
-                            <a href="{{ route('adminprodi.kategori.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.kategori.*') ? 'active' : '' }}">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
-                                Kategori IKU/IKT
-                            </a>
-                            <a href="{{ route('adminprodi.iku.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.iku.*') ? 'active' : '' }}">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                Data IKU/IKT
-                            </a>
-                            <a href="{{ route('adminprodi.bukti.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.bukti.*') ? 'active' : '' }}">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                                Jenis Bukti
-                            </a>
-                            <a href="{{ route('adminprodi.dosen') }}" class="dropdown-link {{ request()->routeIs('adminprodi.dosen') ? 'active' : '' }}">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                Data Dosen
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Target & Penugasan Dropdown -->
-                    <div class="sidebar-dropdown">
-                        <button type="button" class="sidebar-dropdown-toggle {{ (request()->routeIs('adminprodi.pencapaian.*') || request()->routeIs('adminprodi.penugasan.*') || request()->routeIs('adminprodi.bukti-dosen')) ? 'active' : '' }}">
-                            <div class="toggle-content">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                </svg>
-                                <span>Target & Penugasan</span>
-                            </div>
-                            <svg class="chevron-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-                        <div class="sidebar-dropdown-menu {{ (request()->routeIs('adminprodi.pencapaian.*') || request()->routeIs('adminprodi.penugasan.*') || request()->routeIs('adminprodi.bukti-dosen')) ? 'show' : '' }}">
-                            <a href="{{ route('adminprodi.pencapaian.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.pencapaian.*') ? 'active' : '' }}">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.003 9.003 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
-                                Target IKU/IKT Tahunan
-                            </a>
-                            <a href="{{ route('adminprodi.penugasan.index') }}" class="dropdown-link {{ request()->routeIs('adminprodi.penugasan.*') ? 'active' : '' }}">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-                                Penugasan Dosen
-                            </a>
-                            <a href="{{ route('adminprodi.bukti-dosen') }}" class="dropdown-link {{ request()->routeIs('adminprodi.bukti-dosen') ? 'active' : '' }}">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
-                                Bukti IKU/IKT Dosen
-                            </a>
-                        </div>
-                    </div>
-
-
-                @endif
+                <!-- Kelola Model & Token AI -->
+                <a href="{{ route('adminsistem.model_ai.index') }}" 
+                   class="nav-link {{ request()->routeIs('adminsistem.model_ai.*') ? 'active' : '' }}">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    Kelola Model & Token AI
+                </a>
             </nav>
 
         </aside>
@@ -1587,7 +1581,7 @@
                             <strong style="font-size: 1.25rem; font-weight: 700; letter-spacing: 0.5px; line-height: 1;">POLITEKNIK SUKABUMI</strong>
                         </div>
                     </div>
-                </div>
+                </div
 
                 <!-- Theme Toggle + Right Actions -->
                 <div style="display:flex;align-items:center;gap:20px;">
@@ -1656,34 +1650,18 @@
                     </div>
                 @endif
 
-                @if($errors->any() && !request()->routeIs('*.store') && !request()->routeIs('*.update'))
-                    <div class="alert-box alert-danger" role="alert">
-                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                        </svg>
-                        <div>
-                            <ul style="list-style-type: none; margin: 0; padding: 0;">
-                                @foreach($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                @endif
-
                 @yield('content')
             </main>
         </div>
     </div>
 
-    <!-- Modal and AJAX Form Script -->
     <script>
         // Modal functions
         function openModal(id) {
             const modal = document.getElementById(id);
             if (modal) {
                 modal.classList.add('show');
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                document.body.style.overflow = 'hidden';
             }
         }
 
@@ -1692,17 +1670,6 @@
             if (modal) {
                 modal.classList.remove('show');
                 document.body.style.overflow = '';
-                
-                // Reset form inside modal when closed
-                const form = modal.querySelector('form');
-                if (form && !form.classList.contains('no-auto-reset')) {
-                    form.reset();
-                    // Clear any errors
-                    const errorMsgs = form.querySelectorAll('.form-error-custom');
-                    errorMsgs.forEach(el => el.remove());
-                    const invalidInputs = form.querySelectorAll('.is-invalid');
-                    invalidInputs.forEach(el => el.classList.remove('is-invalid'));
-                }
             }
         }
 
@@ -1713,80 +1680,22 @@
             }
         });
 
-        // AJAX Form Submission
-        document.addEventListener('DOMContentLoaded', function() {
-            const ajaxForms = document.querySelectorAll('form.ajax-form');
-            
-            ajaxForms.forEach(form => {
-                form.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    
-                    const submitBtn = form.querySelector('button[type="submit"]');
-                    const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
-                    
-                    if (submitBtn) {
-                        submitBtn.disabled = true;
-                        submitBtn.innerHTML = '<svg style="width:16px;height:16px;animation:spin 1s linear infinite" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Menyimpan...';
-                    }
-
-                    // Clear previous errors
-                    const oldErrors = form.querySelectorAll('.form-error-custom');
-                    oldErrors.forEach(el => el.remove());
-                    const invalidInputs = form.querySelectorAll('.is-invalid');
-                    invalidInputs.forEach(el => el.style.borderColor = '');
-
-                    try {
-                        const formData = new FormData(form);
-                        const response = await fetch(form.action, {
-                            method: form.method || 'POST',
-                            body: formData,
-                            headers: {
-                                'Accept': 'application/json',
-                                'X-Requested-With': 'XMLHttpRequest'
-                            }
-                        });
-
-                        if (response.ok) {
-                            // Success - reload to show success message and new data
-                            window.location.reload();
-                            return;
-                        }
-
-                        const data = await response.json();
-
-                        if (response.status === 422) {
-                            // Validation error
-                            const errors = data.errors;
-                            for (const field in errors) {
-                                // Find the input field
-                                const input = form.querySelector(`[name="${field}"]`) || form.querySelector(`[name="${field}[]"]`);
-                                if (input) {
-                                    input.style.borderColor = '#ef4444';
-                                    
-                                    // Create error element
-                                    const errorEl = document.createElement('div');
-                                    errorEl.className = 'form-error-custom';
-                                    errorEl.textContent = errors[field][0];
-                                    
-                                    // Insert after input or its parent if it's a select/file
-                                    input.parentNode.insertBefore(errorEl, input.nextSibling);
-                                }
-                            }
-                        } else {
-                            alert(data.message || 'Terjadi kesalahan pada server.');
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        alert('Gagal menghubungi server. Periksa koneksi internet Anda.');
-                    } finally {
-                        if (submitBtn) {
-                            submitBtn.disabled = false;
-                            submitBtn.innerHTML = originalBtnText;
-                        }
-                    }
-                });
+        // Profile Dropdown Toggle
+        const profileBtn = document.getElementById('profile-btn');
+        const profileMenu = document.getElementById('profile-menu');
+        
+        if(profileBtn && profileMenu) {
+            profileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                profileMenu.style.display = profileMenu.style.display === 'none' || profileMenu.style.display === '' ? 'block' : 'none';
             });
-        });
+            
+            document.addEventListener('click', (e) => {
+                if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                    profileMenu.style.display = 'none';
+                }
+            });
+        }
 
         // Pengaturan Sistem Modal Logic
         async function openPengaturanModal(url) {
@@ -1871,7 +1780,6 @@
             </div>
         </div>
     </div>
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-    </style>
 </body>
 </html>
+

@@ -1,4 +1,4 @@
-@extends('adminp2mp.layouts.app')
+@extends('adminsistem.layouts.app')
 
 @section('title', 'Kelola Program Studi - Sistem Early Warning IKU/IKT')
 @section('page_title', 'Kelola Program Studi')
@@ -24,7 +24,7 @@
         </div>
 
         <!-- Filters Form -->
-        <form action="{{ route('adminp2mp.prodi.index') }}" method="GET" class="filter-row-custom">
+        <form action="{{ route('adminsistem.prodi.index') }}" method="GET" class="filter-row-custom">
             <!-- Search -->
             <div class="filter-item-custom" style="flex: 2;">
                 <label for="search" class="form-label-custom">Cari Program Studi</label>
@@ -35,7 +35,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </button>
-                    <a href="{{ route('adminp2mp.prodi.index') }}" class="btn-reset" title="Reset Pencarian">
+                    <a href="{{ route('adminsistem.prodi.index') }}" class="btn-reset" title="Reset Pencarian">
                         <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                         </svg>
@@ -85,7 +85,7 @@
                                     </button>
 
                                     <!-- Delete Button -->
-                                    <form action="{{ route('adminp2mp.prodi.destroy', $prodi->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus prodi ini? Seluruh user di bawah prodi ini akan dilepas asosiasinya.')" style="display: inline-flex;">
+                                    <form action="{{ route('adminsistem.prodi.destroy', $prodi->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus prodi ini? Seluruh user di bawah prodi ini akan dilepas asosiasinya.')" style="display: inline-flex;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn-action-delete" title="Hapus Prodi">
@@ -131,7 +131,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <form action="{{ route('adminp2mp.prodi.store') }}" method="POST" class="ajax-form">
+            <form action="{{ route('adminsistem.prodi.store') }}" method="POST" class="ajax-form">
                 @csrf
                 <div class="form-group-custom">
                     <label for="kode_prodi" class="form-label-custom">Kode Prodi</label>

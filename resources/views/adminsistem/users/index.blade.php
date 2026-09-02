@@ -1,4 +1,4 @@
-@extends('adminp2mp.layouts.app')
+@extends('adminsistem.layouts.app')
 
 @section('title', 'Kelola User - Sistem Early Warning IKU/IKT')
 @section('page_title', 'Kelola Pengguna')
@@ -24,7 +24,7 @@
         </div>
 
         <!-- Filters Form -->
-        <form action="{{ route('adminp2mp.users.index') }}" method="GET" class="filter-row-custom">
+        <form action="{{ route('adminsistem.users.index') }}" method="GET" class="filter-row-custom">
             <!-- Search -->
             <div class="filter-item-custom" style="flex: 2;">
                 <label for="search" class="form-label-custom">Cari Pengguna</label>
@@ -35,7 +35,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </button>
-                    <a href="{{ route('adminp2mp.users.index') }}" class="btn-reset" title="Reset Pencarian">
+                    <a href="{{ route('adminsistem.users.index') }}" class="btn-reset" title="Reset Pencarian">
                         <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                         </svg>
@@ -95,7 +95,9 @@
                             </td>
                             <!-- Role Badge -->
                             <td>
-                                @if($user->role === 'admin_p2mp')
+                                @if($user->role === 'admin_sistem')
+                                    <span class="badge-custom badge-rose">Admin Sistem</span>
+                                @elseif($user->role === 'admin_p2mp')
                                     <span class="badge-custom badge-purple">Admin P2MP</span>
                                 @elseif($user->role === 'admin_prodi')
                                     <span class="badge-custom badge-blue">Admin Prodi</span>
@@ -126,7 +128,7 @@
 
                                     <!-- Delete Button -->
                                     @if(auth()->id() !== $user->id)
-                                        <form action="{{ route('adminp2mp.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?')" style="display: inline-flex;">
+                                        <form action="{{ route('adminsistem.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?')" style="display: inline-flex;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn-action-delete" title="Hapus User">
@@ -179,7 +181,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <form action="{{ route('adminp2mp.users.store') }}" method="POST" class="ajax-form">
+            <form action="{{ route('adminsistem.users.store') }}" method="POST" class="ajax-form">
                 @csrf
                 <div class="form-group-custom">
                     <label for="name" class="form-label-custom">Nama Lengkap</label>
@@ -288,7 +290,7 @@
 <script>
     function toggleProdi(role, groupId) {
         const group = document.getElementById(groupId);
-        if (role === 'admin_p2mp') {
+        if (role === 'admin_p2mp' || role === 'admin_sistem') {
             group.style.display = 'none';
         } else {
             group.style.display = 'block';
@@ -313,7 +315,7 @@
         toggleProdi(role, 'edit_prodi_group');
         
         const form = document.getElementById('editForm');
-        form.action = `/adminp2mp/users/${id}`;
+        form.action = `/adminsistem/users/${id}`;
         
         document.getElementById('editModal').classList.add('show');
     }

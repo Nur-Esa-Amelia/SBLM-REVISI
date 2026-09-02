@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminSistem\DashboardController as AdminSistemDashboardController;
+use App\Http\Controllers\AdminSistem\UserController as AdminSistemUserController;
+use App\Http\Controllers\AdminSistem\ProdiController as AdminSistemProdiController;
+use App\Http\Controllers\AdminSistem\ModelTokenAiController as AdminSistemModelTokenAiController;
 use App\Http\Controllers\AdminP2mp\DashboardController as AdminP2mpDashboardController;
-use App\Http\Controllers\AdminP2mp\UserController as AdminP2mpUserController;
-use App\Http\Controllers\AdminP2mp\ProdiController as AdminP2mpProdiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,6 +52,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', function () {
         $user = auth()->user();
+        if ($user->role === 'admin_sistem') {
+            return redirect()->route('adminsistem.dashboard');
+        }
         if ($user->role === 'admin_p2mp') {
             return redirect()->route('adminp2mp.dashboard');
         }
@@ -65,12 +70,19 @@ Route::middleware('auth')->group(function () {
     // Rute Admin P2MP
     Route::middleware('role:admin_p2mp')->prefix('adminp2mp')->name('adminp2mp.')->group(function () {
         Route::get('/dashboard', [AdminP2mpDashboardController::class, 'index'])->name('dashboard');
-        Route::resource('users', AdminP2mpUserController::class);
-        Route::resource('prodi', AdminP2mpProdiController::class);
         Route::get('/validasi', [AdminP2mpDashboardController::class, 'validasi'])->name('validasi');
         Route::post('/validasi/{id}', [AdminP2mpDashboardController::class, 'updateValidasi'])->name('validasi.update');
         Route::post('/validasi-bulk-approve', [\App\Http\Controllers\AdminP2mp\BulkApproveController::class, 'bulkApprove'])->name('validasi.bulk-approve');
         Route::get('/monitoring', [AdminP2mpDashboardController::class, 'monitoring'])->name('monitoring');
+    });
+
+    // Rute Admin Sistem
+    Route::middleware('role:admin_sistem')->prefix('adminsistem')->name('adminsistem.')->group(function () {
+        Route::get('/dashboard', [AdminSistemDashboardController::class, 'index'])->name('dashboard');
+        Route::resource('users', AdminSistemUserController::class);
+        Route::resource('prodi', AdminSistemProdiController::class);
+        Route::get('/model-ai', [AdminSistemModelTokenAiController::class, 'index'])->name('model_ai.index');
+        Route::post('/model-ai', [AdminSistemModelTokenAiController::class, 'store'])->name('model_ai.store');
     });
 
     // Rute yang dapat diakses oleh Admin Prodi, Kaprodi & Admin P2MP

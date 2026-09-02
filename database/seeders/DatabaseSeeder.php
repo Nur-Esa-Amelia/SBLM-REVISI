@@ -118,7 +118,7 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        // 1. Admin P2MP (Not tied to any prodi)
+        // 1. Admin P2MP 
         \App\Models\User::updateOrCreate([
             'email' => 'admin.p2mp@gmail.com'
         ], [

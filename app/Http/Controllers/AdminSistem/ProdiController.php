@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\AdminP2mp;
+namespace App\Http\Controllers\AdminSistem;
 
 use App\Http\Controllers\Controller;
 use App\Models\Prodi;
@@ -23,7 +23,7 @@ class ProdiController extends Controller
             ->paginate(request('per_page', 10))
             ->withQueryString();
 
-        return view('adminp2mp.prodi.index', compact('prodis', 'search'));
+        return view('adminsistem.prodi.index', compact('prodis', 'search'));
     }
 
 
@@ -40,7 +40,7 @@ class ProdiController extends Controller
 
         Prodi::create($validated);
 
-        return redirect()->route('adminp2mp.prodi.index')
+        return redirect()->route('adminsistem.prodi.index')
             ->with('success', 'Program Studi berhasil ditambahkan.');
     }
 
@@ -58,7 +58,7 @@ class ProdiController extends Controller
 
         $prodi->update($validated);
 
-        return redirect()->route('adminp2mp.prodi.index')
+        return redirect()->route('adminsistem.prodi.index')
             ->with('success', 'Program Studi berhasil diperbarui.');
     }
 
@@ -68,7 +68,7 @@ class ProdiController extends Controller
         // Mari kita hapus langsung, user yang terikat dengannya akan memiliki prodi_id bernilai null karena onDelete('set null') pada migrasi.
         $prodi->delete();
 
-        return redirect()->route('adminp2mp.prodi.index')
+        return redirect()->route('adminsistem.prodi.index')
             ->with('success', 'Program Studi berhasil dihapus.');
     }
 }

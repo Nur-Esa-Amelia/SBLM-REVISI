@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\AdminP2mp;
+namespace App\Http\Controllers\AdminSistem;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -37,13 +37,14 @@ class UserController extends Controller
 
         $prodis = Prodi::orderBy('nama_prodi')->get();
         $roles = [
+            'admin_sistem' => 'Admin Sistem',
             'admin_p2mp' => 'Admin P2MP',
             'admin_prodi' => 'Admin Prodi',
             'kaprodi' => 'Kaprodi',
             'dosen' => 'Dosen',
         ];
 
-        return view('adminp2mp.users.index', compact('users', 'prodis', 'roles', 'search', 'role', 'prodiId'));
+        return view('adminsistem.users.index', compact('users', 'prodis', 'roles', 'search', 'role', 'prodiId'));
     }
 
 
@@ -53,8 +54,8 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8'],
-            'role' => ['required', 'in:admin_p2mp,admin_prodi,kaprodi,dosen'],
-            'prodi_id' => ['required_unless:role,admin_p2mp', 'nullable', 'exists:prodi,id'],
+            'role' => ['required', 'in:admin_sistem,admin_p2mp,admin_prodi,kaprodi,dosen'],
+            'prodi_id' => ['required_unless:role,admin_p2mp,admin_sistem', 'nullable', 'exists:prodi,id'],
         ], [
             'name.required' => 'Nama lengkap wajib diisi.',
             'email.required' => 'Email wajib diisi.',
@@ -62,7 +63,7 @@ class UserController extends Controller
             'password.required' => 'Password wajib diisi.',
             'password.min' => 'Password minimal terdiri dari 8 karakter.',
             'role.required' => 'Role wajib dipilih.',
-            'prodi_id.required_unless' => 'Program Studi wajib dipilih untuk role selain Admin P2MP.',
+            'prodi_id.required_unless' => 'Program Studi wajib dipilih untuk role selain Admin P2MP dan Admin Sistem.',
             'prodi_id.exists' => 'Program Studi tidak valid.',
         ]);
 
@@ -71,12 +72,12 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
-            'prodi_id' => $request->role === 'admin_p2mp' ? null : $request->prodi_id,
+            'prodi_id' => in_array($request->role, ['admin_p2mp', 'admin_sistem']) ? null : $request->prodi_id,
         ];
 
         User::create($data);
 
-        return redirect()->route('adminp2mp.users.index')
+        return redirect()->route('adminsistem.users.index')
             ->with('success', 'User berhasil ditambahkan.');
     }
 
@@ -87,22 +88,22 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
             'password' => ['nullable', 'string', 'min:8'],
-            'role' => ['required', 'in:admin_p2mp,admin_prodi,kaprodi,dosen'],
-            'prodi_id' => ['required_unless:role,admin_p2mp', 'nullable', 'exists:prodi,id'],
+            'role' => ['required', 'in:admin_sistem,admin_p2mp,admin_prodi,kaprodi,dosen'],
+            'prodi_id' => ['required_unless:role,admin_p2mp,admin_sistem', 'nullable', 'exists:prodi,id'],
         ], [
             'name.required' => 'Nama lengkap wajib diisi.',
             'email.required' => 'Email wajib diisi.',
             'email.unique' => 'Email sudah digunakan oleh user lain.',
             'password.min' => 'Password minimal terdiri dari 8 karakter.',
             'role.required' => 'Role wajib dipilih.',
-            'prodi_id.required_unless' => 'Program Studi wajib dipilih untuk role selain Admin P2MP.',
+            'prodi_id.required_unless' => 'Program Studi wajib dipilih untuk role selain Admin P2MP dan Admin Sistem.',
             'prodi_id.exists' => 'Program Studi tidak valid.',
         ]);
 
         $user->name = $request->name;
         $user->email = $request->email;
         $user->role = $request->role;
-        $user->prodi_id = $request->role === 'admin_p2mp' ? null : $request->prodi_id;
+        $user->prodi_id = in_array($request->role, ['admin_p2mp', 'admin_sistem']) ? null : $request->prodi_id;
 
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
@@ -110,7 +111,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('adminp2mp.users.index')
+        return redirect()->route('adminsistem.users.index')
             ->with('success', 'User berhasil diperbarui.');
     }
 
@@ -118,13 +119,13 @@ class UserController extends Controller
     {
         // Cegah menghapus akun sendiri
         if (auth()->id() === $user->id) {
-            return redirect()->route('adminp2mp.users.index')
+            return redirect()->route('adminsistem.users.index')
                 ->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
 
         $user->delete();
 
-        return redirect()->route('adminp2mp.users.index')
+        return redirect()->route('adminsistem.users.index')
             ->with('success', 'User berhasil dihapus.');
     }
 }
