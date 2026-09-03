@@ -11,6 +11,13 @@ class GeminiModel extends Model
         'model_id',
         'api_key',
         'status',
+        'last_used_at',
+        'cooldown_until'
+    ];
+
+    protected $casts = [
+        'last_used_at' => 'datetime',
+        'cooldown_until' => 'datetime',
     ];
 
     /**

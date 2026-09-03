@@ -136,14 +136,24 @@
                 </div>
             </form>
 
-            <div style="display: flex; gap: 10px; align-items: center;">
-                <!-- Print Button -->
-                <button onclick="window.print()" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.8rem;">
+            <div style="position: relative; display: inline-block;" class="dropdown-export">
+                <button type="button" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 8px;" onclick="document.getElementById('export-menu').style.display = document.getElementById('export-menu').style.display === 'none' ? 'block' : 'none'; event.stopPropagation();">
                     <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.82l-.24-2.07A1.99 1.99 0 004.5 9.75h-.5m16 0h-.5a1.99 1.99 0 00-1.98 2.01l-.24 2.07M4 9.75V7.5a3 3 0 013-3h10a3 3 0 013 3v2.25m-14 0h14m-12 9h10a2 2 0 002-2v-3.75a2 2 0 00-2-2H7a2 2 0 00-2 2V17a2 2 0 002 2z"></path>
                     </svg>
-                    Cetak Laporan (PDF)
+                    Cetak Laporan
+                    <svg style="width: 12px; height: 12px; margin-left: 2px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
+                <div id="export-menu" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 5px; background: var(--bg-surface, #ffffff); border: 1px solid var(--border, #cbd5e1); border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); width: 240px; z-index: 50; overflow: hidden;">
+                    <button type="button" onclick="window.print(); document.getElementById('export-menu').style.display = 'none';" style="width: 100%; text-align: left; padding: 12px 16px; background: transparent; border: none; font-size: 0.85rem; color: var(--text-primary); cursor: pointer; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border);" onmouseover="this.style.backgroundColor='rgba(241, 245, 249, 0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+                        <svg style="width: 18px; height: 18px; color: #ef4444;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        PDF
+                    </button>
+                    <a href="{{ route('adminp2mp.monitoring.export-excel', ['tahun' => $tahun, 'prodi_id' => $prodiId]) }}" style="width: 100%; text-align: left; padding: 12px 16px; background: transparent; border: none; font-size: 0.85rem; color: var(--text-primary); cursor: pointer; display: flex; align-items: center; gap: 10px; text-decoration: none;" onmouseover="this.style.backgroundColor='rgba(241, 245, 249, 0.1)'" onmouseout="this.style.backgroundColor='transparent'" onclick="document.getElementById('export-menu').style.display = 'none';">
+                        <svg style="width: 18px; height: 18px; color: #10b981;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                       Excel (.xlsx)
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -336,15 +346,61 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.addEventListener('click', function () {
             const pencapaianId = btn.getAttribute('data-pencapaian-id');
             const data = recommendationsData[pencapaianId];
-            if (data) {
-                modalTitle.textContent = 'Rekomendasi Analisis AI: ' + (data.iku_pencapaian.iku ? data.iku_pencapaian.iku.nama_iku : 'IKU/IKT');
-                modalSubtitle.innerHTML = 'Status: <span style="font-weight: 600; color: ' + 
-                    (data.iku_pencapaian.status === 'Perlu Perhatian' ? '#fbbf24' : '#ef4444') + ';">' + 
-                    data.iku_pencapaian.status + '</span> (Realisasi: ' + Math.round(data.iku_pencapaian.realisasi) + ' dari Target: ' + data.iku_pencapaian.target + ')';
-                
-                modalBody.innerHTML = parseMarkdown(data.rekomendasi);
-                modal.style.display = 'flex';
+            
+            let textToShow = data ? data.rekomendasi : 'Rekomendasi belum di-generate';
+            
+            if (textToShow.includes('Rekomendasi belum di-generate') || textToShow.includes('Layanan AI sedang tidak tersedia') || textToShow.includes('sedang diproses')) {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = `<svg style="width: 12px; height: 12px; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses AI...`;
+                btn.style.opacity = '0.7';
+                btn.style.pointerEvents = 'none';
+
+                fetch('/rekomendasi/generate-ajax/' + pencapaianId, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') : ''
+                    }
+                })
+                .then(response => response.json())
+                .then(res => {
+                    if (res.status === 'success') {
+                        if (!recommendationsData[pencapaianId]) {
+                            recommendationsData[pencapaianId] = { rekomendasi: res.rekomendasi, iku_pencapaian: null };
+                        } else {
+                            recommendationsData[pencapaianId].rekomendasi = res.rekomendasi;
+                        }
+                        showModal(res.rekomendasi);
+                    } else {
+                        showModal('**Terjadi kesalahan** saat memproses rekomendasi.');
+                    }
+                })
+                .catch(error => {
+                    showModal('**Koneksi gagal.** Silakan periksa jaringan Anda.');
+                })
+                .finally(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.style.opacity = '1';
+                    btn.style.pointerEvents = 'auto';
+                });
+            } else {
+                showModal(textToShow);
             }
+
+            function showModal(text) {
+                const ikuName = (data && data.iku_pencapaian && data.iku_pencapaian.iku) ? data.iku_pencapaian.iku.nama_iku : 'Indikator Kinerja';
+                const statusHtml = (data && data.iku_pencapaian) ? 
+                    'Status: <span style="font-weight: 600; color: ' + 
+                    (data.iku_pencapaian.status === 'Perlu Perhatian' ? '#fbbf24' : '#ef4444') + ';">' + 
+                    data.iku_pencapaian.status + '</span> (Realisasi: ' + Math.round(data.iku_pencapaian.realisasi) + ' dari Target: ' + data.iku_pencapaian.target + ')'
+                    : 'Detail Pencapaian AI';
+
+                modalTitle.textContent = 'Rekomendasi Analisis AI: ' + ikuName;
+                modalSubtitle.innerHTML = statusHtml;
+                    
+                    modalBody.innerHTML = parseMarkdown(text);
+                    modal.style.display = 'flex';
+                }
         });
     });
 

@@ -295,4 +295,33 @@ class DashboardController extends Controller
             'recommendations'
         ));
     }
+
+    /**
+     * Export laporan monitoring IKU/IKT ke format Excel.
+     */
+    public function exportExcel(Request $request)
+    {
+        $prodis = Prodi::all();
+        $prodiId = $request->query('prodi_id');
+        
+        if ($prodiId) {
+            $selectedProdi = Prodi::find($prodiId);
+            $prodiName = $selectedProdi ? $selectedProdi->nama_prodi : 'Program Studi';
+            $settings = Pengaturan::where('id_prodi', $prodiId)->first();
+        } else {
+            $prodiName = 'Semua Program Studi';
+            $settings = null;
+        }
+
+        $tahunAktif = $settings?->tahun_aktif ?? date('Y');
+        $tahun = $request->query('tahun', $tahunAktif);
+
+        $sanitizedProdiName = str_replace(' ', '_', preg_replace('/[^\w\s-]/', '', $prodiName));
+        $filename = 'Laporan_Capaian_IKU_' . $sanitizedProdiName . '_Tahun_' . $tahun . '.xlsx';
+
+        return \Maatwebsite\Excel\Facades\Excel::download(
+            new \App\Exports\LaporanExport($prodiId, $tahun, $prodiName),
+            $filename
+        );
+    }
 }

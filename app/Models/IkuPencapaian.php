@@ -27,6 +27,11 @@ class IkuPencapaian extends Model
         'status',
     ];
 
+    protected $casts = [
+        'realisasi' => 'float',
+        'target' => 'float',
+    ];
+
     //1 iku pencapaian punya 1 iku
     public function iku()
     {

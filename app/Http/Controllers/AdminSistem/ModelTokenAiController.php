@@ -26,11 +26,6 @@ class ModelTokenAiController extends Controller
             'status' => 'required|in:aktif,nonaktif',
         ]);
 
-        if ($request->status === 'aktif') {
-            // Nonaktifkan model yang lain
-            \App\Models\GeminiModel::where('status', 'aktif')->update(['status' => 'nonaktif']);
-        }
-
         \App\Models\GeminiModel::create([
             'name' => $request->name,
             'model_id' => $request->model_id,
@@ -54,11 +49,6 @@ class ModelTokenAiController extends Controller
             'status' => 'required|in:aktif,nonaktif',
         ]);
 
-        if ($request->status === 'aktif' && $model->status !== 'aktif') {
-            // Nonaktifkan model yang lain jika model ini diaktifkan
-            \App\Models\GeminiModel::where('id', '!=', $id)->where('status', 'aktif')->update(['status' => 'nonaktif']);
-        }
-
         $model->name = $request->name;
         $model->model_id = $request->model_id;
         $model->status = $request->status;
@@ -79,9 +69,6 @@ class ModelTokenAiController extends Controller
     {
         $model = \App\Models\GeminiModel::findOrFail($id);
 
-        // Nonaktifkan semua
-        \App\Models\GeminiModel::where('status', 'aktif')->update(['status' => 'nonaktif']);
-        
         // Aktifkan yang dipilih
         $model->update(['status' => 'aktif']);
 
@@ -99,5 +86,23 @@ class ModelTokenAiController extends Controller
         ActivityLog::log('Menghapus model Gemini', 'Model & Token AI', "Menghapus konfigurasi model '{$name}'");
 
         return redirect()->back()->with('success', 'Model Gemini berhasil dihapus.');
+    }
+
+    public function activateAll()
+    {
+        \App\Models\GeminiModel::query()->update(['status' => 'aktif']);
+        
+        ActivityLog::log('Mengaktifkan semua model Gemini', 'Model & Token AI', "Mengaktifkan semua model secara massal");
+        
+        return redirect()->back()->with('success', 'Semua Model berhasil diaktifkan.');
+    }
+
+    public function destroyAll()
+    {
+        \App\Models\GeminiModel::query()->delete();
+        
+        ActivityLog::log('Menghapus semua model Gemini', 'Model & Token AI', "Menghapus semua konfigurasi model secara massal");
+        
+        return redirect()->back()->with('success', 'Semua Model berhasil dihapus.');
     }
 }

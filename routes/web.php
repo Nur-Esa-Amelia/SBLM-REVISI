@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/validasi/{id}', [AdminP2mpDashboardController::class, 'updateValidasi'])->name('validasi.update');
         Route::post('/validasi-bulk-approve', [\App\Http\Controllers\AdminP2mp\BulkApproveController::class, 'bulkApprove'])->name('validasi.bulk-approve');
         Route::get('/monitoring', [AdminP2mpDashboardController::class, 'monitoring'])->name('monitoring');
+        Route::get('/monitoring/export-excel', [AdminP2mpDashboardController::class, 'exportExcel'])->name('monitoring.export-excel');
     });
 
     // Rute Admin Sistem
@@ -82,6 +83,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', AdminSistemUserController::class);
         Route::resource('prodi', AdminSistemProdiController::class);
         Route::get('/model-ai', [AdminSistemModelTokenAiController::class, 'index'])->name('model_ai.index');
+        Route::post('/model-ai/activate-all', [AdminSistemModelTokenAiController::class, 'activateAll'])->name('model_ai.activate_all');
+        Route::post('/model-ai/destroy-all', [AdminSistemModelTokenAiController::class, 'destroyAll'])->name('model_ai.destroy_all');
         Route::post('/model-ai', [AdminSistemModelTokenAiController::class, 'store'])->name('model_ai.store');
         Route::put('/model-ai/{id}', [AdminSistemModelTokenAiController::class, 'update'])->name('model_ai.update');
         Route::delete('/model-ai/{id}', [AdminSistemModelTokenAiController::class, 'destroy'])->name('model_ai.destroy');
@@ -92,6 +95,7 @@ Route::middleware('auth')->group(function () {
     // Rute yang dapat diakses oleh Admin Prodi, Kaprodi & Admin P2MP
     Route::middleware('role:admin_prodi,kaprodi,admin_p2mp')->prefix('adminprodi')->name('adminprodi.')->group(function () {
         Route::get('/laporan', [\App\Http\Controllers\AdminProdi\LaporanController::class, 'index'])->name('laporan.index');
+        Route::get('/laporan/export-excel', [\App\Http\Controllers\AdminProdi\LaporanController::class, 'exportExcel'])->name('laporan.export-excel');
 
         // Read-only access to Master Data
         Route::resource('kategori', \App\Http\Controllers\AdminProdi\KategoriController::class)->only(['index', 'show']);
@@ -136,4 +140,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/pengisian/{id}', [\App\Http\Controllers\Dosen\PengisianController::class, 'update'])->name('pengisian.update');
         Route::get('/pencapaian', [\App\Http\Controllers\Dosen\DashboardController::class, 'pencapaian'])->name('pencapaian.index');
     });
+    
+    // AJAX Endpoint for Generating Recommendation
+    Route::post('/rekomendasi/generate-ajax/{id}', [\App\Http\Controllers\RekomendasiAiController::class, 'generateAjax'])->name('rekomendasi.generate-ajax');
 });

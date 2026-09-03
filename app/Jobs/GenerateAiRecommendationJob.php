@@ -39,28 +39,21 @@ class GenerateAiRecommendationJob implements ShouldQueue
             return;
         }
 
-        // Ambil konfigurasi model aktif dari database
-        $activeModel = \App\Models\GeminiModel::where('status', 'aktif')->first();
+        // Cek apakah ada model aktif di database
+        $hasActiveKeys = \App\Models\GeminiModel::where('status', 'aktif')
+            ->where(function($q) {
+                $q->whereNull('cooldown_until')->orWhere('cooldown_until', '<', now());
+            })->exists();
 
-        if ($activeModel) {
-            $apiKey = $activeModel->api_key;
-            $model = $activeModel->model_id;
-        } else {
-            // Fallback ke .env jika tidak ada model yang aktif di database
-            $apiKey = config('services.gemini.key');
-            $model = config('services.gemini.model', 'gemini-2.5-flash');
-        }
-
-        // Jika sama sekali tidak ada API key
-        if (!$apiKey) {
+        if (!$hasActiveKeys) {
             RekomendasiAi::updateOrCreate(
                 ['id_iku_pencapaian' => $item->id],
-                ['rekomendasi' => 'Rekomendasi AI belum tersedia karena tidak ada Konfigurasi Model Gemini yang aktif. Silakan hubungi Admin Sistem.']
+                ['rekomendasi' => 'Rekomendasi AI belum tersedia karena tidak ada Konfigurasi Model Gemini yang aktif atau siap digunakan saat ini.']
             );
             return;
         }
 
-        // Catat aktivitas jika ini dipicu (Opsional, tergantung keperluan. Karena berjalan di background, mungkin user pembuat request sulit di-trace jika tidak di-pass di constructor. Kita lewati log aktivitas di job ini, biasanya di log di Controller jika ada aksi eksplisit)
+        // Catat aktivitas jika ini dipicu (Opsional)
 
         // prompt untuk AI
         $prodiName = $item->prodi ? $item->prodi->nama_prodi : 'Program Studi'; 
@@ -164,11 +157,24 @@ class GenerateAiRecommendationJob implements ShouldQueue
         $headerText .= "- **Realisasi**: " . $realisasi . "\n";
         $headerText .= "- **Status**: " . $status . "\n\n";
 
-        $recommendationText = 'Gagal menghubungi server Gemini API.';
+        $recommendationText = 'Layanan AI sedang tidak tersedia atau seluruh kuota API Key telah habis. Silakan coba beberapa saat lagi.';
 
-        if ($apiKey) {
+        $activeModels = \App\Models\GeminiModel::where('status', 'aktif')
+            ->where(function($q) {
+                $q->whereNull('cooldown_until')->orWhere('cooldown_until', '<', now());
+            })
+            // null last_used_at comes first (never used), then ordered by oldest used
+            ->orderByRaw('last_used_at IS NULL DESC, last_used_at ASC')
+            ->get();
+
+        $success = false;
+
+        foreach ($activeModels as $activeModel) {
+            $apiKey = $activeModel->api_key;
+            $model = $activeModel->model_id;
+
             try {
-                $response = Http::timeout(60)->post(
+                $response = Http::timeout(15)->post(
                     'https://generativelanguage.googleapis.com/v1beta/models/' . $model . ':generateContent?key=' . $apiKey,
                     [
                         'contents' => [
@@ -187,28 +193,62 @@ class GenerateAiRecommendationJob implements ShouldQueue
                     $result = $response->json();
                     $aiText = $result['candidates'][0]['content']['parts'][0]['text'] ?? 'Gagal memproses rekomendasi AI.';
                     $recommendationText = $headerText . $aiText;
-                } elseif ($response->status() === 429) {
-                    $recommendationText = 'Rekomendasi AI sementara tidak tersedia karena kuota layanan Gemini telah tercapai. Silakan coba lagi setelah kuota API tersedia kembali.';
-                } else {
-                    Log::error('Gemini API request failed.', [
-                        'status' => $response->status(),
-                        'body' => $response->body(),
-                        'model' => $model,
+                    
+                    // Berhasil, perbarui last_used_at dan hapus cooldown
+                    $activeModel->update([
+                        'last_used_at' => now(),
+                        'cooldown_until' => null
                     ]);
-                    $recommendationText = 'Rekomendasi AI sementara tidak dapat dibuat. Silakan coba lagi nanti.';
+                    
+                    Log::info('Gemini API Success', [
+                        'config_id' => $activeModel->id,
+                        'model_id' => $model,
+                        'key_prefix' => substr($apiKey, 0, 4) . '***',
+                    ]);
+
+                    $success = true;
+                    break; // Berhenti karena sudah berhasil
+                } else {
+                    $status = $response->status();
+                    $errorBody = $response->body();
+                    
+                    Log::warning('Gemini API Failed', [
+                        'config_id' => $activeModel->id,
+                        'model_id' => $model,
+                        'key_prefix' => substr($apiKey, 0, 4) . '***',
+                        'status' => $status,
+                        'response' => $errorBody
+                    ]);
+
+                    // Jika error (misal 429 Too Many Requests, 401 Unauthenticated, 403 Forbidden), berikan cooldown 5 menit
+                    if (in_array($status, [401, 403, 429, 404, 400])) {
+                        $activeModel->update([
+                            'cooldown_until' => now()->addMinutes(5)
+                        ]);
+                    }
+                    // Untuk 500, 502, 503, 504 server sementara, jangan beri cooldown
+                    // Lanjut mencoba model berikutnya
                 }
             } catch (\Exception $e) {
-                Log::error('Gemini API exception.', [
+                // Connection error atau timeout
+                Log::error('Gemini API Connection Error', [
+                    'config_id' => $activeModel->id,
+                    'model_id' => $model,
+                    'key_prefix' => substr($apiKey, 0, 4) . '***',
                     'message' => $e->getMessage()
                 ]);
-                $recommendationText = 'Rekomendasi AI sementara tidak dapat dibuat karena layanan sedang tidak tersedia. Silakan coba lagi nanti.';
+                
+                // Jangan berikan cooldown jika hanya koneksi timeout, lanjut ke key berikutnya
             }
-        } else {
-            $recommendationText = 'Rekomendasi AI belum tersedia karena API Key Gemini belum dikonfigurasi.';
+        }
+
+        // Jika gagal, log message
+        if (!$success) {
+            $recommendationText = 'Layanan AI sedang tidak tersedia atau seluruh kuota API Key telah habis. Silakan coba beberapa saat lagi.';
         }
 
         RekomendasiAi::updateOrCreate(
-            ['id_iku_pencapaian' => $item->id],
+            ['id_iku_pencapaian' => $this->ikuPencapaianId],
             ['rekomendasi' => $recommendationText]
         );
     }

@@ -21,12 +21,32 @@
                 <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0;">Daftar Konfigurasi Gemini AI</h3>
                 <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Atur API Key dan model Gemini AI yang digunakan oleh sistem.</p>
             </div>
-            <button type="button" onclick="openAddModal()" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px;">
-                <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
-                </svg>
-                Tambah Model
-            </button>
+            <div style="display: flex; gap: 10px;">
+                <form action="{{ route('adminsistem.model_ai.activate_all') }}" method="POST" style="margin: 0;">
+                    @csrf
+                    <button type="submit" class="btn" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 10px 18px; font-size: 0.85rem; font-weight: 500;" onclick="return confirm('Apakah Anda yakin ingin mengaktifkan semua model?')">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Aktifkan Semua
+                    </button>
+                </form>
+                <form action="{{ route('adminsistem.model_ai.destroy_all') }}" method="POST" style="margin: 0;">
+                    @csrf
+                    <button type="submit" class="btn" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 10px 18px; font-size: 0.85rem; font-weight: 500;" onclick="return confirm('Peringatan: Aksi ini akan menghapus semua konfigurasi model Gemini dari database!\n\nApakah Anda benar-benar yakin ingin melanjutkan?')">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        Hapus Semua
+                    </button>
+                </form>
+                <button type="button" onclick="openAddModal()" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px;">
+                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Tambah Model
+                </button>
+            </div>
         </div>
 
         <div style="overflow-x: auto;">

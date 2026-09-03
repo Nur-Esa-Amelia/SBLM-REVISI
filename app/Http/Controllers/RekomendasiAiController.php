@@ -47,25 +47,70 @@ class RekomendasiAiController extends Controller
             }
 
             if ($needsGeneration) {
-                // Buat placeholder sementara
+                // Buat placeholder yang menyatakan rekomendasi belum digenerate
                 RekomendasiAi::updateOrCreate(
                     ['id_iku_pencapaian' => $item->id],
-                    ['rekomendasi' => 'Rekomendasi sedang diproses oleh AI... Silakan muat ulang halaman beberapa saat lagi.']
+                    ['rekomendasi' => 'Rekomendasi belum di-generate. Silakan klik tombol **Generate AI Sekarang** di bawah ini untuk memulai analisis.']
                 );
-
-                // Dispatch job ke background
-                \App\Jobs\GenerateAiRecommendationJob::dispatch($item->id);
-                $hasTriggeredGeneration = true;
             }
-        }
-
-        if ($hasTriggeredGeneration) {
-            \App\Models\ActivityLog::log('Generate Rekomendasi AI', 'Rekomendasi AI', 'Sistem menggenerate ulang rekomendasi AI untuk indikator bermasalah');
         }
 
         $warningIds = $warnings->pluck('id')->toArray();
         return RekomendasiAi::with(['ikuPencapaian.iku', 'ikuPencapaian.prodi'])
             ->whereIn('id_iku_pencapaian', $warningIds)
             ->get();
+    }
+
+    /**
+     * Generate rekomendasi AI secara on-demand via AJAX
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function generateAjax($id)
+    {
+        try {
+            $item = IkuPencapaian::findOrFail($id);
+            
+            $rekomendasi = RekomendasiAi::where('id_iku_pencapaian', $item->id)->first();
+            $needsGeneration = false;
+
+            if ($rekomendasi) {
+                // Cek apakah rekomendasi yang tersimpan adalah placeholder atau gagal
+                $isFailedRecommendation = str_contains($rekomendasi->rekomendasi, 'sementara tidak dapat dibuat')
+                    || str_contains($rekomendasi->rekomendasi, 'RESOURCE_EXHAUSTED')
+                    || str_contains($rekomendasi->rekomendasi, 'Gagal menghubungi server Gemini API')
+                    || str_contains($rekomendasi->rekomendasi, 'sedang diproses')
+                    || str_contains($rekomendasi->rekomendasi, 'Rekomendasi belum di-generate')
+                    || str_contains($rekomendasi->rekomendasi, 'Layanan AI sedang tidak tersedia');
+
+                // Generate ulang jika data pencapaian berubah setelah rekomendasi dibuat, ATAU jika gagal/placeholder
+                if (($item->updated_at && $rekomendasi->updated_at && $item->updated_at->gt($rekomendasi->updated_at))
+                    || $isFailedRecommendation) {
+                    $needsGeneration = true;
+                }
+            } else {
+                $needsGeneration = true;
+            }
+
+            if ($needsGeneration) {
+                // Dispatch secara sinkron agar langsung ditunggu hasilnya dari Gemini
+                \App\Jobs\GenerateAiRecommendationJob::dispatchSync($item->id);
+                // Ambil ulang hasil setelah dispatch selesai
+                $rekomendasi = RekomendasiAi::where('id_iku_pencapaian', $item->id)->first();
+            }
+            
+            if ($rekomendasi) {
+                return response()->json([
+                    'status' => 'success',
+                    'rekomendasi' => $rekomendasi->rekomendasi
+                ]);
+            }
+            
+            return response()->json(['status' => 'error', 'message' => 'Gagal generate rekomendasi.'], 500);
+        } catch (\Exception $e) {
+            Log::error('AJAX AI Generate Error: ' . $e->getMessage());
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
     }
 }

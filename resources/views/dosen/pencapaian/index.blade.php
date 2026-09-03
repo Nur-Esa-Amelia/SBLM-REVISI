@@ -283,15 +283,65 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.addEventListener('click', function () {
             const pencapaianId = btn.getAttribute('data-pencapaian-id');
             const data = recommendationsData[pencapaianId];
-            if (data) {
-                modalTitle.textContent = 'Rekomendasi Analisis AI: ' + (data.iku_pencapaian.iku ? data.iku_pencapaian.iku.nama_iku : 'IKU/IKT');
-                modalSubtitle.innerHTML = 'Status: <span style="font-weight: 600; color: ' + 
-                    (data.iku_pencapaian.status === 'Perlu Perhatian' ? '#fbbf24' : '#ef4444') + ';">' + 
-                    data.iku_pencapaian.status + '</span> (Realisasi: ' + Math.round(data.iku_pencapaian.realisasi) + ' dari Target: ' + data.iku_pencapaian.target + ')';
-                
-                modalBody.innerHTML = parseMarkdown(data.rekomendasi);
-                modal.style.display = 'flex';
+            
+            let textToShow = data ? data.rekomendasi : 'Rekomendasi belum di-generate';
+            
+            if (textToShow.includes('Rekomendasi belum di-generate') || textToShow.includes('Layanan AI sedang tidak tersedia') || textToShow.includes('sedang diproses')) {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = `<svg style="width: 12px; height: 12px; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses AI...`;
+                btn.style.opacity = '0.7';
+                btn.style.pointerEvents = 'none';
+
+                fetch('/rekomendasi/generate-ajax/' + pencapaianId, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') : ''
+                    }
+                })
+                .then(response => response.json())
+                .then(res => {
+                    if (res.status === 'success') {
+                        // Pastikan objek dibuat jika sebelumnya tidak ada
+                        if (!recommendationsData[pencapaianId]) {
+                            // Untuk amannya, karena data.iku_pencapaian.iku dipakai di showModal
+                            // Namun karena di AJAX kita hanya terima text, title modal harus pakai default
+                            recommendationsData[pencapaianId] = { rekomendasi: res.rekomendasi, iku_pencapaian: null };
+                        } else {
+                            recommendationsData[pencapaianId].rekomendasi = res.rekomendasi;
+                        }
+                        showModal(res.rekomendasi);
+                    } else {
+                        showModal('**Terjadi kesalahan** saat memproses rekomendasi.');
+                    }
+                })
+                .catch(error => {
+                    showModal('**Koneksi gagal.** Silakan periksa jaringan Anda.');
+                })
+                .finally(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.style.opacity = '1';
+                    btn.style.pointerEvents = 'auto';
+                });
+            } else {
+                showModal(textToShow);
             }
+
+            function showModal(text) {
+                // Gunakan default title jika data iku_pencapaian tidak ada (krn data awal belum ada DB recordnya)
+                const ikuName = (data && data.iku_pencapaian && data.iku_pencapaian.iku) ? data.iku_pencapaian.iku.nama_iku : 'Indikator Kinerja';
+                const statusHtml = (data && data.iku_pencapaian) ? 
+                    'Status: <span style="font-weight: 600; color: ' + 
+                    (data.iku_pencapaian.status === 'Perlu Perhatian' ? '#fbbf24' : '#ef4444') + ';">' + 
+                    data.iku_pencapaian.status + '</span> (Realisasi: ' + Math.round(data.iku_pencapaian.realisasi) + ' dari Target: ' + data.iku_pencapaian.target + ')'
+                    : 'Detail Pencapaian AI';
+
+                modalTitle.textContent = 'Rekomendasi Analisis AI: ' + ikuName;
+                modalSubtitle.innerHTML = statusHtml;
+                    
+                    modalBody.innerHTML = parseMarkdown(text);
+                    modal.style.display = 'flex';
+                }
         });
     });
 
