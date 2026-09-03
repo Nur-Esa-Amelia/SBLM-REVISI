@@ -33,6 +33,8 @@ class ModelTokenAiController extends Controller
             'status' => $request->status,
         ]);
 
+        $this->resetAiStateAndFailedRecommendations();
+
         ActivityLog::log('Menambahkan model Gemini', 'Model & Token AI', "Menambahkan model '{$request->name}' dengan status {$request->status}");
 
         return redirect()->back()->with('success', 'Konfigurasi Model Gemini berhasil ditambahkan.');
@@ -61,6 +63,7 @@ class ModelTokenAiController extends Controller
         }
 
         $model->save();
+        $this->resetAiStateAndFailedRecommendations();
 
         return redirect()->back()->with('success', 'Konfigurasi Model Gemini berhasil diperbarui.');
     }
@@ -71,6 +74,7 @@ class ModelTokenAiController extends Controller
 
         // Aktifkan yang dipilih
         $model->update(['status' => 'aktif']);
+        $this->resetAiStateAndFailedRecommendations();
 
         ActivityLog::log('Mengaktifkan model Gemini', 'Model & Token AI', "Mengaktifkan model '{$model->name}' sebagai default");
 
@@ -91,6 +95,7 @@ class ModelTokenAiController extends Controller
     public function activateAll()
     {
         \App\Models\GeminiModel::query()->update(['status' => 'aktif']);
+        $this->resetAiStateAndFailedRecommendations();
         
         ActivityLog::log('Mengaktifkan semua model Gemini', 'Model & Token AI', "Mengaktifkan semua model secara massal");
         
@@ -104,5 +109,18 @@ class ModelTokenAiController extends Controller
         ActivityLog::log('Menghapus semua model Gemini', 'Model & Token AI', "Menghapus semua konfigurasi model secara massal");
         
         return redirect()->back()->with('success', 'Semua Model berhasil dihapus.');
+    }
+
+    /**
+     * Clear cooldown and delete previous failed recommendation responses from DB
+     */
+    protected function resetAiStateAndFailedRecommendations()
+    {
+        \App\Models\GeminiModel::query()->update(['cooldown_until' => null]);
+        \App\Models\RekomendasiAi::where('rekomendasi', 'LIKE', '%Layanan AI sedang tidak tersedia%')
+            ->orWhere('rekomendasi', 'LIKE', '%RESOURCE_EXHAUSTED%')
+            ->orWhere('rekomendasi', 'LIKE', '%Rekomendasi AI belum tersedia%')
+            ->orWhere('rekomendasi', 'LIKE', '%Gagal%')
+            ->delete();
     }
 }

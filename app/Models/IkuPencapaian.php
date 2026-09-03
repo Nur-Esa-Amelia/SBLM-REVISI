@@ -141,10 +141,12 @@ class IkuPencapaian extends Model
 
             $oldStatus = $pencapaian->status;
 
-            $pencapaian->update([
-                'realisasi' => $realisasi,
-                'status' => $status
-            ]);
+            if ($pencapaian->realisasi != $realisasi || $pencapaian->status != $status) {
+                $pencapaian->update([
+                    'realisasi' => $realisasi,
+                    'status' => $status
+                ]);
+            }
 
             // Deteksi transisi status dari non-warning (Tercapai, Baru, null) ke warning (Perlu Perhatian, Tidak Tercapai)
             $isWarning = in_array($status, ['Perlu Perhatian', 'Tidak Tercapai']);

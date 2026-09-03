@@ -184,9 +184,9 @@
                                     </details>
 
                                         @if($isAssigned && $item->status !== 'Tercapai')
-                                            <a href="{{ route('dosen.pengisian.create', ['id_iku' => $item->id_iku]) }}" class="btn btn-primary" style="padding: 4px 8px; font-size: 0.7rem; border-radius: 6px; align-self: flex-start; justify-content: center; height: 26px;">
+                                            <button type="button" class="btn btn-primary btn-open-upload-modal" data-iku-id="{{ $item->id_iku }}" style="padding: 4px 8px; font-size: 0.7rem; border-radius: 6px; align-self: flex-start; justify-content: center; height: 26px;">
                                                 + Tambah Bukti Baru
-                                            </a>
+                                            </button>
                                         @endif
                                     </div>
                                 @else
@@ -198,9 +198,9 @@
                                                 </svg>
                                                 Ditugaskan ke Anda & Belum Diisi
                                             </span>
-                                            <a href="{{ route('dosen.pengisian.create', ['id_iku' => $item->id_iku]) }}" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.72rem; border-radius: 6px; align-self: flex-start; justify-content: center; height: 28px;">
+                                            <button type="button" class="btn btn-primary btn-open-upload-modal" data-iku-id="{{ $item->id_iku }}" style="padding: 6px 12px; font-size: 0.72rem; border-radius: 6px; align-self: flex-start; justify-content: center; height: 28px;">
                                                 Unggah Bukti Sekarang
-                                            </a>
+                                            </button>
                                         </div>
                                     @elseif($isAssigned && $item->status === 'Tercapai')
                                         <span style="font-size: 0.75rem; color: #10b981; font-weight: 500;">Target prodi sudah terpenuhi</span>

@@ -157,7 +157,7 @@ class PengisianController extends Controller
             ? 'Bukti IKU/IKT berhasil diunggah. Bukti untuk IKU/IKT ini sudah lengkap (capaian maksimal 100%).'
             : 'Bukti IKU/IKT berhasil diunggah dan sedang menunggu validasi P2MP.';
 
-        return redirect()->route('dosen.pengisian.index')->with('success', $pesan);
+        return redirect()->back()->with('success', $pesan);
     }
 
     /**

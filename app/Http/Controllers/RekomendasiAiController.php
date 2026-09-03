@@ -35,8 +35,11 @@ class RekomendasiAiController extends Controller
                 // generate ulang dengan data terbaru.
                 $isFailedRecommendation = str_contains($rekomendasi->rekomendasi, 'sementara tidak dapat dibuat')
                     || str_contains($rekomendasi->rekomendasi, 'RESOURCE_EXHAUSTED')
-                    || str_contains($rekomendasi->rekomendasi, 'Gagal menghubungi server Gemini API:')
-                    || str_contains($rekomendasi->rekomendasi, 'sedang diproses'); // term placeholder
+                    || str_contains($rekomendasi->rekomendasi, 'Gagal menghubungi server Gemini API')
+                    || str_contains($rekomendasi->rekomendasi, 'sedang diproses')
+                    || str_contains($rekomendasi->rekomendasi, 'Rekomendasi belum di-generate')
+                    || str_contains($rekomendasi->rekomendasi, 'Layanan AI sedang tidak tersedia')
+                    || str_contains($rekomendasi->rekomendasi, 'Rekomendasi AI belum tersedia');
 
                 if (($item->updated_at && $rekomendasi->updated_at && $item->updated_at->gt($rekomendasi->updated_at))
                     || $isFailedRecommendation) {

@@ -14,12 +14,12 @@
                 <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Saring pengajuan bukti IKU/IKT berdasarkan status validasi atau tahun akademik.</p>
             </div>
             @if(auth()->user()->role === 'kaprodi')
-                <a href="{{ route('adminprodi.pengisian.create') }}" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.8rem;">
+                <button type="button" class="btn btn-primary btn-open-upload-modal-kaprodi" style="padding: 10px 18px; font-size: 0.8rem;">
                     <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
                     </svg>
-                    Unggah Bukti (Kaprodi)
-                </a>
+                    + Unggah Bukti Kinerja
+                </button>
             @endif
         </div>
 

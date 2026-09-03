@@ -1096,21 +1096,9 @@
                         </svg>
                         Target & Capaian IKU/IKT
                     </a>
-                </div>
-
-                <!-- PENGISIAN BUKTI -->
-                <div class="nav-category">
-                    <span class="category-label">PENGISIAN BUKTI</span>
-                    <a href="{{ route('dosen.pengisian.create') }}" 
-                       class="nav-link {{ request()->routeIs('dosen.pengisian.create') ? 'active' : '' }}">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
-                        </svg>
-                        Unggah Bukti IKU/IKT
-                    </a>
 
                     <a href="{{ route('dosen.pengisian.index') }}" 
-                       class="nav-link {{ request()->routeIs('dosen.pengisian.index') ? 'active' : '' }}">
+                       class="nav-link {{ request()->routeIs('dosen.pengisian.*') ? 'active' : '' }}">
                         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                         </svg>
@@ -1182,48 +1170,328 @@
 
             <!-- Main Content Area -->
             <main class="main-body">
-                <!-- Toast Notifications -->
-                @if(session('success'))
-                    <div class="alert-box alert-success" role="alert">
-                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <div>
-                            {{ session('success') }}
-                        </div>
-                    </div>
-                @endif
-
-                @if(session('error'))
-                    <div class="alert-box alert-danger" role="alert">
-                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                        </svg>
-                        <div>
-                            {{ session('error') }}
-                        </div>
-                    </div>
-                @endif
-
-                @if($errors->any() && !request()->routeIs('*.store'))
-                    <div class="alert-box alert-danger" role="alert">
-                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                        </svg>
-                        <div>
-                            <ul style="list-style-type: none; margin: 0; padding: 0;">
-                                @foreach($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                @endif
-
                 @yield('content')
             </main>
         </div>
     </div>
 
+    <!-- Floating Toast Notification Pop-up Container -->
+    <div id="toast-container" style="position: fixed; top: 24px; right: 24px; z-index: 999999; display: flex; flex-direction: column; gap: 10px; max-width: 420px; width: calc(100% - 48px); pointer-events: none;">
+        @if(session('success'))
+            <div class="toast-popup toast-success" style="pointer-events: auto; background: var(--bg-surface); border-left: 4px solid #10b981; border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border-radius: 10px; padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px; animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); transition: all 0.3s ease;">
+                <div style="width: 24px; height: 24px; border-radius: 50%; background: rgba(16, 185, 129, 0.15); color: #10b981; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;">
+                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div style="flex: 1;">
+                    <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin: 0 0 2px 0;">Berhasil!</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0; line-height: 1.4;">{{ session('success') }}</p>
+                </div>
+                <button type="button" onclick="this.closest('.toast-popup').remove()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 2px; border-radius: 4px; display: flex; align-items: center; justify-content: center;" title="Tutup">
+                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="toast-popup toast-danger" style="pointer-events: auto; background: var(--bg-surface); border-left: 4px solid #ef4444; border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border-radius: 10px; padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px; animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); transition: all 0.3s ease;">
+                <div style="width: 24px; height: 24px; border-radius: 50%; background: rgba(239, 68, 68, 0.15); color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;">
+                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                </div>
+                <div style="flex: 1;">
+                    <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin: 0 0 2px 0;">Terjadi Kesalahan</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0; line-height: 1.4;">{{ session('error') }}</p>
+                </div>
+                <button type="button" onclick="this.closest('.toast-popup').remove()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 2px; border-radius: 4px; display: flex; align-items: center; justify-content: center;" title="Tutup">
+                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        @endif
+
+        @if($errors->any() && !request()->routeIs('*.store'))
+            <div class="toast-popup toast-danger" style="pointer-events: auto; background: var(--bg-surface); border-left: 4px solid #ef4444; border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border-radius: 10px; padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px; animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); transition: all 0.3s ease;">
+                <div style="width: 24px; height: 24px; border-radius: 50%; background: rgba(239, 68, 68, 0.15); color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;">
+                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                </div>
+                <div style="flex: 1;">
+                    <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px 0;">Periksa Form Input:</h4>
+                    <ul style="list-style-type: none; margin: 0; padding: 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+                        @foreach($errors->all() as $error)
+                            <li>• {{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                <button type="button" onclick="this.closest('.toast-popup').remove()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 2px; border-radius: 4px; display: flex; align-items: center; justify-content: center;" title="Tutup">
+                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        @endif
+    </div>
+
+    <style>
+    @keyframes toastSlideIn {
+        from {
+            transform: translateX(100%) scale(0.9);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+        }
+    }
+    .toast-popup.fade-out {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toasts = document.querySelectorAll('#toast-container .toast-popup');
+        toasts.forEach(function (t) {
+            setTimeout(function () {
+                t.classList.add('fade-out');
+                setTimeout(function () {
+                    t.remove();
+                }, 300);
+            }, 4500);
+        });
+    });
+    </script>
+
+    <!-- Custom Floating Modal: Unggah Bukti IKU/IKT -->
+    @auth
+        @if(auth()->user()->role === 'dosen')
+            @php
+                $dosenUser = auth()->user();
+                $dosenSettings = \App\Models\Pengaturan::where('id_prodi', $dosenUser->prodi_id)->first();
+                $dosenTahunAktif = $dosenSettings?->tahun_aktif ?? date('Y');
+                $dosenAssignedIkuIds = \App\Models\PenugasanDosen::where('id_user', $dosenUser->id)
+                    ->where('tahun', $dosenTahunAktif)
+                    ->pluck('id_iku')
+                    ->toArray();
+                $modalIkus = \App\Models\Iku::whereIn('id', $dosenAssignedIkuIds)->get();
+                $modalBuktiIku = \App\Models\BuktiIku::whereIn('id_iku', $dosenAssignedIkuIds)->get();
+            @endphp
+
+            <div id="upload-bukti-modal" style="display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px; transition: all 0.3s ease;">
+                <div style="background: var(--bg-surface); border: 1px solid var(--border); box-shadow: 0 0 30px rgba(16, 185, 129, 0.15); border-radius: 12px; width: 100%; max-width: 650px; max-height: 90vh; display: flex; flex-direction: column; animation: modalSlideIn 0.25s ease-out; overflow: hidden;">
+                    <!-- Modal Header -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 16px 20px; background: var(--bg-surface);">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(16, 185, 129, 0.15); display: flex; align-items: center; justify-content: center; color: #10b981;">
+                                <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin: 0;">Unggah Bukti Kinerja - Tahun {{ $dosenTahunAktif }}</h3>
+                                <p style="font-size: 0.75rem; color: var(--text-muted); margin: 2px 0 0 0;">Kirim berkas bukti pemenuhan IKU/IKT yang ditugaskan</p>
+                            </div>
+                        </div>
+                        <button type="button" id="btn-close-upload-modal" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 6px; border-radius: 6px; transition: all 0.2s;">
+                            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Modal Body Form -->
+                    <form action="{{ route('dosen.pengisian.store') }}" method="POST" enctype="multipart/form-data" style="padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 16px;">
+                        @csrf
+                        <!-- IKU Select -->
+                        <div class="form-group-custom">
+                            <label for="modal_id_iku" class="form-label-custom">Pilih Indikator IKU/IKT Ditugaskan</label>
+                            <select id="modal_id_iku" name="id_iku" class="form-select-custom" required>
+                                <option value="">-- Pilih Indikator --</option>
+                                @foreach($modalIkus as $item)
+                                    <option value="{{ $item->id }}">
+                                        {{ $item->nama_iku }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Bukti Select -->
+                        <div class="form-group-custom">
+                            <label for="modal_id_bukti_iku" class="form-label-custom">Pilih Jenis Bukti Dokumen</label>
+                            <select id="modal_id_bukti_iku" name="id_bukti_iku" class="form-select-custom" required>
+                                <option value="">-- Pilih Jenis Bukti --</option>
+                                @foreach($modalBuktiIku as $b)
+                                    <option value="{{ $b->id }}" data-iku-id="{{ $b->id_iku }}">
+                                        {{ $b->nama_bukti }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <small style="color: var(--text-muted); font-size: 0.72rem; margin-top: 2px;">Pilihan jenis bukti disesuaikan secara otomatis berdasarkan IKU/IKT yang Anda pilih.</small>
+                        </div>
+
+                        <!-- File Inputs Container -->
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Unggah Berkas Bukti</label>
+                            <div id="modal-file-inputs-container" style="display: flex; flex-direction: column; gap: 12px;">
+                                <div class="modal-file-input-card" style="background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span class="modal-file-number-label" style="font-size: 0.78rem; font-weight: 700; color: #10b981;">Berkas Bukti #1</span>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <label class="form-label-custom" style="font-size: 0.72rem;">Pilih Berkas</label>
+                                        <input type="file" name="files[]" class="form-input-custom modal-file-selector-input" required>
+                                    </div>
+                                    <div class="modal-keterangan-file-group" style="display: none; flex-direction: column; gap: 4px;">
+                                        <label class="form-label-custom" style="font-size: 0.72rem;">Keterangan Berkas (Opsional)</label>
+                                        <textarea name="keterangan_files[]" rows="2" placeholder="Tulis keterangan spesifik (contoh: Link Google Drive, Judul Dokumen, dll)..." class="form-input-custom"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" id="modal-add-file-btn" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem; align-self: flex-start; margin-top: 8px; display: none;">
+                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                                </svg>
+                                Tambah File Lainnya
+                            </button>
+                            <small style="color: var(--text-muted); font-size: 0.72rem; margin-top: 8px;">Format: PDF, JPG, JPEG, PNG, ZIP, DOC, DOCX (Maks 10 MB per file).</small>
+                        </div>
+
+                        <!-- Footer Actions -->
+                        <div style="display: flex; justify-content: flex-end; gap: 10px; padding-top: 14px; border-top: 1px solid var(--border); margin-top: 8px;">
+                            <button type="button" id="btn-cancel-upload-modal" class="btn btn-secondary">Batal</button>
+                            <button type="submit" class="btn btn-primary">Unggah Berkas Bukti</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const uploadModal = document.getElementById('upload-bukti-modal');
+                const btnCloseUploadModal = document.getElementById('btn-close-upload-modal');
+                const btnCancelUploadModal = document.getElementById('btn-cancel-upload-modal');
+                const modalIkuSelect = document.getElementById('modal_id_iku');
+                const modalBuktiSelect = document.getElementById('modal_id_bukti_iku');
+
+                if (!uploadModal) return;
+
+                const originalBuktiOptions = Array.from(modalBuktiSelect.querySelectorAll('option')).filter(opt => opt.value !== '');
+
+                function updateModalBuktiOptions() {
+                    const selectedIkuId = modalIkuSelect.value;
+                    modalBuktiSelect.innerHTML = '<option value="">-- Pilih Jenis Bukti --</option>';
+                    if (selectedIkuId) {
+                        const filtered = originalBuktiOptions.filter(opt => opt.getAttribute('data-iku-id') === selectedIkuId);
+                        if (filtered.length > 0) {
+                            filtered.forEach(opt => modalBuktiSelect.appendChild(opt.cloneNode(true)));
+                        } else {
+                            const noOpt = document.createElement('option');
+                            noOpt.value = "";
+                            noOpt.disabled = true;
+                            noOpt.textContent = "Belum ada jenis bukti yang dikonfigurasi untuk IKU/IKT ini oleh Admin Prodi";
+                            modalBuktiSelect.appendChild(noOpt);
+                        }
+                    }
+                }
+
+                if (modalIkuSelect) {
+                    modalIkuSelect.addEventListener('change', updateModalBuktiOptions);
+                }
+
+                document.querySelectorAll('.btn-open-upload-modal').forEach(function (btn) {
+                    btn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const ikuId = btn.getAttribute('data-iku-id');
+                        if (ikuId && modalIkuSelect) {
+                            modalIkuSelect.value = ikuId;
+                            updateModalBuktiOptions();
+                        }
+                        uploadModal.style.display = 'flex';
+                    });
+                });
+
+                function closeUploadModal() {
+                    uploadModal.style.display = 'none';
+                }
+
+                if (btnCloseUploadModal) btnCloseUploadModal.addEventListener('click', closeUploadModal);
+                if (btnCancelUploadModal) btnCancelUploadModal.addEventListener('click', closeUploadModal);
+
+                window.addEventListener('click', function (e) {
+                    if (e.target === uploadModal) closeUploadModal();
+                });
+
+                const fileContainer = document.getElementById('modal-file-inputs-container');
+                const addFileBtn = document.getElementById('modal-add-file-btn');
+
+                if (fileContainer && addFileBtn) {
+                    function checkModalFiles() {
+                        let hasFile = false;
+                        fileContainer.querySelectorAll('.modal-file-input-card').forEach(card => {
+                            const input = card.querySelector('.modal-file-selector-input');
+                            const ket = card.querySelector('.modal-keterangan-file-group');
+                            if (input && input.files && input.files.length > 0) {
+                                hasFile = true;
+                                if (ket) ket.style.display = 'flex';
+                            } else {
+                                if (ket) ket.style.display = 'none';
+                            }
+                        });
+                        addFileBtn.style.display = hasFile ? 'inline-flex' : 'none';
+                    }
+
+                    fileContainer.addEventListener('change', function (e) {
+                        if (e.target.classList.contains('modal-file-selector-input')) {
+                            checkModalFiles();
+                        }
+                    });
+
+                    addFileBtn.addEventListener('click', function () {
+                        const count = fileContainer.querySelectorAll('.modal-file-input-card').length + 1;
+                        const card = document.createElement('div');
+                        card.className = 'modal-file-input-card';
+                        card.style.cssText = 'background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px; margin-top: 10px;';
+                        card.innerHTML = `
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span class="modal-file-number-label" style="font-size: 0.78rem; font-weight: 700; color: #10b981;">Berkas Bukti #${count}</span>
+                                <button type="button" class="btn-action-delete remove-modal-file-btn" style="padding: 6px; height: auto; width: auto; border-radius: 6px;" title="Hapus File">
+                                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label class="form-label-custom" style="font-size: 0.72rem;">Pilih Berkas</label>
+                                <input type="file" name="files[]" class="form-input-custom modal-file-selector-input" required>
+                            </div>
+                            <div class="modal-keterangan-file-group" style="display: none; flex-direction: column; gap: 4px;">
+                                <label class="form-label-custom" style="font-size: 0.72rem;">Keterangan Berkas (Opsional)</label>
+                                <textarea name="keterangan_files[]" rows="2" placeholder="Tulis keterangan spesifik (contoh: Link Google Drive, Judul Dokumen, dll)..." class="form-input-custom"></textarea>
+                            </div>
+                        `;
+                        fileContainer.appendChild(card);
+                    });
+
+                    fileContainer.addEventListener('click', function (e) {
+                        const delBtn = e.target.closest('.remove-modal-file-btn');
+                        if (delBtn) {
+                            const card = delBtn.closest('.modal-file-input-card');
+                            if (card) {
+                                card.remove();
+                                checkModalFiles();
+                            }
+                        }
+                    });
+                }
+            });
+            </script>
+        @endif
+    @endauth
 </body>
 </html>

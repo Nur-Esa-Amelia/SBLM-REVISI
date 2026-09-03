@@ -6,14 +6,6 @@
 
 @section('content')
 <div style="display: flex; flex-direction: column; gap: 24px;">
-    @if(session('success'))
-        <div class="alert-box alert-success" role="alert" style="padding: 12px 16px; border-radius: 8px; background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #10b981; display: flex; align-items: center; gap: 12px;">
-            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span style="font-size: 0.85rem; font-weight: 500;">{{ session('success') }}</span>
-        </div>
-    @endif
 
     <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">

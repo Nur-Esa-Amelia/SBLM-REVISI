@@ -23,10 +23,16 @@
                     <option value="">Semua Status</option>
                     <option value="pending" {{ $status === 'pending' ? 'selected' : '' }}>Awaiting Validasi</option>
                     <option value="valid" {{ $status === 'valid' ? 'selected' : '' }}>Valid</option>
-                    <option value="invalid" {{ $status === 'invalid' ? 'selected' : '' }}>Perlu Perbaikan</option>
+                    <option value="invalid" {{ $status === 'invalid' ? 'selected' : '' }}>Perlu Perhatian</option>
                 </select>
             </div>
         </form>
+        <button type="button" class="btn btn-primary btn-open-upload-modal" style="padding: 10px 16px; font-size: 0.8rem;">
+            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+            </svg>
+            + Unggah Bukti Baru
+        </button>
     </div>
 
     <!-- Table of submission history -->

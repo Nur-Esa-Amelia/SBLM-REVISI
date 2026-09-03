@@ -202,12 +202,12 @@
                             @if(!empty($item->target_tercapai) && $item->target_tercapai)
                                 <span class="badge-custom badge-green" style="font-size: 0.7rem; padding: 6px 10px;">Tercapai</span>
                             @else
-                                <a href="{{ route('dosen.pengisian.create', ['id_iku' => $item->id_iku]) }}" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.75rem; border-radius: 6px;">
+                                <button type="button" class="btn btn-primary btn-open-upload-modal" data-iku-id="{{ $item->id_iku }}" style="padding: 6px 12px; font-size: 0.75rem; border-radius: 6px;">
                                     <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                                     </svg>
                                     Unggah Bukti
-                                </a>
+                                </button>
                             @endif
                         </td>
                     </tr>

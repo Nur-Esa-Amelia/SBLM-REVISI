@@ -40,10 +40,7 @@ class GenerateAiRecommendationJob implements ShouldQueue
         }
 
         // Cek apakah ada model aktif di database
-        $hasActiveKeys = \App\Models\GeminiModel::where('status', 'aktif')
-            ->where(function($q) {
-                $q->whereNull('cooldown_until')->orWhere('cooldown_until', '<', now());
-            })->exists();
+        $hasActiveKeys = \App\Models\GeminiModel::where('status', 'aktif')->exists();
 
         if (!$hasActiveKeys) {
             RekomendasiAi::updateOrCreate(
@@ -167,6 +164,12 @@ class GenerateAiRecommendationJob implements ShouldQueue
             ->orderByRaw('last_used_at IS NULL DESC, last_used_at ASC')
             ->get();
 
+        if ($activeModels->isEmpty()) {
+            $activeModels = \App\Models\GeminiModel::where('status', 'aktif')
+                ->orderByRaw('last_used_at IS NULL DESC, last_used_at ASC')
+                ->get();
+        }
+
         $success = false;
 
         foreach ($activeModels as $activeModel) {
@@ -174,7 +177,7 @@ class GenerateAiRecommendationJob implements ShouldQueue
             $model = $activeModel->model_id;
 
             try {
-                $response = Http::timeout(15)->post(
+                $response = Http::timeout(30)->post(
                     'https://generativelanguage.googleapis.com/v1beta/models/' . $model . ':generateContent?key=' . $apiKey,
                     [
                         'contents' => [
@@ -220,17 +223,14 @@ class GenerateAiRecommendationJob implements ShouldQueue
                         'response' => $errorBody
                     ]);
 
-                    // Jika error (misal 429 Too Many Requests, 401 Unauthenticated, 403 Forbidden), berikan cooldown 5 menit
-                    if (in_array($status, [401, 403, 429, 404, 400])) {
-                        $activeModel->update([
-                            'cooldown_until' => now()->addMinutes(5)
-                        ]);
-                    }
-                    // Untuk 500, 502, 503, 504 server sementara, jangan beri cooldown
-                    // Lanjut mencoba model berikutnya
+                    // Berikan cooldown agar key/model yang error/overload sementara dilewati untuk request selanjutnya
+                    $cooldownMinutes = in_array($status, [500, 502, 503, 504]) ? 2 : 5;
+                    $activeModel->update([
+                        'cooldown_until' => now()->addMinutes($cooldownMinutes)
+                    ]);
                 }
             } catch (\Exception $e) {
-                // Connection error atau timeout
+                // Connection error atau timeout, beri cooldown 2 menit agar request berikutnya langsung memakai key lain yang sehat
                 Log::error('Gemini API Connection Error', [
                     'config_id' => $activeModel->id,
                     'model_id' => $model,
@@ -238,7 +238,9 @@ class GenerateAiRecommendationJob implements ShouldQueue
                     'message' => $e->getMessage()
                 ]);
                 
-                // Jangan berikan cooldown jika hanya koneksi timeout, lanjut ke key berikutnya
+                $activeModel->update([
+                    'cooldown_until' => now()->addMinutes(2)
+                ]);
             }
         }
 

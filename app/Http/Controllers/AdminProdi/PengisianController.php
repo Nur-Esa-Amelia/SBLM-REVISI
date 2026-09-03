@@ -136,7 +136,7 @@ class PengisianController extends Controller
         $iku = Iku::find($request->id_iku);
         ActivityLog::log('Upload bukti', 'Pengisian Bukti', 'Mengunggah bukti IKU/IKT: ' . ($iku ? $iku->nama_iku : ''));
 
-        return redirect()->route('adminprodi.bukti-dosen')->with('success', $pesan);
+        return redirect()->back()->with('success', $pesan);
     }
 
     /**

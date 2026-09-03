@@ -5,85 +5,106 @@
 @section('page_subtitle', 'Kirim berkas bukti pemenuhan Indikator Kinerja Utama Program Studi Anda')
 
 @section('content')
-<div class="card" style="max-width: 650px; margin: 0 auto;">
-    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 12px;">Form Unggah Bukti Kinerja - Tahun {{ $tahunAktif }}</h3>
-
-    <form action="{{ route('adminprodi.pengisian.store') }}" method="POST" enctype="multipart/form-data" class="form-layout-container">
-        @csrf
-
-        <!-- IKU/IKT Select -->
-        <div class="form-group-custom">
-            <label for="id_iku" class="form-label-custom">Pilih Indikator IKU/IKT Program Studi</label>
-            <select id="id_iku" name="id_iku" class="form-select-custom @error('id_iku') is-invalid @enderror" required>
-                <option value="">-- Pilih Indikator --</option>
-                @foreach($ikus as $item)
-                    <option value="{{ $item->id }}" {{ old('id_iku', request('id_iku')) == $item->id ? 'selected' : '' }}>
-                        {{ $item->nama_iku }}
-                    </option>
-                @endforeach
-            </select>
-            @error('id_iku')
-                <span class="form-error-custom">{{ $message }}</span>
-            @enderror
-        </div>
-
-        <!-- Jenis Bukti Select -->
-        <div class="form-group-custom">
-            <label for="id_bukti_iku" class="form-label-custom">Pilih Jenis Bukti Dokumen</label>
-            <select id="id_bukti_iku" name="id_bukti_iku" class="form-select-custom @error('id_bukti_iku') is-invalid @enderror" required>
-                <option value="">-- Pilih Jenis Bukti --</option>
-                @foreach($buktiIku as $bukti)
-                    <option value="{{ $bukti->id }}" data-iku-id="{{ $bukti->id_iku }}" {{ old('id_bukti_iku') == $bukti->id ? 'selected' : '' }}>
-                        {{ $bukti->nama_bukti }}
-                    </option>
-                @endforeach
-            </select>
-            <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 2px;">Pilihan jenis bukti disesuaikan secara otomatis berdasarkan IKU/IKT yang dipilih di atas.</small>
-            @error('id_bukti_iku')
-                <span class="form-error-custom">{{ $message }}</span>
-            @enderror
-        </div>
-
-        <!-- Berkas Bukti (Dynamic Cards) -->
-        <div class="form-group-custom">
-            <label class="form-label-custom">Unggah Berkas Bukti</label>
-            <div id="file-inputs-container" style="display: flex; flex-direction: column; gap: 16px;">
-                <div class="file-input-card" style="background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span class="file-number-label" style="font-size: 0.8rem; font-weight: 700; color: #10b981;">Berkas Bukti #1</span>
-                    </div>
-                    
-                    <div style="display: flex; flex-direction: column; gap: 6px;">
-                        <label class="form-label-custom" style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">Pilih Berkas</label>
-                        <input type="file" name="files[]" class="form-input-custom file-selector-input" required>
-                    </div>
-                    
-                    <div class="keterangan-file-group" style="display: none; flex-direction: column; gap: 6px;">
-                        <label class="form-label-custom" style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">Keterangan Berkas</label>
-                        <textarea name="keterangan_files[]" rows="2" placeholder="Tulis keterangan spesifik untuk berkas ini (contoh: Link Google Drive, Judul Dokumen, dll)..." class="form-input-custom file-keterangan-input"></textarea>
-                    </div>
+<div style="position: fixed; inset: 0; z-index: 9999; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: var(--bg-surface); border: 1px solid var(--border); box-shadow: 0 0 30px rgba(37, 99, 235, 0.15); border-radius: 12px; width: 100%; max-width: 650px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; animation: modalSlideIn 0.25s ease-out;">
+        <!-- Modal Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 16px 20px; background: var(--bg-surface);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(37, 99, 235, 0.15); display: flex; align-items: center; justify-content: center; color: #3b82f6;">
+                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin: 0;">Form Unggah Bukti Kinerja - Tahun {{ $tahunAktif }}</h3>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin: 2px 0 0 0;">Kirim berkas bukti pemenuhan IKU/IKT Program Studi</p>
                 </div>
             </div>
-            
-            <button type="button" id="add-file-btn" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem; align-self: flex-start; margin-top: 12px; display: none;">
-                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+            <a href="{{ route('adminprodi.bukti-dosen') }}" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 6px; border-radius: 6px; text-decoration: none;">
+                <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
-                Tambah File Lainnya
-            </button>
-            
-            <small style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 12px;">Format berkas yang didukung: <strong>PDF, JPG, JPEG, PNG, ZIP, DOC, DOCX</strong>. Maksimal ukuran per file: <strong>10 MB</strong>.</small>
-            @error('files')
-                <span class="form-error-custom">{{ $message }}</span>
-            @enderror
+            </a>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="form-footer-actions">
-            <a href="{{ route('adminprodi.bukti-dosen') }}" class="btn btn-secondary">Kembali</a>
-            <button type="submit" class="btn btn-primary">Unggah Berkas Bukti</button>
-        </div>
-    </form>
+        <!-- Modal Body -->
+        <form action="{{ route('adminprodi.pengisian.store') }}" method="POST" enctype="multipart/form-data" style="padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 16px;">
+            @csrf
+
+            <!-- IKU/IKT Select -->
+            <div class="form-group-custom">
+                <label for="id_iku" class="form-label-custom">Pilih Indikator IKU/IKT Program Studi</label>
+                <select id="id_iku" name="id_iku" class="form-select-custom @error('id_iku') is-invalid @enderror" required>
+                    <option value="">-- Pilih Indikator --</option>
+                    @foreach($ikus as $item)
+                        <option value="{{ $item->id }}" {{ old('id_iku', request('id_iku')) == $item->id ? 'selected' : '' }}>
+                            {{ $item->nama_iku }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('id_iku')
+                    <span class="form-error-custom">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <!-- Jenis Bukti Select -->
+            <div class="form-group-custom">
+                <label for="id_bukti_iku" class="form-label-custom">Pilih Jenis Bukti Dokumen</label>
+                <select id="id_bukti_iku" name="id_bukti_iku" class="form-select-custom @error('id_bukti_iku') is-invalid @enderror" required>
+                    <option value="">-- Pilih Jenis Bukti --</option>
+                    @foreach($buktiIku as $bukti)
+                        <option value="{{ $bukti->id }}" data-iku-id="{{ $bukti->id_iku }}" {{ old('id_bukti_iku') == $bukti->id ? 'selected' : '' }}>
+                            {{ $bukti->nama_bukti }}
+                        </option>
+                    @endforeach
+                </select>
+                <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 2px;">Pilihan jenis bukti disesuaikan secara otomatis berdasarkan IKU/IKT yang dipilih di atas.</small>
+                @error('id_bukti_iku')
+                    <span class="form-error-custom">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <!-- Berkas Bukti (Dynamic Cards) -->
+            <div class="form-group-custom">
+                <label class="form-label-custom">Unggah Berkas Bukti</label>
+                <div id="file-inputs-container" style="display: flex; flex-direction: column; gap: 12px;">
+                    <div class="file-input-card" style="background-color: var(--bg-surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px; position: relative;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="file-number-label" style="font-size: 0.78rem; font-weight: 700; color: #10b981;">Berkas Bukti #1</span>
+                        </div>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label class="form-label-custom" style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">Pilih Berkas</label>
+                            <input type="file" name="files[]" class="form-input-custom file-selector-input" required>
+                        </div>
+                        
+                        <div class="keterangan-file-group" style="display: none; flex-direction: column; gap: 4px;">
+                            <label class="form-label-custom" style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">Keterangan Berkas (Opsional)</label>
+                            <textarea name="keterangan_files[]" rows="2" placeholder="Tulis keterangan spesifik untuk berkas ini (contoh: Link Google Drive, Judul Dokumen, dll)..." class="form-input-custom file-keterangan-input"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="button" id="add-file-btn" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem; align-self: flex-start; margin-top: 8px; display: none;">
+                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                    </svg>
+                    Tambah File Lainnya
+                </button>
+                
+                <small style="color: var(--text-muted); font-size: 0.72rem; display: block; margin-top: 8px;">Format berkas: <strong>PDF, JPG, JPEG, PNG, ZIP, DOC, DOCX</strong> (Maks 10 MB per file).</small>
+                @error('files')
+                    <span class="form-error-custom">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; justify-content: flex-end; gap: 10px; padding-top: 14px; border-top: 1px solid var(--border); margin-top: 8px;">
+                <a href="{{ route('adminprodi.bukti-dosen') }}" class="btn btn-secondary">Batal</a>
+                <button type="submit" class="btn btn-primary">Unggah Berkas Bukti</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <!-- Dynamic Select & File Script -->
