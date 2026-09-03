@@ -228,9 +228,9 @@
 
 <!-- Custom AI Recommendation Modal -->
 <div id="custom-ai-modal" style="display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px; transition: all 0.3s ease;">
-    <div style="background: #0f172a; border: 1px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 30px rgba(168, 85, 247, 0.25); border-radius: 12px; width: 100%; max-width: 750px; max-height: 85vh; display: flex; flex-direction: column; animation: modalSlideIn 0.25s ease-out; overflow: hidden;">
+    <div style="background: var(--bg-surface); border: 1px solid var(--border); box-shadow: 0 0 30px rgba(168, 85, 247, 0.12); border-radius: 12px; width: 100%; max-width: 750px; max-height: 85vh; display: flex; flex-direction: column; animation: modalSlideIn 0.25s ease-out; overflow: hidden;">
         <!-- Modal Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding: 16px 20px; background: #0f172a;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 16px 20px; background: var(--bg-surface);">
             <div style="display: flex; align-items: center; gap: 10px;">
                 <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(168, 85, 247, 0.15); display: flex; align-items: center; justify-content: center; color: #a855f7;">
                     <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -238,18 +238,18 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 id="modal-title" style="font-size: 0.95rem; font-weight: 700; color: #ffffff; margin: 0;">Rekomendasi Analisis AI</h3>
-                    <p id="modal-subtitle" style="font-size: 0.75rem; color: #64748b; margin: 2px 0 0 0;"></p>
+                    <h3 id="modal-title" style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin: 0;">Rekomendasi Analisis AI</h3>
+                    <p id="modal-subtitle" style="font-size: 0.75rem; color: var(--text-muted); margin: 2px 0 0 0;"></p>
                 </div>
             </div>
-            <button id="btn-close-modal" style="background: transparent; border: none; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 6px; border-radius: 6px; transition: all 0.2s;">
+            <button id="btn-close-modal" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 6px; border-radius: 6px; transition: all 0.2s;">
                 <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
         </div>
         <!-- Modal Body -->
-        <div id="modal-body-content" style="color: #cbd5e1; font-size: 0.875rem; line-height: 1.6; padding: 20px; overflow-y: auto; flex: 1; max-height: calc(85vh - 75px);">
+        <div id="modal-body-content" style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; padding: 20px; overflow-y: auto; flex: 1; max-height: calc(85vh - 75px);">
             <!-- Rendered markdown recommendation goes here -->
         </div>
     </div>
@@ -278,88 +278,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalBody = document.getElementById('modal-body-content');
     const btnCloseModal = document.getElementById('btn-close-modal');
 
-    // Attach click events to all Rekomendasi buttons in table
-    document.querySelectorAll('.btn-show-ai-rec').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            const pencapaianId = btn.getAttribute('data-pencapaian-id');
-            const data = recommendationsData[pencapaianId];
-            
-            let textToShow = data ? data.rekomendasi : 'Rekomendasi belum di-generate';
-            
-            if (textToShow.includes('Rekomendasi belum di-generate') || textToShow.includes('Layanan AI sedang tidak tersedia') || textToShow.includes('sedang diproses')) {
-                const originalHtml = btn.innerHTML;
-                btn.innerHTML = `<svg style="width: 12px; height: 12px; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses AI...`;
-                btn.style.opacity = '0.7';
-                btn.style.pointerEvents = 'none';
-
-                fetch('/rekomendasi/generate-ajax/' + pencapaianId, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') : ''
-                    }
-                })
-                .then(response => response.json())
-                .then(res => {
-                    if (res.status === 'success') {
-                        // Pastikan objek dibuat jika sebelumnya tidak ada
-                        if (!recommendationsData[pencapaianId]) {
-                            // Untuk amannya, karena data.iku_pencapaian.iku dipakai di showModal
-                            // Namun karena di AJAX kita hanya terima text, title modal harus pakai default
-                            recommendationsData[pencapaianId] = { rekomendasi: res.rekomendasi, iku_pencapaian: null };
-                        } else {
-                            recommendationsData[pencapaianId].rekomendasi = res.rekomendasi;
-                        }
-                        showModal(res.rekomendasi);
-                    } else {
-                        showModal('**Terjadi kesalahan** saat memproses rekomendasi.');
-                    }
-                })
-                .catch(error => {
-                    showModal('**Koneksi gagal.** Silakan periksa jaringan Anda.');
-                })
-                .finally(() => {
-                    btn.innerHTML = originalHtml;
-                    btn.style.opacity = '1';
-                    btn.style.pointerEvents = 'auto';
-                });
-            } else {
-                showModal(textToShow);
-            }
-
-            function showModal(text) {
-                // Gunakan default title jika data iku_pencapaian tidak ada (krn data awal belum ada DB recordnya)
-                const ikuName = (data && data.iku_pencapaian && data.iku_pencapaian.iku) ? data.iku_pencapaian.iku.nama_iku : 'Indikator Kinerja';
-                const statusHtml = (data && data.iku_pencapaian) ? 
-                    'Status: <span style="font-weight: 600; color: ' + 
-                    (data.iku_pencapaian.status === 'Perlu Perhatian' ? '#fbbf24' : '#ef4444') + ';">' + 
-                    data.iku_pencapaian.status + '</span> (Realisasi: ' + Math.round(data.iku_pencapaian.realisasi) + ' dari Target: ' + data.iku_pencapaian.target + ')'
-                    : 'Detail Pencapaian AI';
-
-                modalTitle.textContent = 'Rekomendasi Analisis AI: ' + ikuName;
-                modalSubtitle.innerHTML = statusHtml;
-                    
-                    modalBody.innerHTML = parseMarkdown(text);
-                    modal.style.display = 'flex';
-                }
-        });
-    });
-
-    if (btnCloseModal) {
-        btnCloseModal.addEventListener('click', function () {
-            modal.style.display = 'none';
-        });
-    }
-
-    // Close on click outside modal content
-    window.addEventListener('click', function (e) {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-
     // A lightweight helper to parse subset of markdown styles safely
     function parseMarkdown(text) {
+        if (!text) return '';
         // Escape HTML
         let html = text
             .replace(/&/g, "&amp;")
@@ -367,12 +288,12 @@ document.addEventListener('DOMContentLoaded', function () {
             .replace(/>/g, "&gt;");
             
         // Headers
-        html = html.replace(/^### (.*$)/gim, '<h5 style="color: #f1f5f9; font-weight: 700; margin-top: 14px; margin-bottom: 6px; font-size: 0.9rem;">$1</h5>');
-        html = html.replace(/^## (.*$)/gim, '<h4 style="color: #ffffff; font-weight: 700; margin-top: 18px; margin-bottom: 8px; font-size: 1rem; border-bottom: 1px solid #1e293b; padding-bottom: 4px;">$1</h4>');
-        html = html.replace(/^# (.*$)/gim, '<h3 style="color: #ffffff; font-weight: 800; margin-top: 22px; margin-bottom: 10px; font-size: 1.15rem;">$1</h3>');
+        html = html.replace(/^### (.*$)/gim, '<h5 style="color: var(--text-primary); font-weight: 700; margin-top: 14px; margin-bottom: 6px; font-size: 0.9rem;">$1</h5>');
+        html = html.replace(/^## (.*$)/gim, '<h4 style="color: var(--text-primary); font-weight: 700; margin-top: 18px; margin-bottom: 8px; font-size: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 4px;">$1</h4>');
+        html = html.replace(/^# (.*$)/gim, '<h3 style="color: var(--text-primary); font-weight: 800; margin-top: 22px; margin-bottom: 10px; font-size: 1.15rem;">$1</h3>');
         
         // Bold
-        html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color: #ffffff; font-weight: 600;">$1</strong>');
+        html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color: var(--text-primary); font-weight: 600;">$1</strong>');
         
         // Bullet Lists: match a line beginning with standard bullet characters
         html = html.replace(/^\s*[-*+]\s+(.*)$/gim, '<li style="margin-left: 20px; margin-bottom: 6px; list-style-type: disc; padding-left: 4px;">$1</li>');
@@ -400,7 +321,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else if (line.startsWith('<h')) {
                     processedLines.push(line);
                 } else {
-                    processedLines.push(`<p style="margin-bottom: 12px; text-align: justify; color: #cbd5e1;">${line}</p>`);
+                    processedLines.push(`<p style="margin-bottom: 12px; text-align: justify; color: var(--text-secondary);">${line}</p>`);
                 }
             }
         }
@@ -410,6 +331,82 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return processedLines.join('\n');
     }
+
+    function showModal(text, pencapaianId) {
+        const data = recommendationsData[pencapaianId];
+        const ikuName = (data && data.iku_pencapaian && data.iku_pencapaian.iku) ? data.iku_pencapaian.iku.nama_iku : 'Indikator Kinerja';
+        const statusHtml = (data && data.iku_pencapaian) ? 
+            'Status: <span style="font-weight: 600; color: ' + 
+            (data.iku_pencapaian.status === 'Perlu Perhatian' ? '#fbbf24' : '#ef4444') + ';">' + 
+            data.iku_pencapaian.status + '</span> (Realisasi: ' + Math.round(data.iku_pencapaian.realisasi) + ' dari Target: ' + data.iku_pencapaian.target + ')'
+            : 'Detail Rekomendasi AI';
+
+        modalTitle.textContent = 'Rekomendasi Analisis AI: ' + ikuName;
+        modalSubtitle.innerHTML = statusHtml;
+        modalBody.innerHTML = parseMarkdown(text);
+        modal.style.display = 'flex';
+    }
+
+    // Attach click events to all Rekomendasi buttons in table
+    document.querySelectorAll('.btn-show-ai-rec').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const pencapaianId = btn.getAttribute('data-pencapaian-id');
+            const data = recommendationsData[pencapaianId];
+            
+            let textToShow = data ? data.rekomendasi : '';
+            
+            if (!textToShow || textToShow.includes('Rekomendasi belum di-generate') || textToShow.includes('Layanan AI sedang tidak tersedia') || textToShow.includes('sedang diproses')) {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = `<svg style="width: 12px; height: 12px; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses AI...`;
+                btn.style.opacity = '0.7';
+                btn.style.pointerEvents = 'none';
+
+                fetch('/rekomendasi/generate-ajax/' + pencapaianId, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') : ''
+                    }
+                })
+                .then(response => response.json())
+                .then(res => {
+                    if (res.status === 'success') {
+                        if (!recommendationsData[pencapaianId]) {
+                            recommendationsData[pencapaianId] = { rekomendasi: res.rekomendasi, iku_pencapaian: null };
+                        } else {
+                            recommendationsData[pencapaianId].rekomendasi = res.rekomendasi;
+                        }
+                        showModal(res.rekomendasi, pencapaianId);
+                    } else {
+                        showModal('**Terjadi kesalahan** saat memproses rekomendasi.', pencapaianId);
+                    }
+                })
+                .catch(error => {
+                    showModal('**Koneksi gagal.** Silakan periksa jaringan Anda.', pencapaianId);
+                })
+                .finally(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.style.opacity = '1';
+                    btn.style.pointerEvents = 'auto';
+                });
+            } else {
+                showModal(textToShow, pencapaianId);
+            }
+        });
+    });
+
+    if (btnCloseModal) {
+        btnCloseModal.addEventListener('click', function () {
+            modal.style.display = 'none';
+        });
+    }
+
+    // Close on click outside modal content
+    window.addEventListener('click', function (e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 });
 </script>
 @endsection

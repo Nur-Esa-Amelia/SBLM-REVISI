@@ -341,15 +341,30 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalBody = document.getElementById('modal-body-content');
     const btnCloseModal = document.getElementById('btn-close-modal');
 
+    function showModal(text, pencapaianId) {
+        const data = recommendationsData[pencapaianId];
+        const ikuName = (data && data.iku_pencapaian && data.iku_pencapaian.iku) ? data.iku_pencapaian.iku.nama_iku : 'Indikator Kinerja';
+        const statusHtml = (data && data.iku_pencapaian) ? 
+            'Status: <span style="font-weight: 600; color: ' + 
+            (data.iku_pencapaian.status === 'Perlu Perhatian' ? '#fbbf24' : '#ef4444') + ';">' + 
+            data.iku_pencapaian.status + '</span> (Realisasi: ' + Math.round(data.iku_pencapaian.realisasi) + ' dari Target: ' + data.iku_pencapaian.target + ')'
+            : 'Detail Rekomendasi AI';
+
+        modalTitle.textContent = 'Rekomendasi Analisis AI: ' + ikuName;
+        modalSubtitle.innerHTML = statusHtml;
+        modalBody.innerHTML = parseMarkdown(text);
+        modal.style.display = 'flex';
+    }
+
     // Attach click events to all Rekomendasi buttons in table
     document.querySelectorAll('.btn-show-ai-rec').forEach(function (btn) {
         btn.addEventListener('click', function () {
             const pencapaianId = btn.getAttribute('data-pencapaian-id');
             const data = recommendationsData[pencapaianId];
             
-            let textToShow = data ? data.rekomendasi : 'Rekomendasi belum di-generate';
+            let textToShow = data ? data.rekomendasi : '';
             
-            if (textToShow.includes('Rekomendasi belum di-generate') || textToShow.includes('Layanan AI sedang tidak tersedia') || textToShow.includes('sedang diproses')) {
+            if (!textToShow || textToShow.includes('Rekomendasi belum di-generate') || textToShow.includes('Layanan AI sedang tidak tersedia') || textToShow.includes('sedang diproses')) {
                 const originalHtml = btn.innerHTML;
                 btn.innerHTML = `<svg style="width: 12px; height: 12px; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses AI...`;
                 btn.style.opacity = '0.7';
@@ -370,13 +385,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         } else {
                             recommendationsData[pencapaianId].rekomendasi = res.rekomendasi;
                         }
-                        showModal(res.rekomendasi);
+                        showModal(res.rekomendasi, pencapaianId);
                     } else {
-                        showModal('**Terjadi kesalahan** saat memproses rekomendasi.');
+                        showModal('**Terjadi kesalahan** saat memproses rekomendasi.', pencapaianId);
                     }
                 })
                 .catch(error => {
-                    showModal('**Koneksi gagal.** Silakan periksa jaringan Anda.');
+                    showModal('**Koneksi gagal.** Silakan periksa jaringan Anda.', pencapaianId);
                 })
                 .finally(() => {
                     btn.innerHTML = originalHtml;
@@ -384,23 +399,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     btn.style.pointerEvents = 'auto';
                 });
             } else {
-                showModal(textToShow);
+                showModal(textToShow, pencapaianId);
             }
-
-            function showModal(text) {
-                const ikuName = (data && data.iku_pencapaian && data.iku_pencapaian.iku) ? data.iku_pencapaian.iku.nama_iku : 'Indikator Kinerja';
-                const statusHtml = (data && data.iku_pencapaian) ? 
-                    'Status: <span style="font-weight: 600; color: ' + 
-                    (data.iku_pencapaian.status === 'Perlu Perhatian' ? '#fbbf24' : '#ef4444') + ';">' + 
-                    data.iku_pencapaian.status + '</span> (Realisasi: ' + Math.round(data.iku_pencapaian.realisasi) + ' dari Target: ' + data.iku_pencapaian.target + ')'
-                    : 'Detail Pencapaian AI';
-
-                modalTitle.textContent = 'Rekomendasi Analisis AI: ' + ikuName;
-                modalSubtitle.innerHTML = statusHtml;
-                    
-                    modalBody.innerHTML = parseMarkdown(text);
-                    modal.style.display = 'flex';
-                }
         });
     });
 
