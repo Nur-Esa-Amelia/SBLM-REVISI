@@ -137,6 +137,7 @@ class DashboardController extends Controller
             $tahunList = range(date('Y') - 2, date('Y') + 5);
         }
 
+        // thn yg ingin di tampilkan
         $tahun = $request->query('tahun', $tahunAktif);
         $status = $request->query('status');
 

@@ -7,6 +7,10 @@
 
     <title>@yield('title', 'Dosen - Sistem Early Warning IKU/IKT')</title>
 
+    <!-- Favicon / Logo Poltek -->
+    <link rel="icon" type="image/jpeg" href="{{ asset('images/LOGO POLTEKKKKK.jpg') }}">
+    <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/LOGO POLTEKKKKK.jpg') }}">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

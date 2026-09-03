@@ -56,13 +56,77 @@
         pointer-events: none;
     }
 
+    /* Halaman Login khusus: tanpa tombol mode, tanpa scroll, panel form latar putih */
+    #auth-theme-btn {
+        display: none !important;
+    }
+    
+    html, body {
+        overflow: hidden !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        margin: 0 !important;
+    }
+
+    body {
+        background-image: linear-gradient(rgba(11, 15, 25, 0.75), rgba(11, 15, 25, 0.75)), url('{{ asset("images/gambar2.jpeg") }}') !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+    }
+
     .auth-right-panel {
         padding: 40px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         position: relative;
-        background-color: var(--auth-surface);
+        background-color: #ffffff !important;
+        color: #0f172a !important;
+    }
+
+    .auth-right-panel .auth-title {
+        color: #0f172a !important;
+    }
+
+    .auth-right-panel .auth-subtitle {
+        color: #475569 !important;
+    }
+
+    .auth-right-panel .form-label {
+        color: #334155 !important;
+    }
+
+    .auth-right-panel .checkbox-label {
+        color: #334155 !important;
+    }
+
+    .auth-right-panel .checkbox-input {
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+    }
+
+    .auth-right-panel .checkbox-input:checked {
+        background-color: #38bdf8 !important;
+        border-color: #38bdf8 !important;
+    }
+
+    .auth-right-panel .form-input-with-icon,
+    .auth-right-panel .form-input-with-icon-both {
+        background-color: #f1f5f9 !important;
+        border-color: #cbd5e1 !important;
+        color: #0f172a !important;
+    }
+
+    .auth-right-panel .form-input-with-icon::placeholder,
+    .auth-right-panel .form-input-with-icon-both::placeholder {
+        color: #94a3b8 !important;
+    }
+
+    .auth-right-panel .input-icon-left,
+    .auth-right-panel .input-icon-right {
+        color: #64748b !important;
     }
 
     @media (max-width: 640px) {
@@ -276,7 +340,7 @@
         <!-- Header: Back & Logo -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; width: 100%;">
             <!-- Arrow Back Button -->
-            <a href="{{ route('home') }}" class="text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1.5 text-sm" style="text-decoration: none;">
+            <a href="{{ route('home') }}" class="text-slate-500 hover:text-slate-800 transition cursor-pointer flex items-center gap-1.5 text-sm" style="text-decoration: none;">
                 <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
@@ -367,6 +431,8 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        document.documentElement.setAttribute('data-theme', 'dark');
+
         const passwordInput = document.getElementById('password');
         const passwordToggle = document.getElementById('password-toggle');
         const eyeOpenIcon = document.getElementById('eye-open');

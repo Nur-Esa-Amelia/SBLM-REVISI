@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Admin P2MP - Sistem Early Warning IKU/IKT')</title>
+    <title>@yield('title', 'Admin Sistem - Sistem Early Warning IKU/IKT')</title>
+
+    <!-- Favicon / Logo Poltek -->
+    <link rel="icon" type="image/jpeg" href="{{ asset('images/LOGO POLTEKKKKK.jpg') }}">
+    <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/LOGO POLTEKKKKK.jpg') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

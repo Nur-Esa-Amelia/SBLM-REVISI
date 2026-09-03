@@ -50,6 +50,11 @@ class IkuPencapaian extends Model
         return $this->belongsTo(User::class, 'id_user');
     }
 
+    public function rekomendasiAi()
+    {
+        return $this->hasOne(RekomendasiAi::class, 'id_iku_pencapaian');
+    }
+
     public function targetNyata(?Pengaturan $settings = null): float
     {
         $settings ??= Pengaturan::where('id_prodi', $this->id_prodi)->first();

@@ -17,7 +17,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $user = auth()->user(); //data user login
+        $user = auth()->user(); 
         $prodiId = $user->prodi_id;
         $prodiName = $user->prodi ? $user->prodi->nama_prodi : 'Program Studi';
         
@@ -32,18 +32,22 @@ class DashboardController extends Controller
 
         // Hitung statistik untuk tahun akademik aktif
         $totalAssignments = $assignments->count();
+        //menghitung jumlah file bukti yang sudah di-upload oleh user tertentu pada tahun aktif.
         $totalProofs = FileIsiBukti::whereHas('pengisianBukti', function ($query) use ($user, $tahunAktif) {
             $query->where('id_user', $user->id)->where('tahun', $tahunAktif);
         })->count();
 
+        //menghitung jumlah file bukti yang sudah dinyatakan valid oleh user pada tahun aktif.
         $validProofs = FileIsiBukti::whereHas('pengisianBukti', function ($query) use ($user, $tahunAktif) {
             $query->where('id_user', $user->id)->where('tahun', $tahunAktif)->where('status', 'valid');
         })->count();
 
+        //menghitung jumlah file bukti yang sudah dinyatakan pending oleh user pada tahun aktif.
         $pendingProofs = FileIsiBukti::whereHas('pengisianBukti', function ($query) use ($user, $tahunAktif) {
             $query->where('id_user', $user->id)->where('tahun', $tahunAktif)->where('status', 'pending');
         })->count();
 
+        //menghitung jumlah file bukti yang sudah dinyatakan invalid oleh user pada tahun aktif.
         $invalidProofs = FileIsiBukti::whereHas('pengisianBukti', function ($query) use ($user, $tahunAktif) {
             $query->where('id_user', $user->id)->where('tahun', $tahunAktif)->where('status', 'invalid');
         })->count();

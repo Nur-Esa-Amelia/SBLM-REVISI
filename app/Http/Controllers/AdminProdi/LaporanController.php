@@ -14,6 +14,7 @@ class LaporanController extends Controller
         $prodis = null;
         $selectedProdiId = null;
 
+        //bole liat seluruh prodi
         if (auth()->user()->role === 'admin_p2mp') {
             $prodis = \App\Models\Prodi::orderBy('nama_prodi')->get();
             $prodiId = $request->query('prodi_id');

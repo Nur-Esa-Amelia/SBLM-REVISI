@@ -55,10 +55,10 @@ class ModelTokenAiController extends Controller
         $model->model_id = $request->model_id;
         $model->status = $request->status;
 
-        if ($request->filled('api_key')) {
+        if ($request->filled('api_key')) { //apakah api key ada
             $model->api_key = $request->api_key;
             ActivityLog::log('Mengubah model Gemini', 'Model & Token AI', "Mengubah model '{$request->name}' (termasuk pergantian API Key)");
-        } else {
+        } else { //api key lama ttp
             ActivityLog::log('Mengubah model Gemini', 'Model & Token AI', "Mengubah data model '{$request->name}'");
         }
 

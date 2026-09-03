@@ -7,6 +7,10 @@
 
     <title>@yield('title', 'Sistem Early Warning IKU/IKT')</title>
 
+    <!-- Favicon / Logo Poltek -->
+    <link rel="icon" type="image/jpeg" href="{{ asset('images/LOGO POLTEKKKKK.jpg') }}">
+    <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/LOGO POLTEKKKKK.jpg') }}">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,6 +69,11 @@
 
         body { 
             background-color: var(--auth-bg); 
+            background-image: linear-gradient(rgba(11, 15, 25, 0.7), rgba(11, 15, 25, 0.7)), url('{{ asset("images/gambar2.jpeg") }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             color: var(--auth-text);
             display: flex;
             justify-content: center;
@@ -79,6 +88,11 @@
         html[data-theme="light"] body,
         html[data-theme="light"] {
             background-color: var(--auth-bg) !important;
+            background-image: linear-gradient(rgba(241, 245, 249, 0.7), rgba(241, 245, 249, 0.7)), url('{{ asset("images/gambar2.jpeg") }}') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            background-attachment: fixed !important;
             color: var(--auth-text) !important;
         }
         html[data-theme="light"] .auth-card {

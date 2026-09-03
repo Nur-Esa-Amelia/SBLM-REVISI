@@ -143,4 +143,8 @@ Route::middleware('auth')->group(function () {
     
     // AJAX Endpoint for Generating Recommendation
     Route::post('/rekomendasi/generate-ajax/{id}', [\App\Http\Controllers\RekomendasiAiController::class, 'generateAjax'])->name('rekomendasi.generate-ajax');
+    
+    // AJAX Endpoints for AI Recommendation Testing / Evaluation
+    Route::get('/rekomendasi/penilaian/{pencapaianId}', [\App\Http\Controllers\PenilaianAiController::class, 'getPenilaianData'])->name('rekomendasi.penilaian.get');
+    Route::post('/rekomendasi/penilaian/store', [\App\Http\Controllers\PenilaianAiController::class, 'storePenilaian'])->name('rekomendasi.penilaian.store');
 });

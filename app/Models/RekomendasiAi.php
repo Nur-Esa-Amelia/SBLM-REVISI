@@ -20,4 +20,9 @@ class RekomendasiAi extends Model
     {
         return $this->belongsTo(IkuPencapaian::class, 'id_iku_pencapaian');
     }
+
+    public function penilaian()
+    {
+        return $this->hasOne(PenilaianRekomendasiAi::class, 'id_rekomendasi_ai');
+    }
 }

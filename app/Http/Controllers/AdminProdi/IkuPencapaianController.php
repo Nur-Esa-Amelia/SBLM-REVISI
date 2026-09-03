@@ -74,7 +74,7 @@ class IkuPencapaianController extends Controller
             ->pluck('id_iku')
             ->toArray();
 
-        $iku = Iku::whereNotIn('id', $existingIkuIds)->get();
+        $iku = Iku::whereNotIn('id', $existingIkuIds)->get(); //Ambil semua IKU yang belum terdapat dalam daftar
 
         return view('adminprodi.pencapaian.create', compact('iku', 'tahunList', 'tahun', 'settings'));
     }
@@ -125,7 +125,7 @@ class IkuPencapaianController extends Controller
 
     public function edit(IkuPencapaian $pencapaian)
     {
-        // Pemeriksaan keamanan
+        // membatasi akses data berdasarkan prodi user
         if ($pencapaian->id_prodi !== auth()->user()->prodi_id) {
             abort(403);
         }
@@ -146,7 +146,7 @@ class IkuPencapaianController extends Controller
 
     public function update(Request $request, IkuPencapaian $pencapaian)
     {
-        // Pemeriksaan keamanan
+        // apakah dosen punya prodi yg sama dgn data capaian yg akan di akses
         if ($pencapaian->id_prodi !== auth()->user()->prodi_id) {
             abort(403);
         }

@@ -82,6 +82,7 @@ class PengisianController extends Controller
             return redirect()->back()->withErrors(['id_iku' => 'Indikator IKU/IKT ini belum dikonfigurasi targetnya untuk program studi Anda pada tahun akademik aktif ini.'])->withInput();
         }
 
+        //membatasi jumlah file bukti yang boleh di-upload berdasarkan sisa capaian IKU/IKT.
         $sisaBerkas = IkuPencapaian::sisaBerkas($prodiId, $request->id_iku, $tahunAktif);
         if ($sisaBerkas !== null && count($request->file('files', [])) > $sisaBerkas) {
             return redirect()->back()->withErrors(['files' => $sisaBerkas > 0

@@ -4,6 +4,26 @@
 
 @section('content')
 <style>
+    /* Halaman Utama khusus: tanpa tombol mode, tanpa scroll, mode gelap default */
+    #auth-theme-btn {
+        display: none !important;
+    }
+    
+    html, body {
+        overflow: hidden !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        margin: 0 !important;
+    }
+
+    body {
+        background-image: linear-gradient(rgba(11, 15, 25, 0.75), rgba(11, 15, 25, 0.75)), url('{{ asset("images/gambar2.jpeg") }}') !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+    }
+
     .welcome-container {
         width: 100%;
         max-width: 480px;
@@ -144,7 +164,7 @@
     </div>
 
     <h1 class="title">Sistem Monitoring Pencapaian IKU/IKT</h1>
-    <p class="subtitle">Aplikasi Monitoring Pencapaian Indikator Kinerja Utama</p>
+    <p class="subtitle">Aplikasi Monitoring Pencapaian Indikator Kinerja</p>
 
     <div class="actions-group">
         <!-- <a href="{{ route('register') }}" class="btn-action btn-register">
@@ -154,9 +174,6 @@
             Daftar Akun
         </a> -->
         <a href="{{ route('login') }}" class="btn-action btn-login">
-            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
-            </svg>
             Login ke Sistem
         </a>
     </div>
@@ -171,4 +188,10 @@
         Sistem Monitoring IKU/IKT — Politeknik Sukabumi
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.documentElement.setAttribute('data-theme', 'dark');
+});
+</script>
 @endsection
